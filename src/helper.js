@@ -8,26 +8,33 @@ export const createPosition = () => {
 
   for (let i = 0; i < 8; i++) {
     // position[6][i] = "bp";
-    position[1][i] = "wp";
+    // position[1][i] = "wp";
   }
 
-  position[0][0] = "wr";
-  position[0][1] = "wn";
-  position[0][2] = "wb";
-  position[0][3] = "wq";
-  position[0][4] = "wk";
-  position[0][5] = "wb";
-  position[0][6] = "wn";
-  position[0][7] = "wr";
-
+  // position[0][0] = "wr";
+  // position[0][1] = "wn";
+  // position[0][2] = "wb";
+  // position[0][3] = "wq";
+  // position[0][4] = "wk";
+  // position[0][5] = "wb";
+  // position[0][6] = "wn";
+  // position[0][7] = "wr";
+  //
   // position[7][0] = "br";
   // position[7][1] = "bn";
   // position[7][2] = "bb";
   // position[7][3] = "bq";
-  position[7][4] = "bk";
+  // position[7][4] = "bk";
   // position[7][5] = "bb";
   // position[7][6] = "bn";
   // position[7][7] = "br";
+
+  position[0][0] = "bk";
+  position[0][7] = "wk";
+  position[3][2] = "wn";
+  position[3][6] = "wn";
+  position[5][2] = "wn";
+  position[5][6] = "wn";
 
   return position;
 };
@@ -111,18 +118,13 @@ export const disambiguateMove = (
   note,
   takes,
 ) => {
-  let ambiguousPieces = 0;
-  let pieceAtPosition = { pieceAt: "", rank: 0, file: 0 };
+  let ambiguousPieces = [];
 
   for (let rank = 0; rank < 8; rank++) {
     for (let file = 0; file < 8; file++) {
-      if (pieceAtPosition === "") {
+      if (position[rank][file] === "" || (rank === currX && file === currY)) {
         continue;
-      } else if (
-        position[rank][file] === piece &&
-        rank !== currX &&
-        file !== currY
-      ) {
+      } else if (position[rank][file] === piece) {
         const pieceAtPositionValidMoves = arbitor.getValidMoves({
           position: position,
           prevPosition: previousPosition,
@@ -134,35 +136,47 @@ export const disambiguateMove = (
         if (
           pieceAtPositionValidMoves.some(([x, y]) => x === toX && y === toY)
         ) {
-          pieceAtPosition.pieceAt = position[rank][file];
-          pieceAtPosition.rank = rank;
-          pieceAtPosition.file = file;
-          ambiguousPieces++;
+          ambiguousPieces.push({
+            pieceAt: position[rank][file],
+            rank: rank,
+            file: file,
+          });
         }
       }
     }
   }
 
-  if (ambiguousPieces === 0) {
-    note += piece[1].toUpperCase();
-    takes !== "" ? (note += "x") : (note += "");
-  } else if (ambiguousPieces === 1) {
-    if (pieceAtPosition.rank !== currX && pieceAtPosition.file !== currY) {
-      note += piece[1].toUpperCase() + getCharacter(currY + 1);
-      takes !== "" ? (note += "x") : (note += "");
-    } else if (
-      pieceAtPosition.rank === currX &&
-      pieceAtPosition.file !== currY
-    ) {
-      note += piece[1].toUpperCase() + getCharacter(currY + 1);
-      takes !== "" ? (note += "x") : (note += "");
+  const pieceLetter = piece[1].toUpperCase();
+  const fileChar = getCharacter(currY + 1);
+  const rankChar = (currX + 1).toString();
+
+  function appendTake(str) {
+    return takes !== "" ? str + "x" : str;
+  }
+
+  if (ambiguousPieces.length === 0) {
+    note += appendTake(pieceLetter);
+  } else if (ambiguousPieces.length === 1) {
+    if (ambiguousPieces[0].file !== currY) {
+      note += appendTake(pieceLetter + fileChar);
     } else {
-      note += piece[1].toUpperCase() + (currX + 1);
-      takes !== "" ? (note += "x") : (note += "");
+      note += appendTake(pieceLetter + rankChar);
     }
   } else {
-    note += piece[1].toUpperCase() + getCharacter(currY + 1) + (currX + 1);
-    takes !== "" ? (note += "x") : (note += "");
+    let onFile = false;
+    let onRank = false;
+    ambiguousPieces.forEach((ambiguousPiece) => {
+      if (ambiguousPiece.file === currY) onFile = true;
+      if (ambiguousPiece.rank === currX) onRank = true;
+    });
+
+    if (onFile && onRank) {
+      note += appendTake(pieceLetter + fileChar + rankChar);
+    } else if (onFile) {
+      note += appendTake(pieceLetter + rankChar);
+    } else {
+      note += appendTake(pieceLetter + fileChar);
+    }
   }
 
   return note;
