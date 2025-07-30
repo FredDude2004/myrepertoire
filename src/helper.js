@@ -145,15 +145,6 @@ export const getNewMoveNotation = ({
     y,
   });
 
-  // console.log(position, positionAfterMove);
-  console.log(
-    arbitor.isPlayerInCheck({
-      positionAfterMove: positionAfterMove,
-      position: position,
-      player: piece[0] === "w" ? "b" : "w",
-    }),
-  );
-
   if (promotesTo) note += "=" + promotesTo.toUpperCase();
 
   const mated = arbitor.isCheckMate(
