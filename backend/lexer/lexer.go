@@ -27,10 +27,6 @@ func (lex *lexer) push(token Token) {
 	lex.Tokens = append(lex.Tokens, token)
 }
 
-func (lex lexer) at() byte {
-	return lex.source[lex.pos]
-}
-
 func (lex lexer) remainder() string {
 	return lex.source[lex.pos:]
 }
@@ -39,7 +35,7 @@ func (lex lexer) at_eof() bool {
 	return lex.pos >= len(lex.source)
 }
 
-func Tokenize(source string) []Token {
+func TokenizePGN(source string) []Token {
 	lex := createLexer(source)
 
 	for !lex.at_eof() {
@@ -60,15 +56,7 @@ func Tokenize(source string) []Token {
 		}
 	}
 
-	lex.push(NewToken(EOF, "EOF"))
 	return lex.Tokens
-}
-
-func defaultHandler(kind TokenKind, literal string) regexHandler {
-	return func(lex *lexer, regex *regexp.Regexp) {
-		lex.advanceN(len(literal))
-		lex.push(NewToken(kind, literal))
-	}
 }
 
 func createLexer(source string) *lexer {
@@ -77,17 +65,44 @@ func createLexer(source string) *lexer {
 		source: source,
 		Tokens: make([]Token, 0),
 		patterns: []regexPattern{
-			{regexp.MustCompile(`\[[^\]]*\]`), defaultHandler(META_DATA, "[*]")},
+			{regexp.MustCompile(`\[[^\]]*\]`), metaDataHandler},
+			{regexp.MustCompile(`\{[^}]*\}`), commentHandler},
+			{regexp.MustCompile(`\([^)]*\)`), variationsHandler},
 			{regexp.MustCompile(`\s+`), skipHandler},
 			{regexp.MustCompile(`\b(?:[1-9]|[1-3][0-9]|40)\.`), moveNumHandler},
-			{regexp.MustCompile(`\b(?:[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|O-O(?:-O)?[+#]?)\b`), moveHandler},
+			{regexp.MustCompile(`(?:[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|O-O(?:-O)?[+#]?)`), moveHandler},
+			{regexp.MustCompile(`\b(?:1-0|0-1|1\/2-1\/2)\b`), resultHandler},
 		},
 	}
+}
+
+func metaDataHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindString(lex.remainder())
+	// lex.push(NewToken(META_DATA, match)) **skipping METADATA tokens
+	lex.advanceN(len(match))
+}
+
+func commentHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindString(lex.remainder())
+	// lex.push(NewToken(META_DATA, match)) **skipping METADATA tokens
+	lex.advanceN(len(match))
+}
+
+func variationsHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindString(lex.remainder())
+	// lex.push(NewToken(META_DATA, match)) **skipping METADATA tokens
+	lex.advanceN(len(match))
 }
 
 func skipHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindStringIndex(lex.remainder())
 	lex.advanceN(match[1])
+}
+
+func moveNumHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindString(lex.remainder())
+	lex.push(NewToken(MOVE_NUM, match))
+	lex.advanceN(len(match))
 }
 
 func moveHandler(lex *lexer, regex *regexp.Regexp) {
@@ -96,8 +111,8 @@ func moveHandler(lex *lexer, regex *regexp.Regexp) {
 	lex.advanceN(len(match))
 }
 
-func moveNumHandler(lex *lexer, regex *regexp.Regexp) {
+func resultHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindString(lex.remainder())
-	lex.push(NewToken(MOVE_NUM, match))
+	// lex.push(NewToken(RESULT, match))  **skipping RESULT tokens
 	lex.advanceN(len(match))
 }

@@ -14,6 +14,7 @@ const (
 
 	MOVE_NUM
 	MOVE
+	RESULT
 )
 
 type Token struct {
@@ -32,7 +33,7 @@ func (token Token) isOneOfMany(expectedTokens ...TokenKind) bool {
 }
 
 func (token Token) Debug() {
-	if token.isOneOfMany(MOVE, MOVE_NUM) {
+	if token.isOneOfMany(MOVE, MOVE_NUM, META_DATA, RESULT) {
 		fmt.Printf("%s (%s)\n", TokenKindString(token.Kind), token.Literal)
 	} else {
 		fmt.Printf("%s () \n", TokenKindString(token.Kind))
@@ -57,8 +58,9 @@ func TokenKindString(kind TokenKind) string {
 		return "move_num"
 	case MOVE:
 		return "move"
+	case RESULT:
+		return "result"
 	default:
 		return fmt.Sprintf("unknown(%d)", kind)
 	}
-
 }
