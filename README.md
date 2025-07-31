@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# myrepertoire.io ♟️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web application for building and mastering your chess repertoire. Upload
+lines in PGN format and drill them interactively with real-time quizzes.
+Inspired by tools like Chessly, this app focuses on helping you retain and
+internalize your openings efficiently.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- 🔍 **PGN Parsing:** Convert raw PGN strings into structured move trees.
+- 🧠 **Quiz Mode:** Practice your repertoire with an interactive quiz that
+  simulates your opponent's moves.
+- 🛠️ **Custom Engine:** Built with a custom lexer and parser in Go for PGN processing.
+- 📡 **API-first Architecture:** RESTful API powering frontend logic.
+- 🔒 **Authentication:** Login/signup with support for Google Sign-In (planned).
+- 📊 **User Profiles:** Save repertoires and track quiz performance (WIP).
 
-### `npm start`
+## Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend:** React (TBD)
+- **Backend:** Go (custom PGN parser, REST API)
+- **Database:** PostgreSQL (planned)
+- **Auth:** Google OAuth + local auth (planned)
+- **Hosting:** VPS (planned)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Development Status 🚧
 
-### `npm test`
+This project is currently under active development.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ✅ Done
 
-### `npm run build`
+- PGN lexer and parser (Go)
+- Move tree generator
+- Basic backend API setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🛠️ In Progress
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Quiz engine (drill mode)
+- API endpoints for repertoires
+- Frontend UI (React)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🧭 Planned
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- User authentication
+- Persistent storage (PostgreSQL)
+- Admin dashboard
+- Live multiplayer quiz modes
