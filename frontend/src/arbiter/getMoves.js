@@ -380,7 +380,7 @@ export const getCastlingDirections = ({
 export const getPieces = (position, enemy) => {
     const enemyPieces = [];
     position.forEach((rank, x) => {
-        rank.forEach((y) => {
+        rank.forEach((file, y) => {
             if (position[x][y].startsWith(enemy))
                 enemyPieces.push({
                     piece: position[x][y],
@@ -395,7 +395,7 @@ export const getPieces = (position, enemy) => {
 export const getKingPosition = (position, player) => {
     let kingPos;
     position.forEach((rank, x) => {
-        rank.forEach((y) => {
+        rank.forEach((file, y) => {
             if (position[x][y].startsWith(player) && position[x][y].endsWith("k"))
                 kingPos = [x, y];
         });

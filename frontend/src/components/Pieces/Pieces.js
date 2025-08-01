@@ -89,7 +89,6 @@ const Pieces = () => {
                 position: currentPosition,
                 previousPosition: previousePosition,
             });
-            console.log("ITS ME");
             dispatch(makeNewMove({ newPosition, newMove }));
 
             if (arbiter.insufficientMaterial(newPosition))

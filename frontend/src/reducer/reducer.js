@@ -18,7 +18,6 @@ export const reducer = (state, action) => {
                 ...castleDirectionHistory,
                 castleDirection
             ]
-            console.log("castleDirection", castleDirection);
             console.log("castleDirectionHistory", castleDirectionHistory);
 
             return {
@@ -108,9 +107,6 @@ export const reducer = (state, action) => {
                 castleDirectionHistory = castleDirectionHistory.slice(0, castleDirectionHistory.length - 1);
                 castleDirection = castleDirectionHistory[castleDirectionHistory.length - 1];
             }
-
-            console.log("TAKE BACK castleDirection: ", castleDirection);
-            console.log("TAKE BACK castleDirectionHistory: ", castleDirectionHistory);
 
             return {
                 ...state,
