@@ -16,9 +16,8 @@ export const reducer = (state, action) => {
             turn = turn === 'w' ? 'b' : 'w'
             castleDirectionHistory = [
                 ...castleDirectionHistory,
-                castleDirection
+                { ...castleDirection }  // deep enough for this structure
             ]
-            console.log("castleDirectionHistory", castleDirectionHistory);
 
             return {
                 ...state,
@@ -63,11 +62,14 @@ export const reducer = (state, action) => {
         case actionTypes.CAN_CASTLE: {
             let { turn, castleDirection } = state
 
-            castleDirection[turn] = action.payload
+            const newCastleDirection = {
+                ...castleDirection,
+                [turn]: action.payload
+            }
 
             return {
                 ...state,
-                castleDirection,
+                castleDirection: newCastleDirection,
             }
         }
 
