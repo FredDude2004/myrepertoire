@@ -18,8 +18,8 @@ import { isMoveCorrect } from "../../quiz/quizUtils";
 
 const Pieces = () => {
     const { appState, dispatch } = useAppContext();
-    const currentPosition = appState.position[appState.position.length - 1];
-    const previousePosition = appState.position[appState.position.length - 2];
+    const currentPosition = appState.position[appState.currentPositionIndex];
+    const previousePosition = appState.position[appState.currentPositionIndex - 1];
 
     const ref = useRef();
 
@@ -91,13 +91,13 @@ const Pieces = () => {
                 previousPosition: previousePosition,
             });
             const moveNum = appState.moveNum;
-            console.log("moveNum:", moveNum);
-            console.log("piece:", piece);
+            // console.log("moveNum:", moveNum);
+            // console.log("piece:", piece);
 
             if (!isMoveCorrect(newMove, moveNum, piece[0])) {
-                console.error("Invalid move detected:", newMove);
+                // console.error("Invalid move detected:", newMove);
             } else {
-                console.log("Valid move:", newMove);
+                // console.log("Valid move:", newMove);
             }
 
             dispatch(makeNewMove({ newPosition, newMove }));

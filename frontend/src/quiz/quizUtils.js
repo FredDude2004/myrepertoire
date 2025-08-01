@@ -23,7 +23,7 @@ const sampleQuiz = [
 
 export function isMoveCorrect(userMove, moveNum, color) {
     const correctMove = sampleQuiz[moveNum - 1][color === 'w' ? 'white' : 'black'];
-    console.log(`User Move: ${userMove}, Correct Move: ${correctMove}, Move Number: ${moveNum}`);
+    // console.log(`User Move: ${userMove}, Correct Move: ${correctMove}, Move Number: ${moveNum}`);
     return userMove === correctMove;
 }
 

@@ -4,11 +4,14 @@ export const reducer = (state, action) => {
 
     switch (action.type) {
         case actionTypes.NEW_MOVE: {
-            let { position, movesList, moveNum, turn, castleDirection, castleDirectionHistory } = state
+            let { position, currentPositionIndex, currentMoveIndex, movesList, moveNum, turn, castleDirection, castleDirectionHistory } = state
             position = [
                 ...position,
                 action.payload.newPosition
             ]
+            currentPositionIndex += 1;
+            currentMoveIndex += 1;
+            console.log("CurrentPositionIndex:", currentPositionIndex);
             movesList = [
                 ...movesList,
                 action.payload.newMove
@@ -23,6 +26,8 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 position,
+                currentPositionIndex,
+                currentMoveIndex,
                 movesList,
                 turn,
                 moveNum,
@@ -102,26 +107,44 @@ export const reducer = (state, action) => {
             }
         }
 
-        case actionTypes.TAKE_BACK: {
-            let { position, movesList, turn, moveNum, castleDirection, castleDirectionHistory } = state
-            if (position.length > 1) {
-                position = position.slice(0, position.length - 1)
-                movesList = movesList.slice(0, movesList.length - 1)
-                turn = turn === 'w' ? 'b' : 'w'
-                moveNum = turn === 'w' ? moveNum - 1 : moveNum;
-                castleDirectionHistory = castleDirectionHistory.slice(0, castleDirectionHistory.length - 1);
-                castleDirection = castleDirectionHistory[castleDirectionHistory.length - 1];
-            }
-
+        case actionTypes.FIRST_MOVE: {
+            let { position, currentPositionIndex } = state;
+            currentPositionIndex = 0;
             return {
                 ...state,
-                position,
-                movesList,
-                turn,
-                moveNum,
-                castleDirection,
-                castleDirectionHistory,
+                currentPositionIndex,
+            };
+        }
+
+        case actionTypes.PREVIOUS_MOVE: {
+            let { position, currentPositionIndex } = state;
+            if (currentPositionIndex > 0) {
+                currentPositionIndex -= 1;
             }
+            return {
+                ...state,
+                currentPositionIndex,
+            };
+        }
+
+        case actionTypes.NEXT_MOVE: {
+            let { position, currentPositionIndex } = state;
+            if (currentPositionIndex >= 0 && currentPositionIndex < (position.length - 1)) {
+                currentPositionIndex += 1;
+            }
+            return {
+                ...state,
+                currentPositionIndex,
+            };
+        }
+
+        case actionTypes.CURRENT_MOVE: {
+            let { position, currentPositionIndex } = state;
+            currentPositionIndex = position.length - 1;
+            return {
+                ...state,
+                currentPositionIndex,
+            };
         }
 
         default:
