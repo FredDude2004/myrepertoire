@@ -4,7 +4,7 @@ export const reducer = (state, action) => {
 
     switch (action.type) {
         case actionTypes.NEW_MOVE: {
-            let { position, movesList, turn, castleDirection, castleDirectionHistory } = state
+            let { position, movesList, moveNum, turn, castleDirection, castleDirectionHistory } = state
             position = [
                 ...position,
                 action.payload.newPosition
@@ -14,6 +14,7 @@ export const reducer = (state, action) => {
                 action.payload.newMove
             ]
             turn = turn === 'w' ? 'b' : 'w'
+            moveNum = turn === 'w' ? moveNum + 1 : moveNum;
             castleDirectionHistory = [
                 ...castleDirectionHistory,
                 { ...castleDirection }  // deep enough for this structure
@@ -24,6 +25,7 @@ export const reducer = (state, action) => {
                 position,
                 movesList,
                 turn,
+                moveNum,
                 castleDirectionHistory,
             }
         }
@@ -101,11 +103,12 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.TAKE_BACK: {
-            let { position, movesList, turn, castleDirection, castleDirectionHistory } = state
+            let { position, movesList, turn, moveNum, castleDirection, castleDirectionHistory } = state
             if (position.length > 1) {
                 position = position.slice(0, position.length - 1)
                 movesList = movesList.slice(0, movesList.length - 1)
                 turn = turn === 'w' ? 'b' : 'w'
+                moveNum = turn === 'w' ? moveNum - 1 : moveNum;
                 castleDirectionHistory = castleDirectionHistory.slice(0, castleDirectionHistory.length - 1);
                 castleDirection = castleDirectionHistory[castleDirectionHistory.length - 1];
             }
@@ -115,6 +118,7 @@ export const reducer = (state, action) => {
                 position,
                 movesList,
                 turn,
+                moveNum,
                 castleDirection,
                 castleDirectionHistory,
             }
