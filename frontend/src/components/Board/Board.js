@@ -16,7 +16,6 @@ const Board = () => {
     const files = Array(8).fill().map((x, i) => i + 1)
 
     const { appState } = useAppContext();
-    console.log("Board.js", appState.currentPositionIndex)
     const position = appState.position[appState.currentPositionIndex]
 
     const checkTile = (() => {

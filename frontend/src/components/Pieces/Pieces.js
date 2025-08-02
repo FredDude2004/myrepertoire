@@ -13,7 +13,7 @@ import {
 
 import { makeNewMove, clearCandidates, incrementStrikes } from "../../reducer/actions/move";
 import arbiter from "../../arbiter/arbiter";
-import { getNewMoveNotation } from "../../helper";
+import { getNewMoveNotation, getPositionFromNotation } from "../../helper";
 import { getOpponentMove, isMoveCorrect } from "../../quiz/quizUtils";
 
 const Pieces = () => {
@@ -60,7 +60,7 @@ const Pieces = () => {
         const [piece, rank, file] = e.dataTransfer.getData("text").split(",");
 
         if (appState.candidateMoves.find((m) => m[0] === x && m[1] === y)) {
-            const opponent = piece.startsWith("b") ? "w" : "b";
+            const opponentColor = piece.startsWith("b") ? "w" : "b";
             const castleDirection =
                 appState.castleDirection[
                 `${piece.startsWith("b") ? "white" : "black"}`
@@ -95,24 +95,42 @@ const Pieces = () => {
 
             if (!isMoveCorrect(newMove, moveNum, piece[0])) {
                 dispatch(incrementStrikes());
+                dispatch(clearCandidates());
                 return;
             }
-            const opponentMove = getOpponentMove(moveNum, piece[0]);
-            console.log('opponentMove: ', opponentMove);
-            console.log('newPosition: ', newPosition);
 
-            dispatch(makeNewMove({ newPosition, newMove }));
-
-            // const newPositionAfterOpponentMove = arbiter.performMove({})
-            // dispatch(makeNewMove({ newPosition, newMove }));
+            dispatch(makeNewMove({ newPosition: newPosition, newMove: newMove }));
 
             if (arbiter.insufficientMaterial(newPosition))
                 dispatch(detectInsufficientMaterial());
-            else if (arbiter.isStalemate(newPosition, opponent, castleDirection)) {
+            else if (arbiter.isStalemate(newPosition, opponentColor, castleDirection)) {
                 dispatch(detectStalemate());
-            } else if (arbiter.isCheckMate(newPosition, opponent, castleDirection)) {
+            } else if (arbiter.isCheckMate(newPosition, opponentColor, castleDirection)) {
                 dispatch(detectCheckmate(piece[0]));
             }
+
+            const opponentMove = getOpponentMove(moveNum, piece[0]);
+            const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
+            const newNewPosition = arbiter.performMove({
+                position: newPosition,
+                piece: opponentMoveInfo.piece,
+                rank: opponentMoveInfo.rank,
+                file: opponentMoveInfo.file,
+                x: opponentMoveInfo.x,
+                y: opponentMoveInfo.y,
+            });
+
+            dispatch(makeNewMove({ newPosition: newNewPosition, newMove: opponentMove }));
+
+            if (arbiter.insufficientMaterial(newNewPosition))
+                dispatch(detectInsufficientMaterial());
+            else if (arbiter.isStalemate(newNewPosition, piece[0], castleDirection)) {
+                dispatch(detectStalemate());
+            } else if (arbiter.isCheckMate(newNewPosition, piece[0], castleDirection)) {
+                dispatch(detectCheckmate(piece[0]));
+            }
+
+
         }
         dispatch(clearCandidates());
     };
@@ -121,7 +139,6 @@ const Pieces = () => {
         e.preventDefault();
 
         move(e);
-        console.log('after move(e)', appState.position[appState.position.length - 1]);
     };
 
     const onDragOver = (e) => {

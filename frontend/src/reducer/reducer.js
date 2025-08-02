@@ -22,8 +22,6 @@ export const reducer = (state, action) => {
                 { ...castleDirection }  // deep enough for this structure
             ]
 
-            console.log('made all updates');
-
             return {
                 ...state,
                 position,
