@@ -15,11 +15,17 @@ html,body {
   grid-template-columns: auto 220px;
 
 }
-button {
-  background: var(--dark-tile);
-  color: var(--light-tile);
-  border: 0 none;
-  padding: 10px 30px;
-  margin: 10px 0;
-  font-size: 1.1em;
-} 
+
+.move-controls {
+    display: flex;
+    gap: 0.25rem;
+    height: 3rem;
+}
+
+.move-controls button {
+    margin: 0;
+    flex: 1;
+    background: var(--dark-tile);
+    color: var(--light-tile);
+    border-radius: 5px;
+}

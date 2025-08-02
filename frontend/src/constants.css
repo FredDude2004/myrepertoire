@@ -1,10 +1,11 @@
 :root {
+    --text-one: #cdd6f4;
     --tile-size : 100px;
     --light-tile : #a6adc8;
     --dark-tile : #313244;
     --bg-color : #202020;
     --highlight : rgba(0,0,0,.1);
-    --check : #FEEC48;
+    --check : #f38ba8;
 }
 
 @media all and (max-width: 450px) {

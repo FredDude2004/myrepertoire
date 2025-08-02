@@ -28,13 +28,15 @@ function App() {
                 <Control>
                     {/* <DrillStatus /> */}
                     <MovesList />
-                    <FirstMove />
-                    <PreviousMove />
-                    <NextMove />
-                    <CurrentMove />
+                    <div className="move-controls">
+                        <FirstMove />
+                        <PreviousMove />
+                        <NextMove />
+                        <CurrentMove />
+                    </div>
                 </Control>
-            </div>
-        </AppContext.Provider>
+            </div >
+        </AppContext.Provider >
     );
 }
 
