@@ -1,9 +1,9 @@
 import actionTypes from '../actionTypes';
 
-export const makeNewMove = ({newPosition,newMove}) => {
+export const makeNewMove = ({ newPosition, newMove }) => {
     return {
         type: actionTypes.NEW_MOVE,
-        payload: {newPosition,newMove},
+        payload: { newPosition, newMove },
     }
 }
 
@@ -13,15 +13,39 @@ export const clearCandidates = () => {
     }
 }
 
-export const generateCandidates = ({candidateMoves}) => {
+export const generateCandidates = ({ candidateMoves }) => {
     return {
         type: actionTypes.GENERATE_CANDIDATE_MOVES,
-        payload : {candidateMoves}
+        payload: { candidateMoves }
     }
 }
 
-export const takeBack = () => {
+export const firstMove = () => {
     return {
-        type: actionTypes.TAKE_BACK,
+        type: actionTypes.FIRST_MOVE,
+    }
+}
+
+export const previousMove = () => {
+    return {
+        type: actionTypes.PREVIOUS_MOVE,
+    }
+}
+
+export const nextMove = () => {
+    return {
+        type: actionTypes.NEXT_MOVE,
+    }
+}
+
+export const currentMove = () => {
+    return {
+        type: actionTypes.CURRENT_MOVE,
+    }
+}
+
+export const incrementStrikes = () => {
+    return {
+        type: actionTypes.INCREMENT_STRIKES,
     }
 }

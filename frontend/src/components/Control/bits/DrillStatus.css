@@ -1,0 +1,45 @@
+.body {
+    background-color: var(--surface);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: var(--tile-size);
+    margin-bottom: var(--space-sm);
+    border-radius: var(--radius);
+}
+
+.drill-status {
+    text-align: center;
+    padding: 40px;
+}
+
+.strikes-title {
+    color: white;
+    font-size: 1.25em;
+    margin-bottom: var(--space-sm);
+}
+
+.strikes {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.inactive {
+    width: var(--space-xl);
+    height: var(--space-xl);
+    border: 2px solid #555;
+    border-radius: 8px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.active {
+    width: var(--space-xl);
+    height: var(--space-xl);
+    border: 2px solid #555;
+    border-radius: 8px;
+    background-color: var(--check);
+    cursor: pointer;
+}

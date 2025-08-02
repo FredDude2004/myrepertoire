@@ -1,13 +1,11 @@
 import { useAppContext } from '../../../contexts/Context'
 import { previousMove } from '../../../reducer/actions/move';
 
-const TakeBack = () => {
+const PreviousMove = () => {
 
     const { dispatch } = useAppContext();
 
-    return <div>
-        <button onClick={() => dispatch(previousMove())}>Take Back</button>
-    </div>
+    return <button className="button" onClick={() => dispatch(previousMove())}>&lt;</button>
 }
 
-export default TakeBack
+export default PreviousMove

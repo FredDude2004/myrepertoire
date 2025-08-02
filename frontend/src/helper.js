@@ -1,6 +1,7 @@
 import arbitor from "../src/arbiter/arbiter.js";
 
 export const getCharacter = (file) => String.fromCharCode(file + 96);
+export const getFileNumber = (char) => char.toLowerCase().charCodeAt(0) - 97;
 export const createPosition = () => {
     const position = new Array(8).fill("").map(() => new Array(8).fill(""));
 
@@ -98,7 +99,15 @@ export const findPieceCoords = (position, type) => {
     return results;
 };
 
-export const getNewMoveNotation = ({ piece, rank, file, x, y, position, previousPosition, promotesTo }) => {
+export const getNewMoveNotation = ({
+    piece,
+    rank,
+    file,
+    x,
+    y,
+    position,
+    previousPosition,
+    promotesTo }) => {
     let note = "";
     const takes = position[x][y];
 
@@ -145,7 +154,16 @@ export const getNewMoveNotation = ({ piece, rank, file, x, y, position, previous
     return note;
 };
 
-export const disambiguateMove = (piece, position, previousPosition, currX, currY, toX, toY, note, takes,) => {
+export const disambiguateMove = (
+    piece,
+    position,
+    previousPosition,
+    currX,
+    currY,
+    toX,
+    toY,
+    note,
+    takes) => {
     let ambiguousPieces = [];
     const enemyColor = piece[0] === "w" ? "b" : "w";
 
@@ -217,3 +235,57 @@ export const disambiguateMove = (piece, position, previousPosition, currX, currY
 
     return note;
 };
+
+export const getPositionFromNotation = (
+    position,
+    previousPosition,
+    notation,
+    castleDirection,
+    color) => {
+    const enemyColor = color === "w" ? "b" : "w";
+    let piece = "";
+    if (notation.includes("K") || notation === "O-O-O" || notation === "O-O") {
+        piece = color + "k";
+    }
+
+    else if (notation.includes("=")) piece = color + "p";
+    else if (notation.includes("Q")) piece = color + "q";
+    else if (notation.includes("R")) piece = color + "r";
+    else if (notation.includes("B")) piece = color + "b";
+    else if (notation.includes("N")) piece = color + "n";
+    else piece = color + "p";
+
+    let trimmedNotation = notation;
+    if (notation.includes("+") || notation.includes("#")) {
+        trimmedNotation = trimmedNotation.slice(0, -1);
+    }
+
+    const toX = (trimmedNotation.charAt(trimmedNotation.length - 1) - 1);
+    const toY = getFileNumber(trimmedNotation.charAt(trimmedNotation.length - 2));
+
+    let originalX = "";
+    let originalY = "";
+
+    for (let rank = 0; rank < 8; rank++) {
+        for (let file = 0; file < 8; file++) {
+            if (position[rank][file] === "" || position[rank][file][0] === enemyColor) {
+                continue;
+            } else if (position[rank][file] === piece) {
+                const pieceAtPositionValidMoves = arbitor.getValidMoves({
+                    position: position,
+                    prevPosition: previousPosition,
+                    castleDirection: castleDirection,
+                    piece: piece,
+                    rank,
+                    file,
+                });
+                if (pieceAtPositionValidMoves.some(([x, y]) => x === toX && y === toY)) {
+                    originalX = rank;
+                    originalY = file;
+                }
+            }
+        }
+    }
+
+    return { piece: piece, rank: originalX, file: originalY, x: toX, y: toY };
+}
