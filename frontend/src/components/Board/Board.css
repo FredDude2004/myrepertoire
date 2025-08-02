@@ -9,6 +9,8 @@
     grid-template-columns: repeat(8,var(--tile-size));
     grid-template-rows: repeat(8,var(--tile-size));
     width: calc(8*var(--tile-size));
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 .tile{
     position: relative;

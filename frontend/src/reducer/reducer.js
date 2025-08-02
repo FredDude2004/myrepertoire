@@ -11,7 +11,6 @@ export const reducer = (state, action) => {
             ]
             currentPositionIndex += 1;
             currentMoveIndex += 1;
-            console.log("CurrentPositionIndex:", currentPositionIndex);
             movesList = [
                 ...movesList,
                 action.payload.newMove
@@ -22,6 +21,8 @@ export const reducer = (state, action) => {
                 ...castleDirectionHistory,
                 { ...castleDirection }  // deep enough for this structure
             ]
+
+            console.log('made all updates');
 
             return {
                 ...state,
@@ -108,22 +109,24 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.FIRST_MOVE: {
-            let { position, currentPositionIndex } = state;
+            let { currentPositionIndex } = state;
             currentPositionIndex = 0;
             return {
                 ...state,
                 currentPositionIndex,
+                candidateMove: [],
             };
         }
 
         case actionTypes.PREVIOUS_MOVE: {
-            let { position, currentPositionIndex } = state;
+            let { currentPositionIndex } = state;
             if (currentPositionIndex > 0) {
                 currentPositionIndex -= 1;
             }
             return {
                 ...state,
                 currentPositionIndex,
+                candidateMove: [],
             };
         }
 
@@ -135,6 +138,7 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 currentPositionIndex,
+                candidateMove: [],
             };
         }
 
@@ -144,7 +148,17 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 currentPositionIndex,
+                candidateMove: [],
             };
+        }
+
+        case actionTypes.INCREMENT_STRIKES: {
+            let { strikeCount } = state;
+            strikeCount++;
+            return {
+                ...state,
+                strikeCount,
+            }
         }
 
         default:

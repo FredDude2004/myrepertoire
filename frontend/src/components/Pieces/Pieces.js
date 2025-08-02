@@ -11,10 +11,10 @@ import {
     detectCheckmate,
 } from "../../reducer/actions/game";
 
-import { makeNewMove, clearCandidates } from "../../reducer/actions/move";
+import { makeNewMove, clearCandidates, incrementStrikes } from "../../reducer/actions/move";
 import arbiter from "../../arbiter/arbiter";
 import { getNewMoveNotation } from "../../helper";
-import { isMoveCorrect } from "../../quiz/quizUtils";
+import { getOpponentMove, isMoveCorrect } from "../../quiz/quizUtils";
 
 const Pieces = () => {
     const { appState, dispatch } = useAppContext();
@@ -90,17 +90,21 @@ const Pieces = () => {
                 position: currentPosition,
                 previousPosition: previousePosition,
             });
+
             const moveNum = appState.moveNum;
-            // console.log("moveNum:", moveNum);
-            // console.log("piece:", piece);
 
             if (!isMoveCorrect(newMove, moveNum, piece[0])) {
-                // console.error("Invalid move detected:", newMove);
-            } else {
-                // console.log("Valid move:", newMove);
+                dispatch(incrementStrikes());
+                return;
             }
+            const opponentMove = getOpponentMove(moveNum, piece[0]);
+            console.log('opponentMove: ', opponentMove);
+            console.log('newPosition: ', newPosition);
 
             dispatch(makeNewMove({ newPosition, newMove }));
+
+            // const newPositionAfterOpponentMove = arbiter.performMove({})
+            // dispatch(makeNewMove({ newPosition, newMove }));
 
             if (arbiter.insufficientMaterial(newPosition))
                 dispatch(detectInsufficientMaterial());
@@ -117,6 +121,7 @@ const Pieces = () => {
         e.preventDefault();
 
         move(e);
+        console.log('after move(e)', appState.position[appState.position.length - 1]);
     };
 
     const onDragOver = (e) => {

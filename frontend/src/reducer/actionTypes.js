@@ -13,6 +13,7 @@ const actionTypes = {
     "PREVIOUS_MOVE": "PREVIOUS_MOVE",
     "NEXT_MOVE": "NEXT_MOVE",
     "CURRENT_MOVE": "CURRENT_MOVE",
+    "INCREMENT_STRIKES": "INCREMENT_STRIKES",
 }
 
 export default actionTypes

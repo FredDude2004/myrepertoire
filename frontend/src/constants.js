@@ -16,6 +16,7 @@ export const initGameState = {
     turn: 'w',
     candidateMoves: [],
     movesList: [],
+    strikeCount: 0,
     moveNum: 1,
 
     promotionSquare: null,

@@ -43,3 +43,9 @@ export const currentMove = () => {
         type: actionTypes.CURRENT_MOVE,
     }
 }
+
+export const incrementStrikes = () => {
+    return {
+        type: actionTypes.INCREMENT_STRIKES,
+    }
+}

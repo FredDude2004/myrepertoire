@@ -1,7 +1,8 @@
 .control {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding-left: calc(0.1*var(--tile-size));
     text-align: center;
     height: calc(8*var(--tile-size));
+    width: calc(3*var(--tile-size));
 }
