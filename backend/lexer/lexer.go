@@ -72,6 +72,7 @@ func createLexer(source string) *lexer {
 			{regexp.MustCompile(`\b(?:[1-9]|[1-3][0-9]|40)\.`), moveNumHandler},
 			{regexp.MustCompile(`(?:[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|O-O(?:-O)?[+#]?)`), moveHandler},
 			{regexp.MustCompile(`\b(?:1-0|0-1|1\/2-1\/2)\b`), resultHandler},
+			{regexp.MustCompile(`\*`), terminationHandler},
 		},
 	}
 }
@@ -114,5 +115,11 @@ func moveHandler(lex *lexer, regex *regexp.Regexp) {
 func resultHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindString(lex.remainder())
 	// lex.push(NewToken(RESULT, match))  **skipping RESULT tokens
+	lex.advanceN(len(match))
+}
+
+func terminationHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindString(lex.remainder())
+	// lex.push(NewToken(TERMINATION, match)) **skipping TERMINATION tokens
 	lex.advanceN(len(match))
 }
