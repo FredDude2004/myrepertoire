@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"myrepertoire.io/backend/lexer"
+	"myrepertoire.io/backend/api/utils/lexer"
 	"os"
 	"testing"
 )
