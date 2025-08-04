@@ -14,6 +14,7 @@ frontend/node_modules
 # misc
 .DS_Store
 .env.local
+backend/api/.env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -23,3 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 
+frontend/.next
