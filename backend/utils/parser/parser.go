@@ -2,7 +2,7 @@ package parser
 
 import (
 	"encoding/json"
-	"myrepertoire.io/backend/api/utils/lexer"
+	"myrepertoire.io/backend/utils/lexer"
 	"strings"
 )
 

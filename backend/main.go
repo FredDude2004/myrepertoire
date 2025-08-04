@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"myrepertoire.io/backend/api/utils"
+	"myrepertoire.io/backend/utils"
 )
 
 func main() {

@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"myrepertoire.io/backend/api/config"
-	"myrepertoire.io/backend/api/models"
-	"myrepertoire.io/backend/api/utils"
+	"myrepertoire.io/backend/config"
+	"myrepertoire.io/backend/models"
+	"myrepertoire.io/backend/utils"
 )
 
 func CreateLine(c *fiber.Ctx) error {
@@ -13,6 +13,7 @@ func CreateLine(c *fiber.Ctx) error {
 		Color       string `json:"color"`
 		OriginalPGN string `json:"original_pgn"`
 		UserID      uint   `json:"user_id"`
+		Line        string `json:"line"`
 	}
 	var body req
 	if err := c.BodyParser(&body); err != nil {

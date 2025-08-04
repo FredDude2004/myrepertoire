@@ -2,7 +2,7 @@ package parser
 
 import (
 	"github.com/corentings/chess/v2"
-	"myrepertoire.io/backend/api/utils/lexer"
+	"myrepertoire.io/backend/utils/lexer"
 	"os"
 	"path/filepath"
 	"strings"

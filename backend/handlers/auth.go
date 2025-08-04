@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"myrepertoire.io/backend/api/config"
-	"myrepertoire.io/backend/api/models"
+	"myrepertoire.io/backend/config"
+	"myrepertoire.io/backend/models"
 )
 
 func Register(c *fiber.Ctx) error {
