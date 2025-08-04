@@ -8,7 +8,7 @@ import (
 
 type Move struct {
 	MoveNo string `json:"moveNo"`
-	White  string `json:"white"`
+	White  string `json:"white,omitempty"`
 	Black  string `json:"black,omitempty"`
 }
 
@@ -41,7 +41,7 @@ func ParseMoves(tokens []lexer.Token) []Move {
 	return moves
 }
 
-func ToJSON(moves []Move) string {
+func ToJSON(moves [][]Move) string {
 	data, _ := json.MarshalIndent(moves, "", "  ")
 	return string(data)
 }

@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"fmt"
+	"github.com/corentings/chess/v2"
 	"regexp"
 )
 
@@ -35,7 +36,12 @@ func (lex lexer) at_eof() bool {
 	return lex.pos >= len(lex.source)
 }
 
-func TokenizePGN(source string) []Token {
+func gameToString(game *chess.Game) string {
+	return fmt.Sprintf("%s", game)
+}
+
+func TokenizePGN(game *chess.Game) []Token {
+	source := gameToString(game)
 	lex := createLexer(source)
 
 	for !lex.at_eof() {

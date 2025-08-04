@@ -1,4 +1,4 @@
-[Event "Live Chess"]
+Event "Live Chess"]
 [Site "Chess.com"]
 [Date "2025.07.29"]
 [Round "?"]

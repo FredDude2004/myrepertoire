@@ -1,20 +1,27 @@
 package utils
 
 import (
+	"github.com/corentings/chess/v2"
 	"myrepertoire.io/backend/api/utils/lexer"
 	"myrepertoire.io/backend/api/utils/parser"
-	"myrepertoire.io/backend/api/utils/validate"
+	"strings"
 )
 
 func ProcessPGN(pgn string) (string, error) {
-	err := validate.ValidatePGN(pgn)
-	if err != nil {
-		return "", err
+	var games [][]parser.Move
+	reader := strings.NewReader(pgn)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			return "", err
+		}
+
+		lexed := lexer.TokenizePGN(game)
+		parsed := parser.ParseMoves(lexed)
+		games = append(games, parsed)
 	}
 
-	lexed := lexer.TokenizePGN(pgn)
-	parsed := parser.ParseMoves(lexed)
-	json := parser.ToJSON(parsed)
-
-	return json, nil
+	return parser.ToJSON(games), nil
 }

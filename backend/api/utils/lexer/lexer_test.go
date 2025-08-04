@@ -1,8 +1,10 @@
 package lexer
 
 import (
+	"github.com/corentings/chess/v2"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -16,7 +18,18 @@ func readPGNFile(t *testing.T, filename string) string {
 
 func TestGameZero(t *testing.T) {
 	input := readPGNFile(t, "../examples/00.txt")
-	tokens := TokenizePGN(input)
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = TokenizePGN(game)
+	}
 
 	expected := []Token{
 		{Kind: MOVE_NUM, Literal: "1."},
@@ -40,7 +53,18 @@ func TestGameZero(t *testing.T) {
 
 func TestGameOne(t *testing.T) {
 	input := readPGNFile(t, "../examples/01.txt")
-	tokens := TokenizePGN(input)
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = TokenizePGN(game)
+	}
 
 	expected := []Token{
 		{Kind: MOVE_NUM, Literal: "1."},
@@ -144,7 +168,18 @@ func TestGameOne(t *testing.T) {
 
 func TestGameTwo(t *testing.T) {
 	input := readPGNFile(t, "../examples/02.txt")
-	tokens := TokenizePGN(input)
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = TokenizePGN(game)
+	}
 
 	expected := []Token{
 		{Kind: MOVE_NUM, Literal: "1."},
@@ -185,7 +220,18 @@ func TestGameTwo(t *testing.T) {
 
 func TestGameThree(t *testing.T) {
 	input := readPGNFile(t, "../examples/03.txt")
-	tokens := TokenizePGN(input)
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = TokenizePGN(game)
+	}
 
 	expected := []Token{
 		{Kind: MOVE_NUM, Literal: "1."},

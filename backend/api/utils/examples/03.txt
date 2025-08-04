@@ -1,1 +1,1 @@
-1. e4 {Best by test} e5 (1... c5 is the Sicilian) 2. Nf3 Nc6 3. Bb5 a6 1-0
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 1-0

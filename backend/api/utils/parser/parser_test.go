@@ -1,14 +1,36 @@
 package parser
 
 import (
+	"github.com/corentings/chess/v2"
 	"myrepertoire.io/backend/api/utils/lexer"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
+func readPGNFile(t *testing.T, filename string) string {
+	data, err := os.ReadFile(filepath.Join("..", "examples", filename))
+	if err != nil {
+		t.Fatalf("failed to read file: %v", err)
+	}
+	return string(data)
+}
+
 func TestParseMovesZero(t *testing.T) {
-	bytes, _ := os.ReadFile("../examples/00.txt")
-	tokens := lexer.TokenizePGN(string(bytes))
+	input := readPGNFile(t, "../examples/00.txt")
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []lexer.Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = lexer.TokenizePGN(game)
+	}
 
 	expected := []Move{
 		{MoveNo: "1", White: "e4", Black: "e5"},
@@ -29,8 +51,19 @@ func TestParseMovesZero(t *testing.T) {
 }
 
 func TestParseMovesOne(t *testing.T) {
-	bytes, _ := os.ReadFile("../examples/01.txt")
-	tokens := lexer.TokenizePGN(string(bytes))
+	input := readPGNFile(t, "../examples/01.txt")
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []lexer.Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = lexer.TokenizePGN(game)
+	}
 
 	expected := []Move{
 		{MoveNo: "1", White: "e4", Black: "d6"},
@@ -78,8 +111,19 @@ func TestParseMovesOne(t *testing.T) {
 }
 
 func TestParseMovesTwo(t *testing.T) {
-	bytes, _ := os.ReadFile("../examples/02.txt")
-	tokens := lexer.TokenizePGN(string(bytes))
+	input := readPGNFile(t, "../examples/02.txt")
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []lexer.Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = lexer.TokenizePGN(game)
+	}
 
 	expected := []Move{
 		{MoveNo: "1", White: "e4", Black: "e5"},
@@ -106,8 +150,19 @@ func TestParseMovesTwo(t *testing.T) {
 }
 
 func TestParseMovesThree(t *testing.T) {
-	bytes, _ := os.ReadFile("../examples/03.txt")
-	tokens := lexer.TokenizePGN(string(bytes))
+	input := readPGNFile(t, "../examples/03.txt")
+	reader := strings.NewReader(input)
+	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
+	var tokens []lexer.Token
+
+	for scanner.HasNext() {
+		game, err := scanner.ParseNext()
+		if err != nil {
+			t.Fatalf("Couldn't read file")
+		}
+
+		tokens = lexer.TokenizePGN(game)
+	}
 
 	expected := []Move{
 		{MoveNo: "1", White: "e4", Black: "e5"},
