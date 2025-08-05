@@ -1,31 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"myrepertoire.io/backend/utils"
+	"github.com/gofiber/fiber/v2"
+	"log"
+	"myrepertoire.io/backend/config"
+	"myrepertoire.io/backend/models"
+	"myrepertoire.io/backend/routes"
 )
 
 func main() {
-	pgn1 := `
-[Event "?"]
-[Site "?"]
-[Date "????.??.??"]
-[Round "?"]
-[White "?"]
-[Black "?"]
-[Result "*"]
-[Link "https://www.chess.com/analysis/game/pgn/4K2jdqroie/analysis"]
+	// Initialize a new Fiber app
+	app := fiber.New()
 
-1. e4 e5 2. Nc3 Nf6 (2... Nc6 3. Bc4 Nf6 4. d3 Bb4 5. Ne2 O-O) 3. f4 d5 (3...
-exf4 4. e5 Qe7 5. Qe2 Ng8 6. Nf3 Nc6 7. d4) 4. fxe5 Nxe4 5. Qf3 Nxc3 6. bxc3 c5
-7. d4 *
-    `
+	config.ConnectDB()
+	config.DB.AutoMigrate(&models.User{}, &models.Line{})
 
-	result1, err := utils.ProcessPGN(pgn1)
-	if err != nil {
-		panic(err)
-	}
+	routes.Setup(app)
 
-	fmt.Println(result1)
-
+	// Start the server on port 3000
+	log.Fatal(app.Listen(":3000"))
 }

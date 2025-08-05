@@ -8,6 +8,9 @@ import (
 func Setup(app *fiber.App) {
 	api := app.Group("/api")
 	api.Post("/register", handlers.Register)
+	api.Post("/login", handlers.Login)
 	api.Post("/lines", handlers.CreateLine)
-	// TODO: Add GetLines, UpdateLine, DeleteLine
+	api.Get("/lines/:userId", handlers.GetLinesByUser)
 }
+
+// TODO: Add GetLines, UpdateLine, DeleteLine

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func ProcessPGN(pgn string) (string, error) {
+func ProcessPGN(pgn string) ([]byte, error) {
 	var games [][]parser.Move
 	reader := strings.NewReader(pgn)
 	scanner := chess.NewScanner(reader, chess.WithExpandVariations())
@@ -15,7 +15,7 @@ func ProcessPGN(pgn string) (string, error) {
 	for scanner.HasNext() {
 		game, err := scanner.ParseNext()
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 
 		lexed := lexer.TokenizePGN(game)

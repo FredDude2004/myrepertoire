@@ -13,7 +13,6 @@ func CreateLine(c *fiber.Ctx) error {
 		Color       string `json:"color"`
 		OriginalPGN string `json:"original_pgn"`
 		UserID      uint   `json:"user_id"`
-		Line        string `json:"line"`
 	}
 	var body req
 	if err := c.BodyParser(&body); err != nil {
@@ -40,4 +39,17 @@ func CreateLine(c *fiber.Ctx) error {
 	return c.JSON(line)
 }
 
-// TODO: add functions for GetLines, UpdateLine, DeleteLine
+func GetLinesByUser(c *fiber.Ctx) error {
+	userID := c.Params("userId")
+	if userID == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "user ID is required"})
+	}
+
+	var lines []models.Line
+	result := config.DB.Where("user_id = ?", userID).Find(&lines)
+	if result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "failed to fetch lines"})
+	}
+
+	return c.JSON(lines)
+}

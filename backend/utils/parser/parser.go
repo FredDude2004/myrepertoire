@@ -41,7 +41,12 @@ func ParseMoves(tokens []lexer.Token) []Move {
 	return moves
 }
 
-func ToJSON(moves [][]Move) string {
+func ToJsonString(moves [][]Move) string {
 	data, _ := json.MarshalIndent(moves, "", "  ")
 	return string(data)
+}
+
+func ToJSON(moves [][]Move) []byte {
+	data, _ := json.MarshalIndent(moves, "", "  ")
+	return data
 }
