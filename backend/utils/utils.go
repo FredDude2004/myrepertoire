@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"github.com/FredDude2004/myrepertoire.io/backend/utils/lexer"
+	"github.com/FredDude2004/myrepertoire.io/backend/utils/parser"
 	"github.com/corentings/chess/v2"
-	"myrepertoire.io/backend/utils/lexer"
-	"myrepertoire.io/backend/utils/parser"
 	"strings"
 )
 

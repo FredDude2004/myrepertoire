@@ -2,7 +2,7 @@ package parser
 
 import (
 	"encoding/json"
-	"myrepertoire.io/backend/utils/lexer"
+	"github.com/FredDude2004/myrepertoire.io/backend/utils/lexer"
 	"strings"
 )
 

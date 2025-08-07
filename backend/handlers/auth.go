@@ -1,67 +1,126 @@
 package handlers
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/FredDude2004/myrepertoire.io/backend/config"
+	"github.com/FredDude2004/myrepertoire.io/backend/models"
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"myrepertoire.io/backend/config"
-	"myrepertoire.io/backend/models"
 )
 
-func Register(c *fiber.Ctx) error {
-	type req struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
+func Signup(c *gin.Context) {
+	// Get the username/pass off req body
+	var body struct {
+		Username string
+		Password string
 	}
 
-	var body req
-	if err := c.BodyParser(&body); err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "invalid input"})
+	if c.Bind(&body) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to read body",
+		})
+
+		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(body.Password), 12)
+	// Hash the password
+	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "could not hash password"})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to hash password",
+		})
+
+		return
 	}
 
-	user := models.User{
-		Username: body.Username,
-		Password: string(hashedPassword),
-	}
-
+	// Create the user
+	user := models.User{Username: body.Username, Password: string(hash)}
 	result := config.DB.Create(&user)
 	if result.Error != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "could not create user"})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to create user",
+		})
+
+		return
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "user created",
-		"user_id": user.ID,
-	})
+	// Respond
+	c.JSON(http.StatusOK, gin.H{})
 }
 
-func Login(c *fiber.Ctx) error {
-	type req struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
+func Login(c *gin.Context) {
+	// Get the username and pass off req body
+	var body struct {
+		Username string
+		Password string
 	}
 
-	var body req
-	if err := c.BodyParser(&body); err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "invalid input"})
+	if c.Bind(&body) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to read body",
+		})
+
+		return
 	}
 
+	// Lookup req user
 	var user models.User
-	result := config.DB.Where("username = ?", body.Username).First(&user)
-	if result.Error != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "user not found"})
+	config.DB.First(&user, "username = ?", body.Username)
+	if user.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid username of password",
+		})
+
+		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "incorrect password"})
+	// Compare sent in pass with saved user pass hash
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid username of password",
+		})
+
+		return
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "login successful",
-		"user_id": user.ID,
+	// generate JWT Token and send it back
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,
+		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to create token",
+		})
+
+		return
+
+	}
+
+	// Send token back
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
+
+	c.JSON(http.StatusOK, gin.H{})
+}
+
+func Logout(c *gin.Context) {
+	// Overwrite the cookie with empty value and set it to expire in the past
+	c.SetCookie("Authorization", "", -1, "/", "localhost", false, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
+}
+
+func Validate(c *gin.Context) {
+	user, _ := c.Get("user")
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": user,
 	})
 }

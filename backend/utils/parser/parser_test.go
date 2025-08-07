@@ -1,8 +1,8 @@
 package parser
 
 import (
+	"github.com/FredDude2004/myrepertoire.io/backend/utils/lexer"
 	"github.com/corentings/chess/v2"
-	"myrepertoire.io/backend/utils/lexer"
 	"os"
 	"path/filepath"
 	"strings"

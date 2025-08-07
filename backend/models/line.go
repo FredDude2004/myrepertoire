@@ -7,9 +7,9 @@ import (
 
 type Line struct {
 	gorm.Model
-	Name        string
-	Color       string
-	OriginalPGN string
-	ParsedPGN   datatypes.JSON `gorm:"type:jsonb"`
+	Name        string         `gorm:"<-update"`
+	Color       string         `gorm:"<-update"`
+	OriginalPGN string         `gorm:"<-update"`
+	ParsedPGN   datatypes.JSON `gorm:"type:jsonb;<-update"`
 	UserID      uint
 }

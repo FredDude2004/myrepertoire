@@ -1,16 +1,20 @@
 package routes
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"myrepertoire.io/backend/handlers"
+	"github.com/FredDude2004/myrepertoire.io/backend/handlers"
+	"github.com/FredDude2004/myrepertoire.io/backend/middleware"
+	"github.com/gin-gonic/gin"
 )
 
-func Setup(app *fiber.App) {
-	api := app.Group("/api")
-	api.Post("/register", handlers.Register)
-	api.Post("/login", handlers.Login)
-	api.Post("/lines", handlers.CreateLine)
-	api.Get("/lines/:userId", handlers.GetLinesByUser)
-}
+func Setup(app *gin.Engine) {
+	app.POST("/signup", handlers.Signup)
+	app.POST("/login", handlers.Login)
+	app.POST("/logout", handlers.Logout)
+	app.GET("/validate", middleware.RequireAuth, handlers.Validate)
 
-// TODO: Add GetLines, UpdateLine, DeleteLine
+	api := app.Group("/api")
+	api.POST("/lines", middleware.RequireAuth, handlers.CreateLine)
+	api.GET("/lines", middleware.RequireAuth, handlers.GetLinesByUser)
+	api.PATCH("/lines/:id", middleware.RequireAuth, handlers.UpdateLine)
+	api.DELETE("/lines/:id", middleware.RequireAuth, handlers.DeletLine)
+}
