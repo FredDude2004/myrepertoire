@@ -2,9 +2,7 @@ import { useAppContext } from '../../../contexts/Context'
 import './DrillStatus.css'
 
 const DrillStatus = () => {
-
     const { appState: { strikeCount } } = useAppContext();
-    console.log('stikeCount:', strikeCount);
 
     return (
         <div className="body">

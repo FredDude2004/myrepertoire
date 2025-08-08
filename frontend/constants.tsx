@@ -15,6 +15,11 @@ interface Line {
     UserID: number;
 }
 
+// interface User {
+//     username: string;
+//     password: string;
+// }
+
 const tempMove: Move[] = [{ moveNo: 1, white: "e4", black: "e5" }];
 const tempLine: Line = {
     ID: 2,
@@ -53,6 +58,7 @@ export const initGameState = {
     castleDirectionHistory: [],
 
     // Quiz State
+    user: null,
     userLines: [tempLine],
     userLineIndexes: [],
 }

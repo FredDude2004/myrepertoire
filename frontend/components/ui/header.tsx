@@ -1,11 +1,14 @@
-'use client'
-import Link from 'next/link'
-import { Logo } from '@/components/ui/logo'
-import { Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import React from 'react'
-import { cn } from '@/lib/utils'
-import { useScroll } from 'motion/react'
+'use client';
+
+import { useAppContext } from "@/contexts/Context"
+import { logout } from '@/reducer/actions/auth'
+import { cn } from '@/lib/utils';
+import { useScroll } from 'motion/react';
+import React from 'react';
+import Link from 'next/link';
+import { Logo } from '@/components/ui/logo';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const menuItems = [
     { name: 'Repertoire', href: '/repertoire' },
@@ -16,8 +19,9 @@ const menuItems = [
 export const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
     const [scrolled, setScrolled] = React.useState(false)
-
     const { scrollYProgress } = useScroll()
+    const { appState, dispatch } = useAppContext();
+    const { user } = appState;
 
     React.useEffect(() => {
         const unsubscribe = scrollYProgress.on('change', (latest) => {
@@ -25,6 +29,24 @@ export const HeroHeader = () => {
         })
         return () => unsubscribe()
     }, [scrollYProgress])
+
+    async function handleLogout() {
+        try {
+            await fetch("http://localhost:8080/logout", {
+                method: "POST",
+                credentials: "include", // important for clearing cookies
+            });
+
+            // Clear app state & storage
+            localStorage.removeItem("token");
+            dispatch(logout());
+
+            // Redirect to login or homepage
+            window.location.href = "/login";
+        } catch (err) {
+            console.error("Logout failed:", err);
+        }
+    }
 
     return (
         <header>
@@ -78,23 +100,46 @@ export const HeroHeader = () => {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <Button
-                                    asChild
-                                    variant="outline"
-                                    size="sm">
-                                    <Link href="#">
-                                        <span>Login</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    asChild
-                                    size="sm">
-                                    <Link href="#">
-                                        <span>Sign Up</span>
-                                    </Link>
-                                </Button>
-                            </div>
+
+                            {user ? (
+                                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                                    <Button
+                                        asChild
+                                        size="sm"
+                                        variant="outline">
+                                        <Link href="/repertoire">
+                                            <span>Welcome, Fred</span>
+                                        </Link>
+                                    </Button>
+                                    <Button
+                                        asChild
+                                        size="sm"
+                                        onClick={handleLogout}
+                                    >
+                                        <Link href="/">
+                                            <span>Logout</span>
+                                        </Link>
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                                    <Button
+                                        asChild
+                                        variant="outline"
+                                        size="sm">
+                                        <Link href="/login">
+                                            <span>Login</span>
+                                        </Link>
+                                    </Button>
+                                    <Button
+                                        asChild
+                                        size="sm">
+                                        <Link href="#">
+                                            <span>Sign Up</span>
+                                        </Link>
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

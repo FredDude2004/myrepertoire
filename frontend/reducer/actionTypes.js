@@ -14,6 +14,8 @@ const actionTypes = {
     "NEXT_MOVE": "NEXT_MOVE",
     "CURRENT_MOVE": "CURRENT_MOVE",
     "INCREMENT_STRIKES": "INCREMENT_STRIKES",
+    "LOGIN": "LOGIN",
+    "LOGOUT": "LOGOUT",
 }
 
 export default actionTypes

@@ -3,10 +3,6 @@
 import './quiz.css';
 import Board from '../../components/Board/Board';
 import Control from '../../components/Control/Control';
-import { reducer } from '../../reducer/reducer';
-import { useReducer } from 'react';
-import { initGameState } from '../../constants';
-import AppContext from '../../contexts/Context';
 import DrillStatus from '../../components/Control/bits/DrillStatus';
 import MovesList from '../../components/Control/bits/MovesList';
 import FirstMove from '../../components/Control/bits/FirstMove';
@@ -16,10 +12,6 @@ import CurrentMove from '../../components/Control/bits/CurrentMove';
 import { HeroHeader } from '../../components/ui/header'
 
 export default function Quiz() {
-    const [appState, dispatch] = useReducer(reducer, initGameState);
-
-    const providerState = { appState, dispatch };
-
     return (
         <>
             <HeroHeader />
@@ -31,21 +23,19 @@ export default function Quiz() {
             {/*     <div className="h-320 -translate-y-87.5 absolute left-0 top-0 w-60 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]" /> */}
             {/* </div> */}
 
-            <AppContext.Provider value={providerState}>
-                <div className="Quiz">
-                    <Board />
-                    <Control>
-                        <DrillStatus />
-                        <MovesList className="move-list" />
-                        <div className="move-controls">
-                            <FirstMove />
-                            <PreviousMove />
-                            <NextMove />
-                            <CurrentMove />
-                        </div>
-                    </Control>
-                </div>
-            </AppContext.Provider>
+            <div className="Quiz">
+                <Board />
+                <Control>
+                    <DrillStatus />
+                    <MovesList className="move-list" />
+                    <div className="move-controls">
+                        <FirstMove />
+                        <PreviousMove />
+                        <NextMove />
+                        <CurrentMove />
+                    </div>
+                </Control>
+            </div>
         </>
     );
 }

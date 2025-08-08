@@ -159,6 +159,29 @@ export const reducer = (state, action) => {
             }
         }
 
+        case actionTypes.LOGIN: {
+            return {
+                ...state,
+                user: {
+                    username: action.payload.username,
+                    password: action.payload.password,
+                },
+            };
+        }
+
+        case actionTypes.LOGOUT: {
+            let { user, userToken, userLines } = state;
+            user = null;
+            userToken = null;
+            userLines = [];
+            return {
+                ...state,
+                user,
+                userToken,
+                userLines,
+            }
+        }
+
         default:
             return state
     }
