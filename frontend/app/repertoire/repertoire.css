@@ -1,0 +1,132 @@
+@import '../globals.css';
+
+html,body {
+    margin: 0;
+    padding: 0;
+}
+
+.repertoire-container {
+  background: var(--bg-color);
+  place-content: center;
+  height: 100vh;
+  display: flex;
+  padding-top: 150px;
+}
+
+.checkbox-container {
+  background: var(--surface);
+  width: 620px;
+  display: flex;
+  justify-content: left;
+  height: 1150px;
+  margin: 10px;
+}
+
+.form-container {
+  background: var(--surface);
+  width: 360px;
+  display: flex;
+  height: 1150px;
+  justify-content: right;
+  margin: 10px;
+}
+
+.name-input {
+  display: flex;
+  align-items: flex-start;
+}
+
+.radio-group-inline {
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  gap: 1rem;
+}
+
+.line-list {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  max-height: 1150px;   /* adjust as needed */
+  width: 620px;
+  overflow-y: auto;    /* makes it scrollable */
+  margin: 10px;
+}
+
+.line-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px;
+  border-bottom: 1px solid var(--bg-color);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.line-name {
+  flex: 1;              /* fills space between checkbox and buttons */
+  margin: 0 10px;       /* gap around the name */
+}
+
+.line-item button {
+  margin-left: 5px;
+}
+
+.line-item button:hover {
+  backeground-color: var(--bg-color)
+}
+
+.form-container {
+  background: var(--surface);
+  width: 360px;
+  display: flex;
+  height: 1150px;
+  justify-content: right;
+  margin: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.line-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+}
+
+.line-form label {
+  margin-top: 16px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.line-form input[type="text"],
+.line-form select,
+.line-form textarea {
+  padding: 8px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.line-form textarea {
+  min-height: 200px;
+}
+
+.line-form button {
+  margin-top: 30px;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.line-form button:hover {
+  background-color: var(--primary-hover);
+}

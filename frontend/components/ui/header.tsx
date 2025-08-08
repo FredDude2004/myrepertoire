@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { useScroll } from 'motion/react'
 
 const menuItems = [
-    { name: 'Repertoire', href: '#link' },
+    { name: 'Repertoire', href: '/repertoire' },
     { name: 'Drill', href: '/quiz' },
     { name: 'About', href: '#link' },
 ]

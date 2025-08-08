@@ -9,8 +9,8 @@ html,body {
     display: grid;
     place-content: center;
     height: 100vh;
-    background: var(--bg-color);
     grid-template-columns: auto 220px;
+    background: var(--bg-color);
 }
 
 .moves-list {
@@ -68,7 +68,6 @@ html,body {
 .move-controls button:hover {
     background-color: var(--primary-hover);
 }
-
 
 
 
