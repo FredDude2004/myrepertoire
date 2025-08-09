@@ -3,6 +3,7 @@
 import { useAppContext } from "@/contexts/Context"
 import { useState } from "react";
 import { login } from "@/reducer/actions/auth"
+import { setLines } from "@/reducer/actions/lines"
 import { cn } from "@/lib/utils"
 import React from 'react';
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/co
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation";
+import { getLines } from "@/lib/api/lines";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
     const [username, setUsername] = useState("");
@@ -42,6 +44,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
             console.log("Login success:", data);
             dispatch(login(username, password))
 
+            try {
+                const lines = await getLines();
+                dispatch(setLines(lines));
+            } catch (err: any) {
+                setError(err.message);
+            }
+
             // Optionally redirect to repertoire page
             router.push("/repertoire");
 
@@ -50,6 +59,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         } finally {
             setLoading(false);
         }
+
     }
 
     return (

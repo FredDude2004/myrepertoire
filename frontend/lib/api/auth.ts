@@ -13,7 +13,7 @@ export async function signup(username: string, password: string) {
     return res.json();
 }
 
-export async function login(username: string, password: string) {
+export async function handleLogin(username: string, password: string) {
     const res = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

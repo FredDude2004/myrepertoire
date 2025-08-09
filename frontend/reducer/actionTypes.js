@@ -14,8 +14,11 @@ const actionTypes = {
     "NEXT_MOVE": "NEXT_MOVE",
     "CURRENT_MOVE": "CURRENT_MOVE",
     "INCREMENT_STRIKES": "INCREMENT_STRIKES",
+
     "LOGIN": "LOGIN",
     "LOGOUT": "LOGOUT",
+    "SET_LINES": "SET_LINES",
+    "TOGGLE_SELECTED_LINE_IDX": "TOGGLE_SELECTED_LINE_IDX",
 }
 
 export default actionTypes

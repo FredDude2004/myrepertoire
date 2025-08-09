@@ -182,6 +182,24 @@ export const reducer = (state, action) => {
             }
         }
 
+        case actionTypes.SET_LINES: {
+            return {
+                ...state,
+                userLines: action.payload
+            }
+        }
+
+        case actionTypes.TOGGLE_SELECTED_LINE_IDX: {
+            const idx = action.payload;
+            const isSelected = state.userLineIndexes.includes(idx);
+            return {
+                ...state,
+                userLineIndexes: isSelected
+                    ? state.userLineIndexes.filter(i => i !== idx) // remove idx
+                    : [...state.userLineIndexes, idx],            // add idx
+            };
+        }
+
         default:
             return state
     }
