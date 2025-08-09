@@ -191,12 +191,12 @@ export const reducer = (state, action) => {
 
         case actionTypes.TOGGLE_SELECTED_LINE_IDX: {
             const idx = action.payload;
-            const isSelected = state.userLineIndexes.includes(idx);
+            const isSelected = state.userLineIdxs.includes(idx);
             return {
                 ...state,
-                userLineIndexes: isSelected
-                    ? state.userLineIndexes.filter(i => i !== idx) // remove idx
-                    : [...state.userLineIndexes, idx],            // add idx
+                userLineIdxs: isSelected
+                    ? state.userLineIdxs.filter(i => i !== idx) // remove idx
+                    : [...state.userLineIdxs, idx],            // add idx
             };
         }
 

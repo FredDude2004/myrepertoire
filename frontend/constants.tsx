@@ -1,25 +1,5 @@
 import { createPosition } from './lib/helper'
 
-// interface Move {
-//     moveNo: number;
-//     white: string;
-//     black: string;
-// }
-//
-// interface Line {
-//     ID: number;
-//     Name: string;
-//     Color: string;
-//     OriginalPGN: string;
-//     ParsedPGN: Move[];
-//     UserID: number;
-// }
-
-// interface User {
-//     username: string;
-//     password: string;
-// }
-
 export const Status = {
     'ongoing': 'Ongoing',
     'promoting': 'Promoting',
@@ -50,5 +30,9 @@ export const initGameState = {
     // Quiz State
     user: null,
     userLines: [],
-    userLineIndexes: [],
+    userLineIdxs: [],
+
+    selectedLines: [],
+    currentLine: [],
+    selectedLinesIdx: 0,
 }

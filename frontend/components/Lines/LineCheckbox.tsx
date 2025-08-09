@@ -8,7 +8,7 @@ interface LineCheckboxProps {
 }
 
 const LineCheckbox = ({ onEditLine }: LineCheckboxProps) => {
-    const { appState: { userLines, userLineIndexes }, dispatch } = useAppContext();
+    const { appState: { userLines, userLineIdxs }, dispatch } = useAppContext();
 
     async function refreshLines() {
         const lines = await getLines();
@@ -42,7 +42,7 @@ const LineCheckbox = ({ onEditLine }: LineCheckboxProps) => {
                 <div key={line.ID} className="line-item">
                     <input
                         type="checkbox"
-                        checked={userLineIndexes.includes(idx)}
+                        checked={userLineIdxs.includes(idx)}
                         onChange={() => handleToggle(idx)}
                     />
                     <span className="line-name">{line.Name}</span>

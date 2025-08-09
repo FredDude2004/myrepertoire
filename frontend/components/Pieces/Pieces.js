@@ -18,6 +18,8 @@ const Pieces = () => {
     const { appState, dispatch } = useAppContext();
     const currentPosition = appState.position[appState.currentPositionIndex];
     const previousePosition = appState.position[appState.currentPositionIndex - 1];
+    const isFirstMove = appState.currentPositionIndex === 0 ? true : false;
+    // const opponentColor = appState.userLines ? "w" : "b";
 
     const ref = useRef();
 

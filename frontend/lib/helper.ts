@@ -290,34 +290,28 @@ export const getPositionFromNotation = (
     return { piece: piece, rank: originalX, file: originalY, x: toX, y: toY };
 }
 
-const sampleQuiz = [
-    {
-        moveNumber: 1,
-        white: "e4",
-        black: "e5",
-    },
-    {
-        moveNumber: 2,
-        white: "Nf3",
-        black: "Nc6",
-    },
-    {
-        moveNumber: 3,
-        white: "Bb5",
-        black: "a6",
-    },
-    {
-        moveNumber: 4,
-        white: "Ba4",
-        black: "Nf6",
-    },
-]
+export type QuizLine = {
+    moveNumber: number;
+    white: string;
+    black: string;
+}[];
 
-export function isMoveCorrect(userMove, moveNum, color) {
-    const correctMove = sampleQuiz[moveNum - 1][color === 'w' ? 'white' : 'black'];
+export function isMoveCorrect(userMove: string, moveNum: number, color: string, openingLine: QuizLine): boolean {
+    // Check if the moveNumber is valid for the openingLine
+    if (moveNum < 1 || moveNum > openingLine.length) {
+        return false;
+    }
+
+    const correctMove = openingLine[moveNum - 1][color === 'w' ? 'white' : 'black'];
     return userMove === correctMove;
 }
 
-export function getOpponentMove(moveNum, color) {
-    return sampleQuiz[moveNum - 1][color === 'w' ? 'black' : 'white']; // getting opponent color
+export function getOpponentMove(moveNum: number, color: string, openingLine: QuizLine): string {
+    // Check if the moveNumber is valid for the openingLine
+    if (moveNum < 1 || moveNum > openingLine.length) {
+        // Return an empty string or null if the move doesn't exist
+        return "";
+    }
+
+    return openingLine[moveNum - 1][color === 'w' ? 'black' : 'white'];
 }
