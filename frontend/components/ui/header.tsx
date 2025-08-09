@@ -108,7 +108,7 @@ export const HeroHeader = () => {
                                         size="sm"
                                         variant="outline">
                                         <Link href="/repertoire">
-                                            <span>Welcome, Fred</span>
+                                            <span>Welcome {user.username}</span>
                                         </Link>
                                     </Button>
                                     <Button
@@ -134,7 +134,7 @@ export const HeroHeader = () => {
                                     <Button
                                         asChild
                                         size="sm">
-                                        <Link href="#">
+                                        <Link href="/signup">
                                             <span>Sign Up</span>
                                         </Link>
                                     </Button>
