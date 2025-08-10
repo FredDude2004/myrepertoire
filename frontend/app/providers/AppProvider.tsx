@@ -2,13 +2,13 @@
 
 import React, { ReactNode, useReducer, useEffect } from 'react';
 import { reducer } from '@/reducer/reducer';
-import { initGameState } from '@/constants';
+import { initAppState } from '@/constants';
 import AppContext from '@/contexts/Context';
 import actionTypes from '@/reducer/actionTypes';
 import { getLines } from '@/lib/api/lines'; // your getLines function
 
 export function AppProvider({ children }: { children: ReactNode }) {
-    const [appState, dispatch] = useReducer(reducer, initGameState);
+    const [appState, dispatch] = useReducer(reducer, initAppState);
 
     useEffect(() => {
         async function validateUserAndFetchLines() {

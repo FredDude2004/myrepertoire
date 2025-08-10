@@ -1,5 +1,5 @@
 import actionTypes from '../actionTypes';
-import { initGameState } from '../../constants';
+import { initAppState } from '../../constants';
 
 export const updateCastling = (direction) => {
     return {
@@ -23,13 +23,13 @@ export const detectInsufficientMaterial = () => {
 export const detectCheckmate = winner => {
     return {
         type: actionTypes.WIN,
-        payload : winner
+        payload: winner
     }
 }
 
 export const setupNewGame = () => {
     return {
         type: actionTypes.NEW_GAME,
-        payload : initGameState
+        payload: initAppState
     }
 }

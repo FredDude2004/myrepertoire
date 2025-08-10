@@ -1,5 +1,8 @@
 import { Status } from "../constants";
 import actionTypes from "./actionTypes";
+import { resetBoard } from "../constants";
+
+
 export const reducer = (state, action) => {
 
     switch (action.type) {
@@ -170,15 +173,8 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.LOGOUT: {
-            let { user, userToken, userLines } = state;
-            user = null;
-            userToken = null;
-            userLines = [];
             return {
-                ...state,
-                user,
-                userToken,
-                userLines,
+                ...action.payload,
             }
         }
 
@@ -191,13 +187,161 @@ export const reducer = (state, action) => {
 
         case actionTypes.TOGGLE_SELECTED_LINE_IDX: {
             const idx = action.payload;
-            const isSelected = state.userLineIdxs.includes(idx);
+            const isSelected = state.selectedLinesIdxs.includes(idx);
             return {
                 ...state,
-                userLineIdxs: isSelected
-                    ? state.userLineIdxs.filter(i => i !== idx) // remove idx
-                    : [...state.userLineIdxs, idx],            // add idx
+                selectedLinesIdxs: isSelected
+                    ? state.selectedLinesIdxs.filter(i => i !== idx) // remove idx
+                    : [...state.selectedLinesIdxs, idx],            // add idx
             };
+        }
+
+        case actionTypes.SET_SELECTED_LINES: {
+            let { userLines, selectedLinesIdxs, selectedLines, lastSelectedIdx, currentLine, currentColor } = state;
+            selectedLinesIdxs.forEach((idx) => {
+                selectedLines.push(userLines[idx]);
+            });
+            lastSelectedIdx = selectedLines.length - 1;
+            currentLine = selectedLines[0].ParsedPGN;
+            currentColor = selectedLines[0].Color === "White" ? "White" : "Black";
+
+            console.log("In Reducer, currentLine:", currentLine);
+            console.log("In Reducer, currentColor:", currentColor);
+
+            return {
+                ...state,
+                selectedLines: selectedLines,
+                lastSelectedIdx: lastSelectedIdx,
+                currentLine: currentLine,
+            }
+
+        }
+
+        case actionTypes.SET_CURRENT_LINE: {
+            let { status, selectedLines, selectedIdx, lastSelectedIdx, currentLine, lastCurrentIdx, currentColor } = state;
+
+            if (selectedIdx > lastSelectedIdx) {
+                status = Status.drillEnds;
+            } else {
+                currentLine = selectedLines[selectedIdx].ParsedPGN;
+                lastCurrentIdx = currentLine.length - 1;
+                currentColor = selectedLines[selectedIdx].Color;
+            }
+
+            return {
+                ...state,
+                status: status,
+                currentLine: currentLine,
+                lastCurrentIdx: lastCurrentIdx,
+                currentColor: currentColor
+            }
+        }
+
+        case actionTypes.SET_CURRENT_VARIATION: {
+            let { status, currentLine, currentIdx, lastCurrentIdx, currentVariation, variationIdx } = state;
+
+            if (currentIdx > lastCurrentIdx) {
+                status = Status.lineEnds;
+            } else {
+                currentVariation = currentLine[currentIdx];
+                variationIdx = 0;
+            }
+
+            console.log("In SET_CURRENT_VARIATION, currentVariation:", currentVariation);
+
+            return {
+                ...state,
+                status,
+                currentVariation,
+                variationIdx
+            }
+        }
+
+        case actionTypes.INCREMENT_SELECTED_IDX: {
+            let { status, currentSelectedIdx, selectedIdx, lastSelectedIdx } = state;
+
+            if (currentSelectedIdx > lastSelectedIdx) {
+                status = Status.drillEnds;
+            } else {
+                selectedIdx++;
+                currentLine = selectedLines[selectedIdx].ParsedPGN;
+                currentColor = selectedLines[selectedIdx].Color === "White" ? "White" : "Black";
+            }
+
+            return {
+                ...state,
+                status,
+                selectedIdx,
+                currentLine,
+                currentColor
+            }
+        }
+
+        case actionTypes.INCREMENT_LINE_IDX: {
+            let { status, currentSelectedIdx, lastSelectedIdx } = state;
+
+            if (currentSelectedIdx > lastSelectedIdx) {
+                status = Status.drillEnds;
+            } else {
+                currentSelectedIdx++;
+            }
+
+            return {
+                ...state,
+                status,
+                currentSelectedIdx
+            }
+        }
+
+        case actionTypes.INCREMENT_VARIATION_IDX: {
+            let { status, variationIdx, lastVariationIdx } = state;
+
+            if (currentVariationIdx > lastVariationIdx) {
+                status = Status.drillEnds;
+            } else {
+                variationIdx++;
+            }
+
+            return {
+                ...state,
+                status,
+                variationIdx
+            }
+        }
+
+        case actionTypes.NEXT_VARIATION: {
+            let { status } = state;
+
+            // reset game state
+            const newBoard = resetBoard(action.payload);
+
+            return {
+                ...state,
+                ...newBoard,
+                status,
+                variationIdx
+            }
+        }
+
+        case actionTypes.NEXT_LINE: {
+            let { status, selectedIdx, lastSelectedIdx } = state;
+
+            // reset game state
+            const newBoard = resetBoard(action.payload);
+
+            // increment current line state
+            if (selectedIdx === lastSelectedIdx) {
+                status = Status.drillEnds
+            } else {
+                selectedIdx++;
+            }
+
+            return {
+                ...state,
+                ...newBoard,
+                status,
+                selectedIdx
+            }
         }
 
         default:

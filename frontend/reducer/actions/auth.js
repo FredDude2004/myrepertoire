@@ -1,3 +1,4 @@
+import { initAppState } from '@/constants';
 import actionTypes from '../actionTypes';
 
 export const login = (username, password) => {
@@ -7,10 +8,10 @@ export const login = (username, password) => {
     }
 }
 
-export const logout = (username, password, token) => {
+export const logout = () => {
     return {
-        type: actionTypes.LOGIN,
-        payload: { username, password, token },
+        type: actionTypes.LOGOUT,
+        payload: initAppState
     }
 }
 

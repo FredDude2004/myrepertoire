@@ -1,6 +1,6 @@
 import "./Pieces.css";
 import Piece from "./Piece";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useAppContext } from "../../contexts/Context";
 import { openPromotion } from "../../reducer/actions/popup";
 import { getCastlingDirections } from "../../arbiter/getMoves";
@@ -12,14 +12,34 @@ import {
 } from "../../reducer/actions/game";
 import { makeNewMove, clearCandidates, incrementStrikes } from "../../reducer/actions/move";
 import arbiter from "../../arbiter/arbiter";
-import { getNewMoveNotation, getPositionFromNotation, getOpponentMove, isMoveCorrect } from "../../lib/helper";
+import { getNewMoveNotation, getPositionFromNotation, getOpponentMove, isMoveCorrect, getFirstWhiteMove } from "../../lib/helper";
+import { incrementVariationIdx } from "@/reducer/actions/lines";
+import { createPosition } from '@/lib/helper'
 
 const Pieces = () => {
     const { appState, dispatch } = useAppContext();
     const currentPosition = appState.position[appState.currentPositionIndex];
     const previousePosition = appState.position[appState.currentPositionIndex - 1];
     const isFirstMove = appState.currentPositionIndex === 0 ? true : false;
-    // const opponentColor = appState.userLines ? "w" : "b";
+    const userColor = appState.currentColor.toLowerCase();
+
+    useEffect(() => {
+        if (isFirstMove && userColor === "black") {
+            const opponentMove = getOpponentMove(1, "w");
+            const moveData = getFirstWhiteMove(opponentMove);
+
+            const newPosition = arbiter.performMove({
+                position: currentPosition,
+                piece: moveData.piece,
+                rank: moveData.rank,
+                file: moveData.file,
+                x: moveData.x,
+                y: moveData.y
+            });
+
+            dispatch(makeNewMove({ newPosition: newPosition, newMove: opponentMove }));
+        }
+    }, [isFirstMove, userColor]);
 
     const ref = useRef();
 
@@ -59,6 +79,8 @@ const Pieces = () => {
         const { x, y } = calculateCoords(e);
         const [piece, rank, file] = e.dataTransfer.getData("text").split(",");
 
+        console.log("In Move, currentVariation, currentLine, currentIdx, variationIdx,", appState.currentVariation, appState.currentLine, appState.currentIdx, appState.variationIdx);
+
         if (appState.candidateMoves.find((m) => m[0] === x && m[1] === y)) {
             const opponentColor = piece.startsWith("b") ? "w" : "b";
             const castleDirection =
@@ -93,7 +115,7 @@ const Pieces = () => {
 
             const moveNum = appState.moveNum;
 
-            if (!isMoveCorrect(newMove, moveNum, piece[0])) {
+            if (!isMoveCorrect(newMove, moveNum, piece[0], appState.currentVariation)) {
                 dispatch(incrementStrikes());
                 dispatch(clearCandidates());
                 return;
@@ -129,10 +151,18 @@ const Pieces = () => {
             } else if (arbiter.isCheckMate(newNewPosition, piece[0], castleDirection)) {
                 dispatch(detectCheckmate(piece[0]));
             }
-
-
         }
         dispatch(clearCandidates());
+
+        if (appState.variationIdx <= appState.lastVariationIdx) {
+            dispatch(incrementVariationIdx());
+        } else if (appState.currentIdx <= appState.currentLastIdx) {
+            dispatch(incrementLineIdx());
+        } else if (appState.selectedIdx <= appState.lastSelectedIdx) {
+            dispatch(incrementSelectedIdx());
+        } else {
+            dispatch(nextLine(createPosition()))
+        }
     };
 
     const onDrop = (e) => {

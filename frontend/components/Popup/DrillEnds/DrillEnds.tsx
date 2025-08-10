@@ -1,28 +1,28 @@
 import { Status } from '../../../constants';
 import { useAppContext } from '../../../contexts/Context'
 import { setupNewGame } from '../../../reducer/actions/game';
-import './GameEnds.css'
+import '../GameEnds/GameEnds.css'
+import { useRouter } from "next/navigation";
 
-const DrillEnds = ({ onClosePopup }: any) => {
+const DrillEnds = ({ onClosePopup }) => {
 
     const { appState: { status }, dispatch } = useAppContext();
+    const router = useRouter();
 
     if (status === Status.ongoing || status === Status.promoting)
         return null
 
-    const nextDrill = () => {
+    const newGame = () => {
         dispatch(setupNewGame())
+        router.push("/repertoire");
     }
 
-    const isWin = status.endsWith('wins')
 
     return <div className="popup--inner popup--inner__center">
-        <h1>{isWin ? status : 'Draw'}</h1>
-        <p>{!isWin && status}</p>
-        <div className={`${status}`} />
-        <button onClick={nextDrill}>Next Drill</button>
+        <h1>Well Done!</h1>
+        <button onClick={newGame}>Back to Repertoire</button>
     </div>
 
 }
 
-export default GameEnds
+export default DrillEnds;

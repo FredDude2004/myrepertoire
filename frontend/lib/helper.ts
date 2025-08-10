@@ -155,15 +155,15 @@ export const getNewMoveNotation = ({
 };
 
 export const disambiguateMove = (
-    piece,
-    position,
-    previousPosition,
-    currX,
-    currY,
-    toX,
-    toY,
-    note,
-    takes) => {
+    piece: string,
+    position: string[][],
+    previousPosition: string[][],
+    currX: number,
+    currY: number,
+    toX: number,
+    toY: number,
+    note: string,
+    takes: string) => {
     let ambiguousPieces = [];
     const enemyColor = piece[0] === "w" ? "b" : "w";
 
@@ -197,7 +197,7 @@ export const disambiguateMove = (
     const fileChar = getCharacter(currY + 1);
     const rankChar = (currX + 1).toString();
 
-    function appendTake(str) {
+    function appendTake(str: string) {
         return takes !== "" ? str + "x" : str;
     }
 
@@ -237,11 +237,11 @@ export const disambiguateMove = (
 };
 
 export const getPositionFromNotation = (
-    position,
-    previousPosition,
-    notation,
-    castleDirection,
-    color) => {
+    position: string[][],
+    previousPosition: string[][],
+    notation: string,
+    castleDirection: string,
+    color: string) => {
     const enemyColor = color === "w" ? "b" : "w";
     let piece = "";
     if (notation.includes("K") || notation === "O-O-O" || notation === "O-O") {
@@ -260,11 +260,11 @@ export const getPositionFromNotation = (
         trimmedNotation = trimmedNotation.slice(0, -1);
     }
 
-    const toX = (trimmedNotation.charAt(trimmedNotation.length - 1) - 1);
+    const toX = parseInt(trimmedNotation.charAt(trimmedNotation.length - 1)) - 1;
     const toY = getFileNumber(trimmedNotation.charAt(trimmedNotation.length - 2));
 
-    let originalX = "";
-    let originalY = "";
+    let originalX = 0;
+    let originalY = 0;
 
     for (let rank = 0; rank < 8; rank++) {
         for (let file = 0; file < 8; file++) {
@@ -314,4 +314,30 @@ export function getOpponentMove(moveNum: number, color: string, openingLine: Qui
     }
 
     return openingLine[moveNum - 1][color === 'w' ? 'black' : 'white'];
+}
+
+export function getFirstWhiteMove(notation: string) {
+    let piece = "";
+
+    if (notation.includes("N")) piece = "wn";
+    else piece = "wp";
+
+    const toX = parseInt(notation.charAt(notation.length - 1)) - 1;
+    const toY = getFileNumber(notation[notation.length - 2]);
+
+    let originalX = 0;
+    let originalY = 0;
+
+    if (piece === "wp") {
+        originalX += 2;
+        originalY += toY;
+    } else if ((toX === 2 && toY === 0) || (toX === 2 && toY === 2)) {
+        originalX = 0;
+        originalY = 1;
+    } else {
+        originalX = 0;
+        originalY = 6;
+    }
+
+    return { piece: piece, rank: originalX, file: originalY, x: toX, y: toY };
 }
