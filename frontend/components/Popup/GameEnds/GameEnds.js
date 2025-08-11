@@ -1,14 +1,16 @@
 import { Status } from '../../../constants';
-import { useAppContext }from '../../../contexts/Context'
+import { useAppContext } from '../../../contexts/Context'
 import { setupNewGame } from '../../../reducer/actions/game';
 import './GameEnds.css'
 
-const GameEnds = ({onClosePopup}) => {
+const GameEnds = ({ onClosePopup }) => {
 
-    const { appState : {status} , dispatch } = useAppContext();
-    
-    if (status === Status.ongoing || status === Status.promoting)
+    const { appState: { status }, dispatch } = useAppContext();
+
+    if (status === Status.ongoing || status === Status.promoting ||
+        status === Status.variationEnds || status === Status.lineEnds || status === Status.drillEnds) {
         return null
+    }
 
     const newGame = () => {
         dispatch(setupNewGame())
@@ -19,10 +21,10 @@ const GameEnds = ({onClosePopup}) => {
     return <div className="popup--inner popup--inner__center">
         <h1>{isWin ? status : 'Draw'}</h1>
         <p>{!isWin && status}</p>
-        <div className={`${status}`}/>
+        <div className={`${status}`} />
         <button onClick={newGame}>New Game</button>
     </div>
-   
+
 }
 
 export default GameEnds

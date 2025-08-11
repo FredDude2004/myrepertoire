@@ -1,0 +1,42 @@
+.popup--inner {
+  position: fixed; /* Overlay on top of everything */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  background: rgba(0, 0, 0, 0.5); /* Dark transparent backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Make sure it’s above the board */
+}
+
+.popup--inner__center {
+  background: white; /* Make it visible */
+  color: #333;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+}
+
+.popup--inner__center h1 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.popup--inner__center button {
+  padding: 0.6rem 1.2rem;
+  background: #f76c6c; /* soft red/pink */
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.popup--inner__center button:hover {
+  background: #e05656;
+}

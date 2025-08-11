@@ -242,6 +242,11 @@ export const getPositionFromNotation = (
     notation: string,
     castleDirection: string,
     color: string) => {
+
+    if (notation === null) {
+        return;
+    }
+
     const enemyColor = color === "w" ? "b" : "w";
     let piece = "";
     if (notation.includes("K") || notation === "O-O-O" || notation === "O-O") {

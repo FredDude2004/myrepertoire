@@ -1,18 +1,21 @@
 import { Status } from '../../../constants';
 import { useAppContext } from '../../../contexts/Context'
-import { nextVariation } from '../../../reducer/actions/lines';
-import '../GameEnds/GameEnds.css'
-import { createPosition } from './lib/helper'
+import { incrementLineIdx } from '../../../reducer/actions/lines';
+import '../VariationEnds/VariationEnds.css'
 
 const VariationEnds = ({ onClosePopup }) => {
 
     const { appState: { status }, dispatch } = useAppContext();
 
-    if (status === Status.ongoing || status === Status.promoting)
+    if (status === Status.ongoing || status === Status.promoting ||
+        status === Status.lineEnds || status === Status.drillEnds ||
+        status === Status.white || status === Status.black ||
+        status === Status.stalemate || status === Status.insufficient) {
         return null
+    }
 
     const next = () => {
-        dispatch(nextVariation(createPosition()))
+        dispatch(incrementLineIdx());
     }
 
     return (

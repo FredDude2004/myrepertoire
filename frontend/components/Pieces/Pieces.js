@@ -13,8 +13,7 @@ import {
 import { makeNewMove, clearCandidates, incrementStrikes } from "../../reducer/actions/move";
 import arbiter from "../../arbiter/arbiter";
 import { getNewMoveNotation, getPositionFromNotation, getOpponentMove, isMoveCorrect, getFirstWhiteMove } from "../../lib/helper";
-import { incrementVariationIdx } from "@/reducer/actions/lines";
-import { createPosition } from '@/lib/helper'
+import { incrementVariationIdx, incrementLineIdx, incrementSelectedIdx } from "@/reducer/actions/lines";
 
 const Pieces = () => {
     const { appState, dispatch } = useAppContext();
@@ -79,8 +78,6 @@ const Pieces = () => {
         const { x, y } = calculateCoords(e);
         const [piece, rank, file] = e.dataTransfer.getData("text").split(",");
 
-        console.log("In Move, currentVariation, currentLine, currentIdx, variationIdx,", appState.currentVariation, appState.currentLine, appState.currentIdx, appState.variationIdx);
-
         if (appState.candidateMoves.find((m) => m[0] === x && m[1] === y)) {
             const opponentColor = piece.startsWith("b") ? "w" : "b";
             const castleDirection =
@@ -121,6 +118,8 @@ const Pieces = () => {
                 return;
             }
 
+
+
             dispatch(makeNewMove({ newPosition: newPosition, newMove: newMove }));
 
             if (arbiter.insufficientMaterial(newPosition))
@@ -131,7 +130,13 @@ const Pieces = () => {
                 dispatch(detectCheckmate(piece[0]));
             }
 
-            const opponentMove = getOpponentMove(moveNum, piece[0]);
+            if (!("black" in appState.currentVariation[moveNum - 1])) {
+                dispatch(incrementVariationIdx());
+                dispatch(clearCandidates());
+                return;
+            }
+
+            const opponentMove = getOpponentMove(moveNum, piece[0], appState.currentVariation);
             const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
             const newNewPosition = arbiter.performMove({
                 position: newPosition,
@@ -154,14 +159,17 @@ const Pieces = () => {
         }
         dispatch(clearCandidates());
 
-        if (appState.variationIdx <= appState.lastVariationIdx) {
+        if (appState.variationIdx < appState.currentVariation.length - 1) {
+            // console.log("first case");
             dispatch(incrementVariationIdx());
-        } else if (appState.currentIdx <= appState.currentLastIdx) {
+        } else if (appState.currentIdx < appState.currentLine.length - 1) {
+            // console.log("second case");
             dispatch(incrementLineIdx());
-        } else if (appState.selectedIdx <= appState.lastSelectedIdx) {
+        } else if (appState.selectedIdx < appState.selectedLines.length - 1) {
+            // console.log("third case");
             dispatch(incrementSelectedIdx());
         } else {
-            dispatch(nextLine(createPosition()))
+            // console.log("fourth case");
         }
     };
 

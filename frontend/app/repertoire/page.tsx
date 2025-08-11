@@ -7,7 +7,7 @@ import LineForm from '@/components/Lines/LineForm';
 import { useState } from 'react';
 import { useAppContext } from '@/contexts/Context';
 import { getLines } from '@/lib/api/lines';
-import { setCurrentVariation, setLines, setSelectedLines } from '@/reducer/actions/lines';
+import { setLines, setSelectedLines } from '@/reducer/actions/lines';
 import { useRouter } from "next/navigation";
 
 export default function Repertoire() {
@@ -24,10 +24,6 @@ export default function Repertoire() {
     async function handleClick(e: React.FormEvent) {
         e.preventDefault();
         dispatch(setSelectedLines());
-        dispatch(setSelectedLines());
-        dispatch(setCurrentVariation());
-        console.log("Dispatch to currentVariation was sent");
-
         router.push("/quiz");
     }
 

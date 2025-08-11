@@ -1,8 +1,8 @@
 import { createPosition } from './lib/helper'
 
 // A function to create the initial state for the game board
-export const resetBoard = (initialPosition: string[][]) => ({
-    position: [initialPosition],
+export const resetBoard = () => ({
+    position: [createPosition()],
     currentPositionIndex: 0,
     currentMoveIndex: 0,
     turn: 'w',
@@ -26,13 +26,13 @@ export const Status = {
     'black': 'Black wins',
     'stalemate': 'Game draws due to stalemate',
     'insufficient': 'Game draws due to insufficient material',
-    'variationEnds': 'Finished variation',
-    'lineEnds': 'Finished line',
-    'drillEnds': 'Drill ends',
+    'variationEnds': 'Finished with variation',
+    'lineEnds': 'Finished with line',
+    'drillEnds': 'Finished with drill'
 }
 
 export const initAppState = {
-    ...resetBoard(createPosition()),
+    ...resetBoard(),
 
     // Quiz State
     user: null,
@@ -42,15 +42,12 @@ export const initAppState = {
 
     selectedLines: [],
     selectedIdx: 0,
-    lastSelectedIdx: 0,
+
 
     currentColor: "",
-
     currentLine: [],
     currentIdx: 0,
-    lastCurrentIdx: 0,
 
     currentVariation: [],
     variationIdx: 0,
-    lastVariationIdx: 0
 }

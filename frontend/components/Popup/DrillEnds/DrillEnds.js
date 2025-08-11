@@ -9,8 +9,12 @@ const DrillEnds = ({ onClosePopup }) => {
     const { appState: { status }, dispatch } = useAppContext();
     const router = useRouter();
 
-    if (status === Status.ongoing || status === Status.promoting)
+    if (status === Status.ongoing || status === Status.promoting ||
+        status === Status.variationEnds || status === Status.lineEnds ||
+        status === Status.white || status === Status.black ||
+        status === Status.stalemate || status === Status.insufficient) {
         return null
+    }
 
     const newGame = () => {
         dispatch(setupNewGame())

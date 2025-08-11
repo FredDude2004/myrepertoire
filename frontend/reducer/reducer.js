@@ -1,9 +1,8 @@
 import { Status } from "../constants";
 import actionTypes from "./actionTypes";
-import { resetBoard } from "../constants";
-
 
 export const reducer = (state, action) => {
+    console.log("Reducer received:", action.type, "with payload", action.payload);
 
     switch (action.type) {
         case actionTypes.NEW_MOVE: {
@@ -197,150 +196,115 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.SET_SELECTED_LINES: {
-            let { userLines, selectedLinesIdxs, selectedLines, lastSelectedIdx, currentLine, currentColor } = state;
+            let { userLines, selectedLinesIdxs, lastSelectedIdx, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
+            let newSelectedLines = [];
             selectedLinesIdxs.forEach((idx) => {
-                selectedLines.push(userLines[idx]);
+                newSelectedLines.push(userLines[idx]);
             });
-            lastSelectedIdx = selectedLines.length - 1;
-            currentLine = selectedLines[0].ParsedPGN;
-            currentColor = selectedLines[0].Color === "White" ? "White" : "Black";
-
-            console.log("In Reducer, currentLine:", currentLine);
-            console.log("In Reducer, currentColor:", currentColor);
+            lastSelectedIdx = newSelectedLines.length - 1;
+            currentLine = newSelectedLines[currentIdx].ParsedPGN;
+            currentColor = newSelectedLines[currentIdx].Color === "White" ? "White" : "Black";
+            variationIdx = 0;
+            currentVariation = currentLine[variationIdx];
 
             return {
                 ...state,
-                selectedLines: selectedLines,
+                selectedLines: newSelectedLines,
                 lastSelectedIdx: lastSelectedIdx,
                 currentLine: currentLine,
+                currentColor: currentColor,
+                currentVariation: currentVariation,
+                variationIdx: variationIdx
             }
 
         }
 
-        case actionTypes.SET_CURRENT_LINE: {
-            let { status, selectedLines, selectedIdx, lastSelectedIdx, currentLine, lastCurrentIdx, currentColor } = state;
+        case actionTypes.INCREMENT_SELECTED_IDX: {
+            let { status, selectedLines, selectedIdx, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
 
-            if (selectedIdx > lastSelectedIdx) {
+            if (selectedIdx >= selectedLines.length - 1) {
                 status = Status.drillEnds;
+                console.log("Changing status to Status.drillEnds");
             } else {
+                selectedIdx++;
                 currentLine = selectedLines[selectedIdx].ParsedPGN;
-                lastCurrentIdx = currentLine.length - 1;
                 currentColor = selectedLines[selectedIdx].Color;
-            }
-
-            return {
-                ...state,
-                status: status,
-                currentLine: currentLine,
-                lastCurrentIdx: lastCurrentIdx,
-                currentColor: currentColor
-            }
-        }
-
-        case actionTypes.SET_CURRENT_VARIATION: {
-            let { status, currentLine, currentIdx, lastCurrentIdx, currentVariation, variationIdx } = state;
-
-            if (currentIdx > lastCurrentIdx) {
-                status = Status.lineEnds;
-            } else {
+                currentIdx = 0;
                 currentVariation = currentLine[currentIdx];
                 variationIdx = 0;
             }
 
-            console.log("In SET_CURRENT_VARIATION, currentVariation:", currentVariation);
-
             return {
                 ...state,
-                status,
-                currentVariation,
-                variationIdx
-            }
-        }
-
-        case actionTypes.INCREMENT_SELECTED_IDX: {
-            let { status, currentSelectedIdx, selectedIdx, lastSelectedIdx } = state;
-
-            if (currentSelectedIdx > lastSelectedIdx) {
-                status = Status.drillEnds;
-            } else {
-                selectedIdx++;
-                currentLine = selectedLines[selectedIdx].ParsedPGN;
-                currentColor = selectedLines[selectedIdx].Color === "White" ? "White" : "Black";
-            }
-
-            return {
-                ...state,
-                status,
-                selectedIdx,
-                currentLine,
-                currentColor
+                ...action.payload,
+                status: status,
+                selectedIdx: selectedIdx,
+                currentLine: currentLine,
+                currentColor: currentColor,
+                currentVariation: currentVariation,
+                variationIdx: variationIdx
             }
         }
 
         case actionTypes.INCREMENT_LINE_IDX: {
-            let { status, currentSelectedIdx, lastSelectedIdx } = state;
+            let { status, currentLine, currentIdx, currentVariation, variationIdx } = state;
 
-            if (currentSelectedIdx > lastSelectedIdx) {
-                status = Status.drillEnds;
+            if (currentIdx >= currentLine.length - 1) {
+                status = Status.lineEnds;
+                console.log("Changing status to Status.lineEnds");
             } else {
-                currentSelectedIdx++;
+                currentIdx++;
+                variationIdx = 0;
+                currentVariation = currentLine[currentIdx];
             }
 
             return {
                 ...state,
-                status,
-                currentSelectedIdx
+                ...action.payload,
+                status: status,
+                currentIdx: currentIdx,
+                currentVariation: currentVariation,
+                variationIdx, variationIdx
             }
         }
 
         case actionTypes.INCREMENT_VARIATION_IDX: {
-            let { status, variationIdx, lastVariationIdx } = state;
+            let { status, currentVariation, variationIdx } = state;
 
-            if (currentVariationIdx > lastVariationIdx) {
-                status = Status.drillEnds;
+            if (variationIdx >= currentVariation.length - 1) {
+                status = Status.variationEnds;
+                console.log("Changing status to Status.variationEnds");
             } else {
                 variationIdx++;
             }
 
+            console.log("status:", status);
+
             return {
                 ...state,
                 status,
-                variationIdx
+                variationIdx,
+            };
+        }
+
+        case actionTypes.VARIATION_ENDS: {
+            return {
+                ...state,
+                status: Status.variationDone
             }
         }
 
-        case actionTypes.NEXT_VARIATION: {
-            let { status } = state;
-
-            // reset game state
-            const newBoard = resetBoard(action.payload);
-
+        case actionTypes.LINE_ENDS: {
             return {
                 ...state,
-                ...newBoard,
-                status,
-                variationIdx
+                status: Status.lineDone
             }
         }
 
-        case actionTypes.NEXT_LINE: {
-            let { status, selectedIdx, lastSelectedIdx } = state;
-
-            // reset game state
-            const newBoard = resetBoard(action.payload);
-
-            // increment current line state
-            if (selectedIdx === lastSelectedIdx) {
-                status = Status.drillEnds
-            } else {
-                selectedIdx++;
-            }
-
+        case actionTypes.DRILL_ENDS: {
             return {
                 ...state,
-                ...newBoard,
-                status,
-                selectedIdx
+                status: Status.drillDone
             }
         }
 
