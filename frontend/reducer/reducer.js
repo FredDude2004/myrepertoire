@@ -247,9 +247,12 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_LINE_IDX: {
-            let { status, currentLine, currentIdx, currentVariation, variationIdx } = state;
+            let { status, selectedLines, selectedIdx, currentLine, currentIdx, currentVariation, variationIdx } = state;
 
-            if (currentIdx >= currentLine.length - 1) {
+            if (selectedIdx >= selectedLines.length - 1) {
+                status = Status.drillEnds;
+                console.log("Changing status to Status.drillEnds");
+            } else if (currentIdx >= currentLine.length - 1) {
                 status = Status.lineEnds;
                 console.log("Changing status to Status.lineEnds");
             } else {
@@ -269,9 +272,12 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_VARIATION_IDX: {
-            let { status, currentVariation, variationIdx } = state;
+            let { status, currentLine, lineIdx, currentVariation, variationIdx } = state;
 
-            if (variationIdx >= currentVariation.length - 1) {
+            if (lineIdx >= currentLine.length - 1) {
+                status = Status.lineEnds;
+                console.log("Changing status to Status.lineEnds");
+            } else if (variationIdx >= currentVariation.length - 1) {
                 status = Status.variationEnds;
                 console.log("Changing status to Status.variationEnds");
             } else {
@@ -287,24 +293,9 @@ export const reducer = (state, action) => {
             };
         }
 
-        case actionTypes.VARIATION_ENDS: {
+        case actionTypes.DRILL_POPUP_CLOSE: {
             return {
-                ...state,
-                status: Status.variationDone
-            }
-        }
-
-        case actionTypes.LINE_ENDS: {
-            return {
-                ...state,
-                status: Status.lineDone
-            }
-        }
-
-        case actionTypes.DRILL_ENDS: {
-            return {
-                ...state,
-                status: Status.drillDone
+                ...action.payload,
             }
         }
 

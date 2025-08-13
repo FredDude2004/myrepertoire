@@ -1,4 +1,4 @@
-import { resetBoard } from '@/constants';
+import { initAppState, resetBoard } from '@/constants';
 import actionTypes from '../actionTypes';
 
 export const setLines = (lines) => {
@@ -32,6 +32,14 @@ export const incrementSelectedIdx = () => {
     }
 }
 
+export const drillPopupClose = () => {
+    console.log("Dispatching drillPopupClose");
+    return {
+        type: actionTypes.DRILL_POPUP_CLOSE,
+        payload: initAppState
+    }
+}
+
 export const incrementLineIdx = () => {
     console.log("Dispatching incrementLineIdx");
     return {
@@ -46,5 +54,3 @@ export const incrementVariationIdx = () => {
         type: actionTypes.INCREMENT_VARIATION_IDX
     }
 }
-
-

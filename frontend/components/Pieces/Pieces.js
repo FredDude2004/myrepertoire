@@ -130,7 +130,7 @@ const Pieces = () => {
                 dispatch(detectCheckmate(piece[0]));
             }
 
-            if (!("black" in appState.currentVariation[moveNum - 1])) {
+            if (!("black" in appState.currentVariation[moveNum - 1]) || moveNum === appState.currentVariation.length) {
                 dispatch(incrementVariationIdx());
                 dispatch(clearCandidates());
                 return;

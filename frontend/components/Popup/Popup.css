@@ -20,13 +20,24 @@
     transform: translate(-50%, -50%);
     text-align: center;
     padding: 1em 0;
+    color: black;
 }
 
 .popup--inner__center h1 {
     font-size: 2.5em;
     margin: 0 0 .5em 0;
+    color: black;
 }
 .popup--inner__center p {
     font-size: 1.2em;
     margin: 0 0 1em 0;
+    color: black;
 }
+
+/* button { */
+/*     font-size: 1.2em; */
+/*     padding: .25em 1em; */
+/*     background: var(--highlight); */
+/*     border: 2px solid black; */
+/*     cursor: pointer; */
+/* } */
