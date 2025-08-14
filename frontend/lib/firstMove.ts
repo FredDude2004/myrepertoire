@@ -217,7 +217,7 @@ const twenty = [ // Nh3
     ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br",],
 ]
 
-export const getFirstMove = (note: string) => {
+export const getFirstMove = (note: string | undefined) => {
     switch (note) {
         case "a3": return one;
         case "b3": return two;

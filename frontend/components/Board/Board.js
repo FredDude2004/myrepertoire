@@ -20,6 +20,7 @@ const Board = () => {
 
     const { appState } = useAppContext();
     const position = appState.position[appState.currentPositionIndex]
+    console.log("position", position);
 
     const checkTile = (() => {
         const isInCheck = (arbiter.isPlayerInCheck({

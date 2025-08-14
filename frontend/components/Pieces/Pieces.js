@@ -1,6 +1,6 @@
 import "./Pieces.css";
 import Piece from "./Piece";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useAppContext } from "../../contexts/Context";
 import { openPromotion } from "../../reducer/actions/popup";
 import { getCastlingDirections } from "../../arbiter/getMoves";
@@ -12,43 +12,13 @@ import {
 } from "../../reducer/actions/game";
 import { makeNewMove, clearCandidates, incrementStrikes } from "../../reducer/actions/move";
 import arbiter from "../../arbiter/arbiter";
-import { getNewMoveNotation, getPositionFromNotation, getOpponentMove, isMoveCorrect, getFirstWhiteMove } from "../../lib/helper";
+import { getNewMoveNotation, getPositionFromNotation, getOpponentMove, isMoveCorrect } from "../../lib/helper";
 import { incrementVariationIdx, incrementLineIdx, incrementSelectedIdx } from "@/reducer/actions/lines";
 
 const Pieces = () => {
     const { appState, dispatch } = useAppContext();
     const currentPosition = appState.position[appState.currentPositionIndex];
     const previousePosition = appState.position[appState.currentPositionIndex - 1];
-    const isFirstMove = appState.currentPositionIndex === 0 ? true : false;
-    const userColor = appState.currentColor.toLowerCase();
-
-    useEffect(() => {
-        if (isFirstMove && userColor === "black") {
-            const opponentMove = getOpponentMove(1, "b", appState.currentVariation);
-            console.log("currentVariation:", appState.currentVariation);
-            console.log("Opponent's first move:", opponentMove);
-            const moveData = getFirstWhiteMove(opponentMove);
-
-            console.log("currentPosition:", currentPosition);
-            console.log("moveData:", moveData);
-            const newPosition = arbiter.performMove({
-                position: currentPosition,
-                piece: moveData.piece,
-                rank: moveData.rank,
-                file: moveData.file,
-                x: moveData.x,
-                y: moveData.y
-            });
-
-            console.log("newPosition:", newPosition);
-
-            dispatch(makeNewMove({ newPosition, newMove: opponentMove }));
-
-            // Ensure we don't accidentally trigger any extra opponent moves on mount
-            return;
-        }
-    }, [isFirstMove, userColor, appState.currentVariation, currentPosition, dispatch]);
-
     const ref = useRef();
 
     const updateCastlingState = ({ piece, file, rank }) => {
@@ -137,35 +107,32 @@ const Pieces = () => {
                 dispatch(detectCheckmate(piece[0]));
             }
 
-            // Only auto-play opponent move if it’s NOT the very first move for black
-            if (!(isFirstMove && userColor === "black")) {
-                if (!("black" in appState.currentVariation[moveNum - 1]) ||
-                    moveNum === appState.currentVariation.length) {
-                    dispatch(incrementVariationIdx());
-                    dispatch(clearCandidates());
-                    return;
-                }
+            if (!("black" in appState.currentVariation[moveNum - 1]) ||
+                moveNum === appState.currentVariation.length) {
+                dispatch(incrementVariationIdx());
+                dispatch(clearCandidates());
+                return;
+            }
 
-                const opponentMove = getOpponentMove(moveNum, piece[0], appState.currentVariation);
-                const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
-                const newNewPosition = arbiter.performMove({
-                    position: newPosition,
-                    piece: opponentMoveInfo.piece,
-                    rank: opponentMoveInfo.rank,
-                    file: opponentMoveInfo.file,
-                    x: opponentMoveInfo.x,
-                    y: opponentMoveInfo.y,
-                });
+            const opponentMove = getOpponentMove(moveNum, piece[0], appState.currentVariation);
+            const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
+            const newNewPosition = arbiter.performMove({
+                position: newPosition,
+                piece: opponentMoveInfo.piece,
+                rank: opponentMoveInfo.rank,
+                file: opponentMoveInfo.file,
+                x: opponentMoveInfo.x,
+                y: opponentMoveInfo.y,
+            });
 
-                dispatch(makeNewMove({ newPosition: newNewPosition, newMove: opponentMove }));
+            dispatch(makeNewMove({ newPosition: newNewPosition, newMove: opponentMove }));
 
-                if (arbiter.insufficientMaterial(newNewPosition))
-                    dispatch(detectInsufficientMaterial());
-                else if (arbiter.isStalemate(newNewPosition, piece[0], castleDirection)) {
-                    dispatch(detectStalemate());
-                } else if (arbiter.isCheckMate(newNewPosition, piece[0], castleDirection)) {
-                    dispatch(detectCheckmate(piece[0]));
-                }
+            if (arbiter.insufficientMaterial(newNewPosition))
+                dispatch(detectInsufficientMaterial());
+            else if (arbiter.isStalemate(newNewPosition, piece[0], castleDirection)) {
+                dispatch(detectStalemate());
+            } else if (arbiter.isCheckMate(newNewPosition, piece[0], castleDirection)) {
+                dispatch(detectCheckmate(piece[0]));
             }
         }
         dispatch(clearCandidates());

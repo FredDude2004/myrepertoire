@@ -1,14 +1,16 @@
 import { createPosition } from './lib/helper'
 import { getFirstMove } from './lib/firstMove';
+import { firstMove } from './reducer/actions/move';
 
 // A function to create the initial state for the game board
 type Color = "w" | "b";
 
 export const resetBoard = (playerColor: Color, firstMoveNote?: string) => {
-    let initialPosition;
+    console.log("resetBoard, playerColor:", playerColor, "firstMoveNote:", firstMoveNote);
+    let initialPosition = createPosition();
     let initialMovesList: string[] = [];
 
-    if (firstMoveNote) {
+    if (playerColor === "b" && firstMoveNote) {
         // Use the predefined first move if given
         initialPosition = getFirstMove(firstMoveNote);
         initialMovesList.push(firstMoveNote);
@@ -18,7 +20,8 @@ export const resetBoard = (playerColor: Color, firstMoveNote?: string) => {
     }
 
     // If the player is black and the first move is for white, we might want to flip the turn
-    const initialTurn: Color = playerColor === "w" ? "w" : "w"; // always start with white
+    const initialTurn = playerColor;
+    console.log("initialTurn:", initialTurn);
 
     return {
         position: [initialPosition],
@@ -51,7 +54,7 @@ export const Status = {
 }
 
 export const initAppState = {
-    ...resetBoard("w"),
+    ...resetBoard("w", ""),
 
     // Quiz State
     user: null,

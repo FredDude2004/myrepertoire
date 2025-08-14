@@ -1,4 +1,5 @@
 import { Status } from "../constants";
+import { resetBoard } from "../constants";
 import actionTypes from "./actionTypes";
 
 export const reducer = (state, action) => {
@@ -209,6 +210,7 @@ export const reducer = (state, action) => {
 
             return {
                 ...state,
+                ...resetBoard(currentColor, currentVariation[0].white),
                 selectedLines: newSelectedLines,
                 currentLine: currentLine,
                 currentColor: currentColor,
@@ -232,7 +234,7 @@ export const reducer = (state, action) => {
 
             return {
                 ...state,
-                ...action.payload,
+                ...resetBoard(currentColor, currentVariation[0].white),
                 status: status,
                 selectedIdx: selectedIdx,
                 currentColor: currentColor,
@@ -244,7 +246,7 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_LINE_IDX: {
-            let { status, currentLine, currentIdx, currentVariation } = state;
+            let { status, currentColor, currentLine, currentIdx, currentVariation } = state;
 
             if (currentIdx < currentLine.length - 1) {
                 currentIdx++;
@@ -256,7 +258,7 @@ export const reducer = (state, action) => {
 
             return {
                 ...state,
-                ...action.payload,
+                ...resetBoard(currentColor, currentVariation[0].white),
                 status: status,
                 currentIdx: currentIdx,
                 currentVariation: currentVariation,
