@@ -28,53 +28,10 @@ export const createPosition = () => {
     position[7][6] = "bn";
     position[7][7] = "br";
 
-    /* This is a position that you can use to test the disambiguation of moves
-     * it has three white knights that can all move to the same square and you
-     * you should see that the moves are properly disambiguated.
-     *
-     * position[-1][0] = "bk";
-     * position[-1][7] = "wk";
-     * position[2][2] = "wn";
-     * position[2][6] = "wn";
-     * position[4][2] = "wn";
-     *
-     * Example: if you move the knight on g4 to e5, the notation was originally
-     * only "Ne5" but now it should be "Nge5" to signify which knight is moving.
-     *
-     * All cases should work, if you have two of the same pieces that can move to
-     * the same square, but they are on different files or ranks, the notation
-     * should be disambiguated by the file, rank, or file and rank, of the piece
-     * depending on where the ambiguity is.
-     *
-     * If you have two knights that can move to the same square, but they
-     * are on different files, the notation should be disambiguated by the file.
-     *
-     * If you have two knights that can move to the same square, but they are on
-     * the same file, the notation should be disambiguated by the rank.
-     *
-     * Take for example this opening:
-     * 1. e4 e5
-     * 2. Ne2 Nc6
-     * 3. Nbc3 ...
-     *
-     * Since we have two knights that can both move to the c3 square, we need to
-     * disambiguate the move. Disambiguating by the file takes priority.
-     *
-     * If you have two of the same pieces that are on the same file and can move to
-     * the same square, you would then disambiguate by the rank.
-     *
-     * In the rare case that you have three or more of the same piece that can all
-     * move to the same square and they share files and ranks, you would disambiguate
-     * by both the file and rank. If you move the knight on c3 to e5 in the provided
-     * position, the notation should be "Nc3e5" to signify that the knight on c3
-     * is moving to e5.
-     *
-     */
-
     return position;
 };
 
-export const copyPosition = (position) => {
+export const copyPosition = (position: string[][]) => {
     const newPosition = new Array(8).fill("").map(() => new Array(8).fill(""));
 
     for (let rank = 0; rank < position.length; rank++) {
@@ -89,7 +46,7 @@ export const copyPosition = (position) => {
 export const areSameColorTiles = (coords1, coords2) =>
     (coords1.x + coords1.y) % 2 === coords2.x + coords2.y;
 
-export const findPieceCoords = (position, type) => {
+export const findPieceCoords = (position: string[][], type: string) => {
     let results = [];
     position.forEach((rank, i) => {
         rank.forEach((pos, j) => {
@@ -247,10 +204,21 @@ export const getPositionFromNotation = (
         return;
     }
 
+
     const enemyColor = color === "w" ? "b" : "w";
     let piece = "";
-    if (notation.includes("K") || notation === "O-O-O" || notation === "O-O") {
+    let toX = 0;
+    let toY = 0;
+    if (notation.includes("K")) {
         piece = color + "k";
+    } else if (notation === "O-O-O") {
+        piece = color + "k";
+        toX = enemyColor === "w" ? 7 : 0;
+        toY = 2;
+    } else if (notation === "O-O") {
+        piece = color + "k";
+        toX = enemyColor === "w" ? 7 : 0;
+        toY = 6;
     }
 
     else if (notation.includes("=")) piece = color + "p";
@@ -265,8 +233,10 @@ export const getPositionFromNotation = (
         trimmedNotation = trimmedNotation.slice(0, -1);
     }
 
-    const toX = parseInt(trimmedNotation.charAt(trimmedNotation.length - 1)) - 1;
-    const toY = getFileNumber(trimmedNotation.charAt(trimmedNotation.length - 2));
+    if (toX === 0 && toY === 0) {
+        toX = parseInt(trimmedNotation.charAt(trimmedNotation.length - 1)) - 1;
+        toY = getFileNumber(trimmedNotation.charAt(trimmedNotation.length - 2));
+    }
 
     let originalX = 0;
     let originalY = 0;
@@ -281,8 +251,8 @@ export const getPositionFromNotation = (
                     prevPosition: previousPosition,
                     castleDirection: castleDirection,
                     piece: piece,
-                    rank,
-                    file,
+                    rank: rank,
+                    file: file,
                 });
                 if (pieceAtPositionValidMoves.some(([x, y]) => x === toX && y === toY)) {
                     originalX = rank;
@@ -301,7 +271,11 @@ export type QuizLine = {
     black: string;
 }[];
 
-export function isMoveCorrect(userMove: string, moveNum: number, color: string, openingLine: QuizLine): boolean {
+export function isMoveCorrect(
+    userMove: string,
+    moveNum: number,
+    color: string,
+    openingLine: QuizLine): boolean {
     // Check if the moveNumber is valid for the openingLine
     if (moveNum < 1 || moveNum > openingLine.length) {
         return false;
@@ -311,10 +285,11 @@ export function isMoveCorrect(userMove: string, moveNum: number, color: string, 
     return userMove === correctMove;
 }
 
-export function getOpponentMove(moveNum: number, color: string, openingLine: QuizLine): string {
-    // Check if the moveNumber is valid for the openingLine
+export function getOpponentMove(
+    moveNum: number,
+    color: string,
+    openingLine: QuizLine): string {
     if (moveNum < 1 || moveNum > openingLine.length) {
-        // Return an empty string or null if the move doesn't exist
         return "";
     }
 

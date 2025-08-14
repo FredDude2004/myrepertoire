@@ -41,19 +41,17 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
             }
 
             const data = await res.json();
-            console.log("Login success:", data);
-            dispatch(login(username, password))
+            if (data !== null) {
+                dispatch(login(username, password))
+            }
 
             try {
                 const lines = await getLines();
                 dispatch(setLines(lines));
+                router.push("/repertoire");
             } catch (err: any) {
                 setError(err.message);
             }
-
-            // Optionally redirect to repertoire page
-            router.push("/repertoire");
-
         } catch (err: any) {
             setError(err.message);
         } finally {

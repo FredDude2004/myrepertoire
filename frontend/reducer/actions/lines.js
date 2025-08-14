@@ -32,14 +32,6 @@ export const incrementSelectedIdx = () => {
     }
 }
 
-export const drillPopupClose = () => {
-    console.log("Dispatching drillPopupClose");
-    return {
-        type: actionTypes.DRILL_POPUP_CLOSE,
-        payload: initAppState
-    }
-}
-
 export const incrementLineIdx = () => {
     console.log("Dispatching incrementLineIdx");
     return {
@@ -52,5 +44,27 @@ export const incrementVariationIdx = () => {
     console.log("Dispatching incrementVariationIdx");
     return {
         type: actionTypes.INCREMENT_VARIATION_IDX
+    }
+}
+
+export const drillPopupClose = () => {
+    console.log("Dispatching drillPopupClose");
+    return {
+        type: actionTypes.DRILL_POPUP_CLOSE,
+        payload: initAppState
+    }
+}
+
+export const linePopupClose = () => {
+    console.log("Dispatching linePopupClost");
+    return {
+        type: actionTypes.LINE_POPUP_CLOSE
+    }
+}
+
+export const variationPopupClose = () => {
+    console.log("Dispatching variationPopupClose");
+    return {
+        type: actionTypes.VARIATION_POPUP_CLOSE
     }
 }

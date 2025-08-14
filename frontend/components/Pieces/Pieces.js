@@ -24,9 +24,13 @@ const Pieces = () => {
 
     useEffect(() => {
         if (isFirstMove && userColor === "black") {
-            const opponentMove = getOpponentMove(1, "w");
+            const opponentMove = getOpponentMove(1, "b", appState.currentVariation);
+            console.log("currentVariation:", appState.currentVariation);
+            console.log("Opponent's first move:", opponentMove);
             const moveData = getFirstWhiteMove(opponentMove);
 
+            console.log("currentPosition:", currentPosition);
+            console.log("moveData:", moveData);
             const newPosition = arbiter.performMove({
                 position: currentPosition,
                 piece: moveData.piece,
@@ -36,9 +40,14 @@ const Pieces = () => {
                 y: moveData.y
             });
 
-            dispatch(makeNewMove({ newPosition: newPosition, newMove: opponentMove }));
+            console.log("newPosition:", newPosition);
+
+            dispatch(makeNewMove({ newPosition, newMove: opponentMove }));
+
+            // Ensure we don't accidentally trigger any extra opponent moves on mount
+            return;
         }
-    }, [isFirstMove, userColor]);
+    }, [isFirstMove, userColor, appState.currentVariation, currentPosition, dispatch]);
 
     const ref = useRef();
 
@@ -118,8 +127,6 @@ const Pieces = () => {
                 return;
             }
 
-
-
             dispatch(makeNewMove({ newPosition: newPosition, newMove: newMove }));
 
             if (arbiter.insufficientMaterial(newPosition))
@@ -130,46 +137,46 @@ const Pieces = () => {
                 dispatch(detectCheckmate(piece[0]));
             }
 
-            if (!("black" in appState.currentVariation[moveNum - 1]) || moveNum === appState.currentVariation.length) {
-                dispatch(incrementVariationIdx());
-                dispatch(clearCandidates());
-                return;
-            }
+            // Only auto-play opponent move if it’s NOT the very first move for black
+            if (!(isFirstMove && userColor === "black")) {
+                if (!("black" in appState.currentVariation[moveNum - 1]) ||
+                    moveNum === appState.currentVariation.length) {
+                    dispatch(incrementVariationIdx());
+                    dispatch(clearCandidates());
+                    return;
+                }
 
-            const opponentMove = getOpponentMove(moveNum, piece[0], appState.currentVariation);
-            const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
-            const newNewPosition = arbiter.performMove({
-                position: newPosition,
-                piece: opponentMoveInfo.piece,
-                rank: opponentMoveInfo.rank,
-                file: opponentMoveInfo.file,
-                x: opponentMoveInfo.x,
-                y: opponentMoveInfo.y,
-            });
+                const opponentMove = getOpponentMove(moveNum, piece[0], appState.currentVariation);
+                const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
+                const newNewPosition = arbiter.performMove({
+                    position: newPosition,
+                    piece: opponentMoveInfo.piece,
+                    rank: opponentMoveInfo.rank,
+                    file: opponentMoveInfo.file,
+                    x: opponentMoveInfo.x,
+                    y: opponentMoveInfo.y,
+                });
 
-            dispatch(makeNewMove({ newPosition: newNewPosition, newMove: opponentMove }));
+                dispatch(makeNewMove({ newPosition: newNewPosition, newMove: opponentMove }));
 
-            if (arbiter.insufficientMaterial(newNewPosition))
-                dispatch(detectInsufficientMaterial());
-            else if (arbiter.isStalemate(newNewPosition, piece[0], castleDirection)) {
-                dispatch(detectStalemate());
-            } else if (arbiter.isCheckMate(newNewPosition, piece[0], castleDirection)) {
-                dispatch(detectCheckmate(piece[0]));
+                if (arbiter.insufficientMaterial(newNewPosition))
+                    dispatch(detectInsufficientMaterial());
+                else if (arbiter.isStalemate(newNewPosition, piece[0], castleDirection)) {
+                    dispatch(detectStalemate());
+                } else if (arbiter.isCheckMate(newNewPosition, piece[0], castleDirection)) {
+                    dispatch(detectCheckmate(piece[0]));
+                }
             }
         }
         dispatch(clearCandidates());
 
         if (appState.variationIdx < appState.currentVariation.length - 1) {
-            // console.log("first case");
             dispatch(incrementVariationIdx());
         } else if (appState.currentIdx < appState.currentLine.length - 1) {
-            // console.log("second case");
             dispatch(incrementLineIdx());
         } else if (appState.selectedIdx < appState.selectedLines.length - 1) {
-            // console.log("third case");
             dispatch(incrementSelectedIdx());
         } else {
-            // console.log("fourth case");
         }
     };
 

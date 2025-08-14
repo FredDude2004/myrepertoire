@@ -1,23 +1,42 @@
 import { createPosition } from './lib/helper'
+import { getFirstMove } from './lib/firstMove';
 
 // A function to create the initial state for the game board
-export const resetBoard = () => ({
-    position: [createPosition()],
-    currentPositionIndex: 0,
-    currentMoveIndex: 0,
-    turn: 'w',
-    candidateMoves: [],
-    movesList: [],
-    strikeCount: 0,
-    moveNum: 1,
-    promotionSquare: null,
-    status: Status.ongoing,
-    castleDirection: {
-        w: 'both',
-        b: 'both'
-    },
-    castleDirectionHistory: [],
-});
+type Color = "w" | "b";
+
+export const resetBoard = (playerColor: Color, firstMoveNote?: string) => {
+    let initialPosition;
+    let initialMovesList: string[] = [];
+
+    if (firstMoveNote) {
+        // Use the predefined first move if given
+        initialPosition = getFirstMove(firstMoveNote);
+        initialMovesList.push(firstMoveNote);
+    } else {
+        // Otherwise, use a standard starting position
+        initialPosition = createPosition();
+    }
+
+    // If the player is black and the first move is for white, we might want to flip the turn
+    const initialTurn: Color = playerColor === "w" ? "w" : "w"; // always start with white
+
+    return {
+        position: [initialPosition],
+        currentPositionIndex: 0,
+        currentMoveIndex: 0,
+        turn: initialTurn,
+        candidateMoves: [],
+        movesList: initialMovesList,
+        strikeCount: 0,
+        moveNum: 1,
+        promotionSquare: null,
+        castleDirection: {
+            w: "both",
+            b: "both"
+        },
+        castleDirectionHistory: [],
+    };
+};
 
 export const Status = {
     'ongoing': 'Ongoing',
@@ -32,17 +51,17 @@ export const Status = {
 }
 
 export const initAppState = {
-    ...resetBoard(),
+    ...resetBoard("w"),
 
     // Quiz State
     user: null,
 
     userLines: [],
     selectedLinesIdxs: [],
+    status: Status.ongoing,
 
     selectedLines: [],
     selectedIdx: 0,
-
 
     currentColor: "",
     currentLine: [],

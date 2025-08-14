@@ -12,7 +12,7 @@ const VariationEnds = ({ onClosePopup }) => {
 
     const handleNext = () => {
         dispatch(incrementLineIdx());
-        onClosePopup();
+        // dispatch(variationPopupClose());
     };
 
     return (

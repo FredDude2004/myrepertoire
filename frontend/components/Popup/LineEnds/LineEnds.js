@@ -1,6 +1,6 @@
 import { Status } from '../../../constants';
 import { useAppContext } from '../../../contexts/Context';
-import { drillPopupClose, incrementSelectedIdx } from '@/reducer/actions/lines';
+import { drillPopupClose, incrementSelectedIdx, linePopupClose } from '@/reducer/actions/lines';
 import './LineEnds.css';
 
 const LineEnds = ({ onClosePopup }) => {
@@ -12,7 +12,7 @@ const LineEnds = ({ onClosePopup }) => {
 
     const handleNext = () => {
         dispatch(incrementSelectedIdx());
-        onClosePopup();
+        // dispatch(linePopupClose());
     };
 
     return (

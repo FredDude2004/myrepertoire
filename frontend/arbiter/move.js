@@ -1,7 +1,6 @@
 import { copyPosition } from "../lib/helper"
 
 export const movePiece = ({ position, piece, rank, file, x, y }) => {
-
     const newPosition = copyPosition(position)
 
     if (piece.endsWith('k') && Math.abs(y - file) > 1) { // Castles

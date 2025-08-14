@@ -196,12 +196,12 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.SET_SELECTED_LINES: {
-            let { userLines, selectedLinesIdxs, lastSelectedIdx, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
+            let { userLines, selectedLinesIdxs, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
+
             let newSelectedLines = [];
             selectedLinesIdxs.forEach((idx) => {
                 newSelectedLines.push(userLines[idx]);
             });
-            lastSelectedIdx = newSelectedLines.length - 1;
             currentLine = newSelectedLines[currentIdx].ParsedPGN;
             currentColor = newSelectedLines[currentIdx].Color === "White" ? "White" : "Black";
             variationIdx = 0;
@@ -210,28 +210,24 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 selectedLines: newSelectedLines,
-                lastSelectedIdx: lastSelectedIdx,
                 currentLine: currentLine,
                 currentColor: currentColor,
                 currentVariation: currentVariation,
                 variationIdx: variationIdx
             }
-
         }
 
         case actionTypes.INCREMENT_SELECTED_IDX: {
-            let { status, selectedLines, selectedIdx, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
+            let { status, selectedLines, selectedIdx, currentLine, currentColor, currentVariation } = state;
 
-            if (selectedIdx >= selectedLines.length - 1) {
-                status = Status.drillEnds;
-                console.log("Changing status to Status.drillEnds");
-            } else {
+            if (selectedIdx < selectedLines.length - 1) {
                 selectedIdx++;
-                currentLine = selectedLines[selectedIdx].ParsedPGN;
                 currentColor = selectedLines[selectedIdx].Color;
-                currentIdx = 0;
-                currentVariation = currentLine[currentIdx];
-                variationIdx = 0;
+                currentLine = selectedLines[selectedIdx].ParsedPGN;
+                currentVariation = currentLine[0]; // start the new line
+                status = Status.ongoing;
+            } else {
+                status = Status.drillEnds;
             }
 
             return {
@@ -239,26 +235,23 @@ export const reducer = (state, action) => {
                 ...action.payload,
                 status: status,
                 selectedIdx: selectedIdx,
-                currentLine: currentLine,
                 currentColor: currentColor,
+                currentLine: currentLine,
+                currentIdx: 0,
                 currentVariation: currentVariation,
-                variationIdx: variationIdx
+                variationIdx: 0
             }
         }
 
         case actionTypes.INCREMENT_LINE_IDX: {
-            let { status, selectedLines, selectedIdx, currentLine, currentIdx, currentVariation, variationIdx } = state;
+            let { status, currentLine, currentIdx, currentVariation } = state;
 
-            if (selectedIdx >= selectedLines.length - 1) {
-                status = Status.drillEnds;
-                console.log("Changing status to Status.drillEnds");
-            } else if (currentIdx >= currentLine.length - 1) {
-                status = Status.lineEnds;
-                console.log("Changing status to Status.lineEnds");
-            } else {
+            if (currentIdx < currentLine.length - 1) {
                 currentIdx++;
-                variationIdx = 0;
                 currentVariation = currentLine[currentIdx];
+                status = Status.ongoing;
+            } else {
+                status = Status.lineEnds;
             }
 
             return {
@@ -267,35 +260,61 @@ export const reducer = (state, action) => {
                 status: status,
                 currentIdx: currentIdx,
                 currentVariation: currentVariation,
-                variationIdx, variationIdx
+                variationIdx: 0
             }
         }
 
         case actionTypes.INCREMENT_VARIATION_IDX: {
-            let { status, currentLine, lineIdx, currentVariation, variationIdx } = state;
+            let { status, currentVariation, variationIdx } = state;
 
-            if (lineIdx >= currentLine.length - 1) {
-                status = Status.lineEnds;
-                console.log("Changing status to Status.lineEnds");
-            } else if (variationIdx >= currentVariation.length - 1) {
-                status = Status.variationEnds;
-                console.log("Changing status to Status.variationEnds");
-            } else {
+            if (variationIdx < currentVariation.length - 1) {
                 variationIdx++;
+            } else {
+                status = Status.variationEnds;
             }
-
-            console.log("status:", status);
 
             return {
                 ...state,
-                status,
-                variationIdx,
+                status: status,
+                variationIdx: variationIdx
             };
         }
 
         case actionTypes.DRILL_POPUP_CLOSE: {
             return {
                 ...action.payload,
+            }
+        }
+
+        case actionTypes.LINE_POPUP_CLOSE: {
+            let { status, selectedLines, selectedIdx } = state;
+
+            if (selectedIdx < selectedLines.length) {
+                status = Status.ongoing;
+            } else {
+                status = Status.drillEnds;
+            }
+
+            return {
+                ...state,
+                status: status
+            }
+        }
+
+        case actionTypes.VARIATION_POPUP_CLOSE: {
+            let { status, selectedLines, selectedIdx, currentLine, currentIdx } = state;
+
+            if (currentIdx < currentLine.length) {
+                status = Status.ongoing;
+            } else if (selectedIdx < selectedLines.length - 1) {
+                status = Status.lineEnds;
+            } else {
+                status = Status.drillEnds;
+            }
+
+            return {
+                ...state,
+                status: status
             }
         }
 
