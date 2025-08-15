@@ -89,7 +89,7 @@ const Pieces = () => {
                 previousPosition: previousePosition,
             });
 
-            const moveNum = appState.moveNum;
+            let moveNum = appState.moveNum;
 
             if (!isMoveCorrect(newMove, moveNum, piece[0], appState.currentVariation)) {
                 dispatch(incrementStrikes());
@@ -114,6 +114,10 @@ const Pieces = () => {
                 return;
             }
 
+
+            if (opponentColor === "w") { // if the player is black need to make sure we are on second move
+                moveNum++;
+            }
             const opponentMove = getOpponentMove(moveNum, piece[0], appState.currentVariation);
             const opponentMoveInfo = getPositionFromNotation(newPosition, currentPosition, opponentMove, "both", opponentColor);
             const newNewPosition = arbiter.performMove({

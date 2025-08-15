@@ -393,6 +393,8 @@ export const getPieces = (position, enemy) => {
 };
 
 export const getKingPosition = (position, player) => {
+    if (player === "Black") player = 'b';
+
     let kingPos;
     position.forEach((rank, x) => {
         rank.forEach((file, y) => {

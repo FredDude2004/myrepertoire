@@ -71,7 +71,6 @@ const arbiter = {
     },
 
     isPlayerInCheck: function({ positionAfterMove, position, player }) {
-        console.log("\npositionAfterMove:", positionAfterMove, "\nposition", position, "\nplayer", player)
         const enemy = player.startsWith("w") ? "b" : "w";
         let kingPos = getKingPosition(positionAfterMove, player);
         const enemyPieces = getPieces(positionAfterMove, enemy);
@@ -96,7 +95,8 @@ const arbiter = {
 
         if (enemyMoves.some(([x, y]) => kingPos[0] === x && kingPos[1] === y))
             return true;
-        else return false;
+        else
+            return false;
     },
 
     performMove: function({ position, piece, rank, file, x, y }) {
