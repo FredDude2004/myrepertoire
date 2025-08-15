@@ -15,10 +15,16 @@ import arbiter from '../../arbiter/arbiter'
 import { getKingPosition } from '../../arbiter/getMoves'
 
 const Board = () => {
-    const ranks = Array(8).fill().map((x, i) => 8 - i)
-    const files = Array(8).fill().map((x, i) => i + 1)
-
     const { appState } = useAppContext();
+
+    let ranks = Array(8).fill().map((_, i) => 8 - i) // [8,7,6,5,4,3,2,1]
+    let files = Array(8).fill().map((_, i) => i + 1) // [1,2,3,4,5,6,7,8]
+
+    if (appState.isFlipped) {
+        ranks = [...ranks].reverse() // [1,2,3,4,5,6,7,8]
+        files = [...files].reverse() // [8,7,6,5,4,3,2,1]
+    }
+
     const position = appState.position[appState.currentPositionIndex]
 
     const checkTile = (() => {
@@ -50,6 +56,13 @@ const Board = () => {
         return c
     }
 
+    const getPositionCoords = (i, j) => {
+        if (appState.isFlipped) {
+            return [i, 7 - j] // flip horizontally AND vertically
+        }
+        return [7 - i, j]
+    }
+
     return <div className='board'>
 
         <Ranks ranks={ranks} />
@@ -59,9 +72,7 @@ const Board = () => {
                 files.map((file, j) =>
                     <div
                         key={file + '' + rank}
-                        i={i}
-                        j={j}
-                        className={`${getClassName(7 - i, j)}`}>
+                        className={`${getClassName(...getPositionCoords(i, j))}`}>
                     </div>
                 ))}
         </div>

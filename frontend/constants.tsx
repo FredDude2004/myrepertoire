@@ -51,6 +51,7 @@ export const initAppState = {
     ...resetBoard("w", ""),
 
     // Quiz State
+    isFlipped: false,
     user: null,
 
     userLines: [],

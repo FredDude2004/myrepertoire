@@ -3,8 +3,6 @@ import { resetBoard } from "../constants";
 import actionTypes from "./actionTypes";
 
 export const reducer = (state, action) => {
-    console.log("Reducer received:", action.type, "with payload", action.payload);
-
     switch (action.type) {
         case actionTypes.NEW_MOVE: {
             let { position, currentPositionIndex, currentMoveIndex, movesList, moveNum, turn, castleDirection, castleDirectionHistory } = state
@@ -317,6 +315,14 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 status: status
+            }
+        }
+
+        case actionTypes.FLIP_BOARD: {
+            let { isFlipped } = state;
+            return {
+                ...state,
+                isFlipped: !isFlipped
             }
         }
 

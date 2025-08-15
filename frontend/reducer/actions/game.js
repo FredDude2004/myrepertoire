@@ -33,3 +33,9 @@ export const setupNewGame = () => {
         payload: initAppState
     }
 }
+
+export const flipBoard = () => {
+    return {
+        type: actionTypes.FLIP_BOARD
+    }
+}

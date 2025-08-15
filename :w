@@ -60,11 +60,7 @@ const Pieces = () => {
 
     const move = (e) => {
         const { x, y } = calculateCoords(e);
-        let [piece, rank, file] = e.dataTransfer.getData("text").split(",");
-        if (appState.isFlipped) {
-            rank = 7 - rank;
-            file = 7 - file;
-        }
+        const [piece, rank, file] = e.dataTransfer.getData("text").split(",");
 
         if (appState.candidateMoves.find((m) => m[0] === x && m[1] === y)) {
             const opponentColor = piece.startsWith("b") ? "w" : "b";

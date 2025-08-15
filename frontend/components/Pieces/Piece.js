@@ -25,9 +25,10 @@ const Piece = ({ rank, file, piece }) => {
                 prevPosition: currentPosition[currentPosition.length - 2],
                 castleDirection: castleDirection[turn],
                 piece,
-                file,
-                rank,
+                file: appState.isFlipped ? 7 - file : file,
+                rank: appState.isFlipped ? 7 - rank : rank,
             });
+
             dispatch(generateCandidates({ candidateMoves }));
         }
     };
@@ -38,7 +39,7 @@ const Piece = ({ rank, file, piece }) => {
 
     return (
         <div
-            className={`piece ${piece} p-${file}${rank}`}
+            className={`piece ${piece} p-${file}${rank}`} // file first, then rank
             draggable={isLatestPosition}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
