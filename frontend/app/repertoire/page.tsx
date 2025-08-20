@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function Repertoire() {
     const [editingLine, setEditingLine] = useState(null);
-    const { appState: { selectedLines }, dispatch } = useAppContext();
+    const { appState: { selectedLines = [] }, dispatch } = useAppContext();
     const router = useRouter();
 
     async function refreshLines() {
