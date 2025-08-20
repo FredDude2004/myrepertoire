@@ -33,8 +33,8 @@ export default function Repertoire() {
             <div className="repertoire-container">
                 <div className="line-list">
                     <LineCheckbox onEditLine={setEditingLine} />
-                    <button onClick={handleClick}>
-                        Start Quiz
+                    <button className="quiz-button" onClick={handleClick}>
+                        Start Drill
                     </button>
                 </div>
 

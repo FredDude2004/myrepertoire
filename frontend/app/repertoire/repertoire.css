@@ -31,6 +31,14 @@ html,body {
   margin: 10px;
 }
 
+.line-form input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.line-form label {
+  cursor: pointer; /* optional, makes the label clickable too */
+}
+
 .name-input {
   display: flex;
   align-items: flex-start;
@@ -95,14 +103,17 @@ html,body {
 }
 
 .line-form label {
-  margin-top: 16px;
   margin-bottom: 6px;
   font-weight: 600;
+  height: 38px;
+  line-height: 38px;
+  display: inline-block;
 }
 
 .line-form input[type="text"],
 .line-form select,
 .line-form textarea {
+    height: 40px;
   padding: 8px 10px;
   font-size: 1rem;
   border: 1px solid var(--bg-color);
@@ -111,11 +122,13 @@ html,body {
 }
 
 .line-form textarea {
-  min-height: 200px;
+  min-height: 500px;
+  max-height: 750px;
 }
 
 .line-form button {
-  margin-top: 30px;
+  margin: 10px;
+  margin-top: auto;
   padding: 12px;
   font-size: 1.1rem;
   font-weight: 700;
@@ -128,5 +141,23 @@ html,body {
 }
 
 .line-form button:hover {
+  background-color: var(--primary-hover);
+}
+
+.quiz-button {
+  margin: 30px;
+  margin-top: auto;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.quiz-button:hover {
   background-color: var(--primary-hover);
 }
