@@ -25,7 +25,7 @@ const actionTypes = {
     "VARIATION_POPUP_CLOSE": "VARIATION_POPUP_CLOSE",
     "LINE_POPUP_CLOSE": "LINE_POPUP_CLOSE",
     "DRILL_POPUP_CLOSE": "DRILL_POPUP_CLOSE",
-    "FLIP_BOARD": "FLIP_BOARD"
+    "FLIP_BOARD": "FLIP_BOARD",
 }
 
 export default actionTypes

@@ -44,7 +44,8 @@ export const Status = {
     'insufficient': 'Game draws due to insufficient material',
     'variationEnds': 'Finished with variation',
     'lineEnds': 'Finished with line',
-    'drillEnds': 'Finished with drill'
+    'drillEnds': 'Finished with drill',
+    'threeStrikes': 'You got three strikes now you are out'
 }
 
 export const initAppState = {
@@ -61,6 +62,7 @@ export const initAppState = {
     selectedLines: [],
     selectedIdx: 0,
 
+    currentName: "",
     currentColor: "",
     currentLine: [],
     currentIdx: 0,

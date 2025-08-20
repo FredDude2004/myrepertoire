@@ -8,7 +8,8 @@ const GameEnds = ({ onClosePopup }) => {
     const { appState: { status }, dispatch } = useAppContext();
 
     if (status === Status.ongoing || status === Status.promoting ||
-        status === Status.variationEnds || status === Status.lineEnds || status === Status.drillEnds) {
+        status === Status.variationEnds || status === Status.lineEnds ||
+        status === Status.drillEnds || status === Status.threeStrikes) {
         return null
     }
 

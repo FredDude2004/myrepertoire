@@ -67,7 +67,7 @@ export default function LineForm({ line, onSuccess }: LineFormProps) {
     }
 
     return (
-        <form className="line-form" onSubmit={handleSubmit} noValidate>
+        <form className="line-form" onSubmit={handleSubmit} >
             <label htmlFor="lineName">Line Name</label>
             <input
                 type="text"

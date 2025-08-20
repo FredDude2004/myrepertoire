@@ -10,6 +10,7 @@ import GameEnds from '../Popup/GameEnds/GameEnds'
 import VariationEnds from '../Popup/VariationEnds/VariationEnds'
 import LineEnds from '../Popup/LineEnds/LineEnds'
 import DrillEnds from '../Popup/DrillEnds/DrillEnds'
+import ThreeStrikes from '../Popup/ThreeStikes/ThreeStrikes'
 
 import arbiter from '../../arbiter/arbiter'
 import { getKingPosition } from '../../arbiter/getMoves'
@@ -85,6 +86,7 @@ const Board = () => {
             <VariationEnds />
             <DrillEnds />
             <LineEnds />
+            <ThreeStrikes />
         </Popup>
 
         <Files files={files} />

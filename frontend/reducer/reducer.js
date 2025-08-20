@@ -152,11 +152,15 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_STRIKES: {
-            let { strikeCount } = state;
+            let { status, strikeCount } = state;
             strikeCount++;
+            if (strikeCount >= 3) {
+                status = Status.threeStrikes;
+            }
             return {
                 ...state,
-                strikeCount,
+                status: status,
+                strikeCount: strikeCount
             }
         }
 
@@ -195,7 +199,7 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.SET_SELECTED_LINES: {
-            let { userLines, selectedLinesIdxs, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
+            let { userLines, selectedLinesIdxs, currentName, currentLine, currentIdx, currentColor, currentVariation, variationIdx } = state;
 
             let newSelectedLines = [];
             selectedLinesIdxs.forEach((idx) => {
@@ -203,6 +207,7 @@ export const reducer = (state, action) => {
             });
             currentLine = newSelectedLines[currentIdx].ParsedPGN;
             currentColor = newSelectedLines[currentIdx].Color === "White" ? "White" : "Black";
+            currentName = newSelectedLines[currentIdx].Name;
             variationIdx = 0;
             currentVariation = currentLine[variationIdx];
 
@@ -210,6 +215,7 @@ export const reducer = (state, action) => {
                 ...state,
                 ...resetBoard(currentColor, currentVariation[0].white),
                 selectedLines: newSelectedLines,
+                currentName: currentName,
                 currentLine: currentLine,
                 currentColor: currentColor,
                 currentVariation: currentVariation,
@@ -218,23 +224,26 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_SELECTED_IDX: {
-            let { status, selectedLines, selectedIdx, currentLine, currentColor, currentVariation } = state;
+            let { status, selectedLines, selectedIdx, currentName, currentLine, currentColor, currentVariation } = state;
 
             if (selectedIdx < selectedLines.length - 1) {
                 selectedIdx++;
                 currentColor = selectedLines[selectedIdx].Color;
                 currentLine = selectedLines[selectedIdx].ParsedPGN;
+                currentName = selectedLines[selectedIdx].Name;
                 currentVariation = currentLine[0]; // start the new line
                 status = Status.ongoing;
             } else {
                 status = Status.drillEnds;
             }
 
+
             return {
                 ...state,
                 ...resetBoard(currentColor, currentVariation[0].white),
                 status: status,
                 selectedIdx: selectedIdx,
+                currentName: currentName,
                 currentColor: currentColor,
                 currentLine: currentLine,
                 currentIdx: 0,
@@ -325,6 +334,7 @@ export const reducer = (state, action) => {
                 isFlipped: !isFlipped
             }
         }
+
 
         default:
             return state

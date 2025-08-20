@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function Repertoire() {
     const [editingLine, setEditingLine] = useState(null);
-    const { dispatch } = useAppContext();
+    const { appState: { selectedLines }, dispatch } = useAppContext();
     const router = useRouter();
 
     async function refreshLines() {
@@ -33,7 +33,7 @@ export default function Repertoire() {
             <div className="repertoire-container">
                 <div className="line-list">
                     <LineCheckbox onEditLine={setEditingLine} />
-                    <button className="quiz-button" onClick={handleClick}>
+                    <button className="quiz-button" onClick={handleClick} disabled={selectedLines.length === 0}>
                         Start Drill
                     </button>
                 </div>
@@ -44,7 +44,7 @@ export default function Repertoire() {
                         onSuccess={refreshLines}
                     />
                 </div>
-            </div>
+            </div >
         </>
     );
 }
