@@ -41,10 +41,10 @@ export const incrementVariationIdx = () => {
     }
 }
 
-export const drillPopupClose = () => {
+export const drillPopupClose = (username, password) => {
     return {
         type: actionTypes.DRILL_POPUP_CLOSE,
-        payload: initAppState
+        payload: { initAppState, username, password }
     }
 }
 

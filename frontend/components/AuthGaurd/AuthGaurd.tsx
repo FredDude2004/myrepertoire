@@ -9,17 +9,15 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     const router = useRouter();
 
     useEffect(() => {
-        async function validateUserAndFetchLines() {
+        async function validateUser() {
             const res = await fetch('http://localhost:8080/validate', {
                 credentials: 'include',
             });
 
             if (!res.ok) router.replace("/login"); // redirect to login page
-            else router.push("/repertoire");
         }
 
-        if (!appState.user) {
-        }
+        validateUser();
     }, [appState.user, router]);
 
     if (!appState.user) return null; // or a loading spinner

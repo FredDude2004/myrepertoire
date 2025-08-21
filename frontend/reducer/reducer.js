@@ -188,8 +188,9 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.TOGGLE_SELECTED_LINE_IDX: {
+            let { selectedLinesIdxs } = state;
             const idx = action.payload;
-            const isSelected = state.selectedLinesIdxs.includes(idx);
+            const isSelected = selectedLinesIdxs.includes(idx);
             return {
                 ...state,
                 selectedLinesIdxs: isSelected
@@ -292,6 +293,10 @@ export const reducer = (state, action) => {
         case actionTypes.DRILL_POPUP_CLOSE: {
             return {
                 ...action.payload,
+                user: {
+                    username: action.payload.username,
+                    password: action.payload.password,
+                },
             }
         }
 

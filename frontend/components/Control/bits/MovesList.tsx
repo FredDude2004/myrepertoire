@@ -3,6 +3,14 @@ import { useAppContext } from '../../../contexts/Context'
 const MovesList = ({ className = '' }: { className?: string }) => {
     const { appState: { movesList, currentName } } = useAppContext();
 
+    if (!movesList || movesList.length === 0) {
+        return (
+            <div className={`moves-list ${className}`}>
+                <div className='moves-list'></div>
+            </div>
+        );
+    }
+
     return (
         <>
             <div className='line-name-label'>{currentName}</div>

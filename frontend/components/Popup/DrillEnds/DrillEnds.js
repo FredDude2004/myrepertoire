@@ -6,7 +6,7 @@ import { drillPopupClose, setLines } from '@/reducer/actions/lines';
 import { getLines } from '@/lib/api/lines';
 
 const DrillEnds = ({ onClosePopup }) => {
-    const { appState: { status }, dispatch } = useAppContext();
+    const { appState: { user, status }, dispatch } = useAppContext();
     const router = useRouter();
 
     if (status !== Status.drillEnds) {
@@ -14,7 +14,7 @@ const DrillEnds = ({ onClosePopup }) => {
     }
 
     const handleBack = async () => {
-        dispatch(drillPopupClose());
+        dispatch(drillPopupClose(user.username, user.password));
         const lines = await getLines();
         dispatch(setLines(lines));
         router.push("/repertoire");
