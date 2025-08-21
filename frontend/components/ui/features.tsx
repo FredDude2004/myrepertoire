@@ -21,11 +21,11 @@ export default function Features() {
                                 />
                             </CardDecorator>
 
-                            <h3 className="mt-6 font-medium">Customizable</h3>
+                            <h3 className="mt-6 font-medium">Build</h3>
                         </CardHeader>
 
                         <CardContent>
-                            <p className="text-sm"></p>
+                            <p className="text-sm">Store your opening lines for the white and black pieces</p>
                         </CardContent>
                     </Card>
 
@@ -38,11 +38,11 @@ export default function Features() {
                                 />
                             </CardDecorator>
 
-                            <h3 className="mt-6 font-medium">You have full control</h3>
+                            <h3 className="mt-6 font-medium">Drill</h3>
                         </CardHeader>
 
                         <CardContent>
-                            <p className="mt-3 text-sm">From design elements to functionality, you have complete control to create a unique and personalized experience.</p>
+                            <p className="mt-3 text-sm">Memorize them in an interactive environment</p>
                         </CardContent>
                     </Card>
 
@@ -55,11 +55,11 @@ export default function Features() {
                                 />
                             </CardDecorator>
 
-                            <h3 className="mt-6 font-medium">Powered By AI</h3>
+                            <h3 className="mt-6 font-medium">Profit</h3>
                         </CardHeader>
 
                         <CardContent>
-                            <p className="mt-3 text-sm">Elements to functionality, you have complete control to create a unique experience.</p>
+                            <p className="mt-3 text-sm">Frag noobs</p>
                         </CardContent>
                     </Card>
                 </div>

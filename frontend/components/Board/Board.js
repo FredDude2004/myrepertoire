@@ -1,5 +1,4 @@
 import './Board.css'
-import { useAppContext } from '../../contexts/Context'
 
 import Ranks from './bits/Ranks'
 import Files from './bits/Files'
@@ -11,12 +10,15 @@ import VariationEnds from '../Popup/VariationEnds/VariationEnds'
 import LineEnds from '../Popup/LineEnds/LineEnds'
 import DrillEnds from '../Popup/DrillEnds/DrillEnds'
 import ThreeStrikes from '../Popup/ThreeStikes/ThreeStrikes'
-
 import arbiter from '../../arbiter/arbiter'
 import { getKingPosition } from '../../arbiter/getMoves'
+import { useAppContext } from '../../contexts/Context'
 
 const Board = () => {
     const { appState } = useAppContext();
+    if (!appState?.position || appState.currentPositionIndex == null) {
+        return <div className="board-loading">Loading board...</div>;
+    }
 
     let ranks = Array(8).fill().map((_, i) => 8 - i) // [8,7,6,5,4,3,2,1]
     let files = Array(8).fill().map((_, i) => i + 1) // [1,2,3,4,5,6,7,8]

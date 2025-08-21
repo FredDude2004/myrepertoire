@@ -8,7 +8,7 @@ interface LineCheckboxProps {
 }
 
 const LineCheckbox = ({ onEditLine }: LineCheckboxProps) => {
-    const { appState: { userLines, selectedLinesIdxs = [] }, dispatch } = useAppContext();
+    const { appState: { userLines = [], selectedLinesIdxs = [] }, dispatch } = useAppContext();
 
     async function refreshLines() {
         const lines = await getLines();

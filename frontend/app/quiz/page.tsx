@@ -11,10 +11,11 @@ import NextMove from '../../components/Control/bits/NextMove';
 import CurrentMove from '../../components/Control/bits/CurrentMove';
 import FlipBoard from '../../components/Control/bits/FlipBoard';
 import { HeroHeader } from '../../components/ui/header'
+import AuthGuard from '@/components/AuthGaurd/AuthGaurd';
 
 export default function Quiz() {
     return (
-        <>
+        <AuthGuard>
             <HeroHeader />
 
             <div className="Quiz">
@@ -31,6 +32,6 @@ export default function Quiz() {
                     </div>
                 </Control>
             </div>
-        </>
+        </AuthGuard>
     );
 }

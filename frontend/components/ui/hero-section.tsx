@@ -81,7 +81,7 @@ export default function HeroSection() {
                                             asChild
                                             size="lg"
                                             className="rounded-xl px-5 text-base">
-                                            <Link href="#link">
+                                            <Link href="/login">
                                                 <span className="text-nowrap">Start Building</span>
                                             </Link>
                                         </Button>
@@ -92,7 +92,7 @@ export default function HeroSection() {
                                         size="lg"
                                         variant="ghost"
                                         className="h-10.5 rounded-xl px-5 text-base">
-                                        <Link href="#link">
+                                        <Link href="/about">
                                             <span className="text-nowrap">How to use</span>
                                         </Link>
                                     </Button>
@@ -119,14 +119,14 @@ export default function HeroSection() {
                                 <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-5xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                                     <Image
                                         className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                                        src="/board-preview1.png"
+                                        src="/book-moves.png"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"
                                     />
                                     <Image
                                         className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
-                                        src="/board-preview1.png"
+                                        src="/book-moves.png"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"

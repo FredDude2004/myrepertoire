@@ -11,9 +11,9 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
+    { name: 'About', href: '/about' },
     { name: 'Repertoire', href: '/repertoire' },
     { name: 'Drill', href: '/quiz' },
-    { name: 'About', href: '#link' },
 ]
 
 export const HeroHeader = () => {

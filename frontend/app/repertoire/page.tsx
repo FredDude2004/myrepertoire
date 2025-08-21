@@ -9,6 +9,7 @@ import { useAppContext } from '@/contexts/Context';
 import { getLines } from '@/lib/api/lines';
 import { setLines, setSelectedLines } from '@/reducer/actions/lines';
 import { useRouter } from "next/navigation";
+import AuthGuard from '@/components/AuthGaurd/AuthGaurd';
 
 export default function Repertoire() {
     const [editingLine, setEditingLine] = useState(null);
@@ -28,12 +29,12 @@ export default function Repertoire() {
     }
 
     return (
-        <>
+        <AuthGuard>
             <HeroHeader />
             <div className="repertoire-container">
                 <div className="line-list">
                     <LineCheckbox onEditLine={setEditingLine} />
-                    <button className="quiz-button" onClick={handleClick} disabled={selectedLines.length === 0}>
+                    <button className="quiz-button" onClick={handleClick}>
                         Start Drill
                     </button>
                 </div>
@@ -45,7 +46,7 @@ export default function Repertoire() {
                     />
                 </div>
             </div >
-        </>
+        </AuthGuard>
     );
 }
 

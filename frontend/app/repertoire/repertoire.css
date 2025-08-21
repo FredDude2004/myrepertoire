@@ -88,7 +88,7 @@ html,body {
   background: var(--surface);
   width: 360px;
   display: flex;
-  height: 1150px;
+  min-height: 1070px;
   justify-content: right;
   margin: 10px;
   padding: 20px;
