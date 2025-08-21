@@ -55,7 +55,7 @@ function MyMarkdownPage() {
                         </ol>
                         <br />
                         -
-                        <p>One of the best features of myrepertoire.io <strong>Variation Folding</strong>. For example:</p>
+                        <p>One of the best features of myrepertoire.io is <strong>Variation Folding</strong>. For example:</p>
                         <br />
                         <pre>1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 (3... Nf6 4. O-O) 4. Ba4 *</pre>
                         <br />
@@ -69,7 +69,7 @@ function MyMarkdownPage() {
                         <h2>Disclaimer</h2>
                         <p>This site is in its early stages, so you may encounter bugs or errors. I ask for your patience—this is a personal project I’ve wanted ever since becoming a proud owner of <em>“e4 New York Style”</em>.</p>
 
-                        <p>If you run into issues, please visit my <a href="https://github.com/FredDude2004/myrepertoire.io" target="_blank">GitHub</a> and submit an issue (and maybe leave a star!). The more detailed the report, the better.</p>
+                        <p>If you run into issues, please visit my <a href="https://github.com/FredDude2004/myrepertoire.io" target="_blank">GitHub</a> and submit an issue (leave a star while you're there). The more detailed the report, the better.</p>
                     </section>
                 </main>
             </div>

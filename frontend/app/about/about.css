@@ -43,7 +43,7 @@
 }
 
 .about-container a {
-  color: #0070f3;
+  color: var(--accent);
   text-decoration: none;
 }
 
