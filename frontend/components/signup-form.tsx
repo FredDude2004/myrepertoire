@@ -40,6 +40,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                 throw new Error("Invalid credentials");
             }
 
+
             const res = await fetch("http://localhost:8080/signup", {
                 method: "POST",
                 headers: {
@@ -61,7 +62,6 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             try {
                 const lines = await getLines();
                 dispatch(setLines(lines));
-                router.push("/repertoire");
             } catch (err: any) {
                 setError(err.message);
             }
@@ -72,6 +72,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             setLoading(false);
         }
 
+        router.push("/login");
     }
 
     return (
@@ -79,9 +80,9 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             <Card>
                 <CardHeader className="text-center">
                     <CardTitle className="text-xl">Welcome</CardTitle>
-                    {/* <CardDescription> */}
-                    {/*     Login with your Apple or Google account */}
-                    {/* </CardDescription> */}
+                    <CardDescription>
+                        Sign up to continue.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
@@ -144,6 +145,12 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                                 <Button type="submit" className="w-full" disabled={loading}>
                                     {loading ? "Signing up..." : "Sign up"}
                                 </Button>
+                            </div>
+                            <div className="text-center text-sm">
+                                Already have an account?{" "}
+                                <a href="/login" className="underline underline-offset-4">
+                                    Log in
+                                </a>
                             </div>
                         </div>
                     </form>

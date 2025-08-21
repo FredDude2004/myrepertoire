@@ -65,9 +65,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
             <Card>
                 <CardHeader className="text-center">
                     <CardTitle className="text-xl">Welcome back</CardTitle>
-                    {/* <CardDescription> */}
-                    {/*     Login with your Apple or Google account */}
-                    {/* </CardDescription> */}
+                    <CardDescription>
+                        Login to your account.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
