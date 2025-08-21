@@ -51,7 +51,7 @@ function MyMarkdownPage() {
                             <li>Open an analysis board on <a href="https://www.chess.com/analysis" target="_blank">chess.com</a> or <a href="https://lichess.org/analysis" target="_blank">lichess.org</a>.</li>
                             <li>Play through the moves of the line you want and copy the PGN.</li>
                             <li>Go to your <strong>Repertoire</strong> page, fill out the form, and click <em>Create New Line</em>.</li>
-                            <li>Select your line, check the box, and click <em>Start Drilling</em> to master it.</li>
+                            <li>Select your line by checking the box and click <em>Start Drilling</em> to master it.</li>
                         </ol>
                         <br />
                         -
@@ -62,14 +62,14 @@ function MyMarkdownPage() {
 
                         <p>This Ruy Lopez main line also contains the Berlin Defense as a variation. When drilling, you’ll be taken through both lines seamlessly.</p>
 
-                        <p>To stay organized, store moves and variations under one opening. When expanding a line, simply copy it back into an analysis board, add new branches, and save it again.</p>
+                        <p>To stay organized, store moves and variations under one line. When expanding a line, simply copy it back into an analysis board, add new branches, and save it again.</p>
                     </section>
 
                     <section className="disclaimer">
                         <h2>Disclaimer</h2>
                         <p>This site is in its early stages, so you may encounter bugs or errors. I ask for your patience—this is a personal project I’ve wanted ever since becoming a proud owner of <em>“e4 New York Style”</em>.</p>
 
-                        <p>If you run into issues, please visit my <a href="https://github.com/FredDude2004/myrepertoire.io" target="_blank">GitHub</a> and submit an issue (leave a star while you're there). The more detailed the report, the better.</p>
+                        <p>If you run into issues, please visit my <a href="https://github.com/FredDude2004/myrepertoire.io" target="_blank">GitHub</a> and submit an issue (leave a star while you&apos;re there!). The more detailed the report, the better.</p>
                     </section>
                 </main>
             </div>
