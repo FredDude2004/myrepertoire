@@ -86,6 +86,11 @@ myrepertoire.io is open source and welcomes contributions!
 
 Just fork the repository and clone it out on your local machine.
 Run locally (backend + frontend + database with Docker Compose):
+
+```bash
+docker-compose up --build
+```
+
 Backend (Go API) runs on port 8080
 
 Frontend (Next.js) runs on port 3000
@@ -105,23 +110,34 @@ This project has taught me a lot and I have absolutely loved all of the steps
 
 - [Writing An Interpreter In Go](https://interpreterbook.com/)
 - [Introduction to Tokenization | Writing a Custom Language Parser in Golang](https://youtu.be/V77J9l8N-P8?si=4IvABR0VSai87v3K)
+
   Building my own interpreter for a custom programming language was what gave me
   the technical base to understand how to process data and turn it into
   something that a computer can comprehend, which allowed me to use what I
   learned to build something hands on.
+
 - [Chess in React](https://www.youtube.com/watch?v=jS9elCC2hPQ)
+
   It all started with this, I built all of the functionality of the app on top
   of this (after fixing a couple of the issues that I noticed which are still
   waiting to be merged :( ).
+
 - [ShadCN](https://ui.shadcn.com/)
+
   Made making a decent looking UI a breeze, and allowed me to focus more on the
   things that I cared about.
+
 - [JWT Authentication in Go (Gin/Gorm)](https://youtu.be/ma7rUS_vW9M?si=yrRS3YV-0hjOR9GO)
+
   This video was instrumental for setting up authentication and building the
   rest of the API. It showed all of the documentation and was so well put
   together that I referenced it multiple times for implementing the REST API
+
 - [Setting up a production ready VPS is a lot easier than I thought.](https://youtu.be/F-9KWQByeU0?si=zsfz8yHdTL1fwdCz)
+
   All of the steps that I followed in order to secure my machine for self
   hosting. Also just an entertaining video that is very well put together.
+
 - [Skyrim: Music & Ambience - Rainy Towns 10 Hours](https://youtu.be/Eveef36s_Wc?si=EF4asP_9WyH_L9dM)
+
   Pretty sure I listened to this full video eight times
