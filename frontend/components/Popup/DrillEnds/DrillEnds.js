@@ -16,6 +16,7 @@ const DrillEnds = ({ onClosePopup }) => {
     const handleBack = async () => {
         dispatch(drillPopupClose(user.username, user.password));
         const lines = await getLines();
+        console.log("getting lines after popup, lines:", lines);
         dispatch(setLines(lines));
         router.push("/repertoire");
     };

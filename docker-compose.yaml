@@ -1,4 +1,5 @@
-version: "3.9"
+# docker-compose.yml
+version: '3.9'
 
 services:
   db:
@@ -25,14 +26,30 @@ services:
       - db
 
   frontend:
-    build: ./frontend
+    # For development, we directly use a Node.js image and mount the source code.
+    # This enables hot-reloading and avoids rebuilding a Docker image for every code change.
+    image: node:20-alpine
     container_name: myrepertoire-frontend
+    working_dir: /app/frontend # Adjusted working_dir to match your project structure
     ports:
       - "3000:3000"
+    volumes:
+      # Mount your local frontend project directory into the container's /app/frontend.
+      # Ensure your Next.js project's package.json is directly inside your local 'frontend' directory.
+      - ./frontend:/app/frontend
+      # Explicitly mount an anonymous volume for node_modules within the frontend directory.
+      # This keeps node_modules installed inside the container separate from your host.
+      - /app/frontend/node_modules
     environment:
-      NEXT_PUBLIC_BACKEND_URL: http://myrepertoire-backend:8080
+      # Define environment variables as simple KEY=VALUE strings for consistency
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+      - NEXT_PUBLIC_BACKEND_URL=http://myrepertoire-backend:8080 # Corrected format
     depends_on:
       - backend
+    command: >
+      sh -c "npm install && npm run dev"
+      # This command installs dependencies and starts the Next.js development server.
 
 volumes:
   db-data:

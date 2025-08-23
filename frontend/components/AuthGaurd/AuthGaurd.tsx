@@ -17,8 +17,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
                 router.replace("/login"); // redirect to login page
                 return;
             }
-
-            router.push("/repertoire");
         }
 
         validateUserAndFetchLines();

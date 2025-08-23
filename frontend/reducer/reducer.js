@@ -194,8 +194,8 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 selectedLinesIdxs: isSelected
-                    ? state.selectedLinesIdxs.filter(i => i !== idx) // remove idx
-                    : [...state.selectedLinesIdxs, idx],            // add idx
+                    ? selectedLinesIdxs.filter(i => i !== idx) // remove idx
+                    : [...selectedLinesIdxs, idx],            // add idx
             };
         }
 
@@ -206,6 +206,9 @@ export const reducer = (state, action) => {
             selectedLinesIdxs.forEach((idx) => {
                 newSelectedLines.push(userLines[idx]);
             });
+            console.log("in reducer newSelectedLines:", newSelectedLines);
+
+            currentIdx = 0;
             currentLine = newSelectedLines[currentIdx].ParsedPGN;
             currentColor = newSelectedLines[currentIdx].Color === "White" ? "White" : "Black";
             currentName = newSelectedLines[currentIdx].Name;
@@ -215,9 +218,11 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 ...resetBoard(currentColor, currentVariation[0].white),
+                status: Status.ongoing,
                 selectedLines: newSelectedLines,
                 currentName: currentName,
                 currentLine: currentLine,
+                currentIdx: currentIdx,
                 currentColor: currentColor,
                 currentVariation: currentVariation,
                 variationIdx: variationIdx
@@ -225,8 +230,10 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_SELECTED_IDX: {
+            console.log("incrementing selected idx");
             let { status, selectedLines, selectedIdx, currentName, currentLine, currentColor, currentVariation } = state;
 
+            console.log("incrementSelectedIdx, selectedIdx:", selectedIdx, "selectedLines.length - 1", selectedLines.length - 1);
             if (selectedIdx < selectedLines.length - 1) {
                 selectedIdx++;
                 currentColor = selectedLines[selectedIdx].Color;
@@ -254,8 +261,10 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_LINE_IDX: {
+            console.log("incrementing line idx");
             let { status, currentColor, currentLine, currentIdx, currentVariation } = state;
 
+            console.log("incrementLineIdx, currentIdx:", currentIdx, "currentLine.length - 1:", currentLine.lenght - 1);
             if (currentIdx < currentLine.length - 1) {
                 currentIdx++;
                 currentVariation = currentLine[currentIdx];
@@ -275,8 +284,10 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.INCREMENT_VARIATION_IDX: {
+            console.log("incrementing variation idx");
             let { status, currentVariation, variationIdx } = state;
 
+            console.log("incrementVariationIdx, variationIdx:", variationIdx, "currentVariation.length - 1", currentVariation.length - 1);
             if (variationIdx < currentVariation.length - 1) {
                 variationIdx++;
             } else {
@@ -309,6 +320,8 @@ export const reducer = (state, action) => {
                 status = Status.drillEnds;
             }
 
+            console.log("linePopupClose, changing status to:", status);
+
             return {
                 ...state,
                 status: status
@@ -325,6 +338,8 @@ export const reducer = (state, action) => {
             } else {
                 status = Status.drillEnds;
             }
+
+            console.log("variationPopupClose, changing status to:", status);
 
             return {
                 ...state,

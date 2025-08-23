@@ -4,7 +4,7 @@ import './repertoire.css';
 import { HeroHeader } from '@/components/ui/header';
 import LineCheckbox from '@/components/Lines/LineCheckbox';
 import LineForm from '@/components/Lines/LineForm';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '@/contexts/Context';
 import { getLines } from '@/lib/api/lines';
 import { setLines, setSelectedLines } from '@/reducer/actions/lines';
@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function Repertoire() {
     const [editingLine, setEditingLine] = useState(null);
-    const { appState: { selectedLinesIdxs = [] }, dispatch } = useAppContext();
+    const { appState: { userLines, selectedLinesIdxs = [], currentLine = [] }, dispatch } = useAppContext();
     const router = useRouter();
 
     async function refreshLines() {
@@ -23,9 +23,22 @@ export default function Repertoire() {
 
     async function handleClick(e: React.FormEvent) {
         e.preventDefault();
+
+        if (userLines.length === 0 || selectedLinesIdxs.length === 0) {
+            return;
+        }
+
+        // make sure the selected lines actually have ParsedPGN
         dispatch(setSelectedLines());
-        router.push("/quiz");
+
+
     }
+
+    useEffect(() => {
+        if (currentLine.length > 0) {
+            router.push("/quiz");
+        }
+    }, [currentLine]);
 
     return (
         <>
@@ -33,7 +46,7 @@ export default function Repertoire() {
             <div className="repertoire-container">
                 <div className="line-list">
                     <LineCheckbox onEditLine={setEditingLine} />
-                    <button className="quiz-button" onClick={handleClick} disabled={selectedLinesIdxs.length === 0}>
+                    <button className="quiz-button" onClick={handleClick}>
                         Start Drill
                     </button>
                 </div>

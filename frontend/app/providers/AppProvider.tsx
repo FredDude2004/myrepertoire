@@ -13,7 +13,6 @@ import { setLines } from '@/reducer/actions/lines';
 export function AppProvider({ children }: { children: ReactNode }) {
     const [appState, dispatch] = useReducer(reducer, initAppState);
 
-
     useEffect(() => {
         async function validateUserAndFetchLines() {
             try {

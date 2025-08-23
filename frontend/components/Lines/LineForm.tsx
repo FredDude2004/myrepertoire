@@ -41,7 +41,7 @@ export default function LineForm({ line, onSuccess }: LineFormProps) {
                 await updateLine(line.ID, { name, color, original_pgn: pgn });
             } else {
                 // Create new line
-                await createLine({ name, color, OriginalPGN: pgn });
+                await createLine({ name, color, pgn });
             }
 
             onSuccess();

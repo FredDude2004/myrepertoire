@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BASE_URL = "http://localhost:8080";
 
 export async function getLines() {
     const res = await fetch(`${BASE_URL}/api/lines`, {
@@ -10,12 +10,16 @@ export async function getLines() {
     return res.json();
 }
 
-export async function createLine(data: { name: string, color: string, OriginalPGN: string }) {
+export async function createLine(data: { name: string, color: string, pgn: string }) {
     const res = await fetch(`${BASE_URL}/api/lines`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+            name: data.name,
+            color: data.color,
+            original_pgn: data.pgn, // <-- snake_case
+        }),
     });
     if (!res.ok) {
         throw new Error("Failed to create line");
