@@ -3,21 +3,25 @@
 import { useRouter } from "next/navigation";
 import { useAppContext } from "@/contexts/Context";
 import { useEffect } from "react";
+import { validate } from "@/lib/api/auth";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
     const { appState } = useAppContext();
     const router = useRouter();
 
     useEffect(() => {
-        async function validateUser() {
-            const res = await fetch('http://localhost:8080/validate', {
-                credentials: 'include',
-            });
+        async function validateUserAndFetchLines() {
+            try {
+                await validate();
+            } catch (err: any) {
+                router.replace("/login"); // redirect to login page
+                return;
+            }
 
-            if (!res.ok) router.replace("/login"); // redirect to login page
+            router.push("/repertoire");
         }
 
-        validateUser();
+        validateUserAndFetchLines();
     }, [appState.user, router]);
 
     if (!appState.user) return null; // or a loading spinner

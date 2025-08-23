@@ -188,7 +188,7 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.TOGGLE_SELECTED_LINE_IDX: {
-            let { selectedLinesIdxs } = state;
+            let { selectedLinesIdxs = [] } = state;
             const idx = action.payload;
             const isSelected = selectedLinesIdxs.includes(idx);
             return {

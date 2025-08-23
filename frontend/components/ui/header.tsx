@@ -2,6 +2,7 @@
 
 import { useAppContext } from "@/contexts/Context"
 import { logout } from '@/reducer/actions/auth'
+import { logoutFetch } from '@/lib/api/auth'
 import { cn } from '@/lib/utils';
 import { useScroll } from 'motion/react';
 import React from 'react';
@@ -32,11 +33,7 @@ export const HeroHeader = () => {
 
     async function handleLogout() {
         try {
-            await fetch("http://localhost:8080/logout", {
-                method: "POST",
-                credentials: "include", // important for clearing cookies
-            });
-
+            await logoutFetch();
             // Clear app state & storage
             localStorage.removeItem("token");
             dispatch(logout());

@@ -6,10 +6,11 @@ import (
 	"github.com/FredDude2004/myrepertoire.io/backend/routes"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
+	"os"
 )
 
 func init() {
-	config.LoadEnvVars()
 	config.ConnectDB()
 	config.DB.AutoMigrate(&models.User{}, &models.Line{})
 }
@@ -28,5 +29,9 @@ func main() {
 	routes.Setup(app)
 
 	// Start the server on port 8080
-	app.Run()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // fallback
+	}
+	app.Run(":" + port)
 }

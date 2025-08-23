@@ -1,39 +1,29 @@
 'use client'
 
-import React, { ReactNode, useReducer, useEffect } from 'react';
+import { ReactNode, useReducer, useEffect } from 'react';
 import { reducer } from '@/reducer/reducer';
 import { initAppState } from '@/constants';
 import AppContext from '@/contexts/Context';
 import actionTypes from '@/reducer/actionTypes';
 import { getLines } from '@/lib/api/lines'; // your getLines function
+import { validate } from '@/lib/api/auth';
+import { login } from '@/reducer/actions/auth';
+import { setLines } from '@/reducer/actions/lines';
 
 export function AppProvider({ children }: { children: ReactNode }) {
     const [appState, dispatch] = useReducer(reducer, initAppState);
 
+
     useEffect(() => {
         async function validateUserAndFetchLines() {
             try {
-                // 1️⃣ Validate user session
-                const res = await fetch('http://localhost:8080/validate', {
-                    credentials: 'include',
-                });
+                // 1️⃣ Validate user session via centralized function
+                const data = await validate();
+                dispatch(login(data.username, data.password));
 
-                if (!res.ok) throw new Error('Not authenticated');
-
-                const data = await res.json();
-
-                // Set the logged in user in state
-                dispatch({
-                    type: actionTypes.LOGIN,
-                    payload: { username: data.message.Username },
-                });
-
-                // 2️⃣ Now fetch their lines
+                // 2️⃣ Fetch lines via centralized function
                 const lines = await getLines();
-                dispatch({
-                    type: actionTypes.SET_LINES,
-                    payload: lines,
-                });
+                dispatch(setLines(lines));
 
             } catch (err) {
                 dispatch({ type: actionTypes.LOGOUT });

@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: myrepertoire-db
+    restart: always
+    environment:
+      POSTGRES_USER: fred
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: myrepertoire-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: myrepertoire-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: myrepertoire-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://myrepertoire-backend:8080
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

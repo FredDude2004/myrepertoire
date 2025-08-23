@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppContext } from '@/contexts/Context';
-import { getLines } from '@/lib/api/lines';
+import { deleteLine, getLines } from '@/lib/api/lines';
 import { setLines, toggleSelectedLineIdx } from '@/reducer/actions/lines'
 
 interface LineCheckboxProps {
@@ -23,15 +23,9 @@ const LineCheckbox = ({ onEditLine }: LineCheckboxProps) => {
         if (!confirm("Are you sure you want to delete this line?")) return;
 
         try {
-            const res = await fetch(`http://localhost:8080/api/lines/${id}`, {
-                method: "DELETE",
-                credentials: "include"
-            });
-
-            if (!res.ok) throw new Error("Failed to delete line");
+            await deleteLine(id);
             refreshLines();
-        } catch (err) {
-            console.error(err);
+        } catch (err: any) {
             alert("Error deleting line");
         }
     }
