@@ -2,7 +2,9 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm set fetch-timeout 60000 \
+    && npm set fetch-retries 5 \
+    && npm ci --registry=https://registry.npmjs.org/
 
 # Rebuild the source code only when needed
 FROM node:20-alpine AS builder
