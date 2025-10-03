@@ -6,6 +6,9 @@ import './GameEnds.css'
 const GameEnds = ({ onClosePopup }) => {
 
     const { appState: { status }, dispatch } = useAppContext();
+    if (status === null || status === undefined) {
+        return;
+    }
 
     if (status === Status.ongoing || status === Status.promoting ||
         status === Status.variationEnds || status === Status.lineEnds ||

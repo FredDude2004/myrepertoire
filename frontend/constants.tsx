@@ -1,6 +1,5 @@
 import { createPosition } from './lib/helper'
 import { getFirstMove } from './lib/firstMove';
-import { firstMove } from './reducer/actions/move';
 
 // A function to create the initial state for the game board
 export const resetBoard = (playerColor: string, firstMoveNote?: string) => {

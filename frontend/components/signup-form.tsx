@@ -1,9 +1,6 @@
 'use client'
 
-import { useAppContext } from "@/contexts/Context"
 import { useState } from "react";
-import { login } from "@/reducer/actions/auth"
-import { setLines } from "@/reducer/actions/lines"
 import { cn } from "@/lib/utils"
 import React from 'react';
 import { Button } from "@/components/ui/button"
@@ -11,14 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/co
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation";
-import { getLines } from "@/lib/api/lines";
+import { signup } from "@/lib/api/auth";
 
 export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const { dispatch } = useAppContext();
     const router = useRouter();
 
     async function handleSubmit(e: React.FormEvent) {
@@ -27,45 +23,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
         setError("");
 
         try {
-            const resSignUp = await fetch("http://localhost:8080/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-                credentials: "include", // optional, for cookies
-            });
-
-            if (!resSignUp.ok) {
-                throw new Error("Invalid credentials");
-            }
-
-
-            const res = await fetch("http://localhost:8080/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-                credentials: "include", // optional, for cookies
-            });
-
-            if (!res.ok) {
-                throw new Error("Invalid credentials");
-            }
-
-            const data = await res.json();
-            if (data !== null) {
-                dispatch(login(username, password))
-            }
-
-            try {
-                const lines = await getLines();
-                dispatch(setLines(lines));
-            } catch (err: any) {
-                setError(err.message);
-            }
-
+            await signup(username, password);
         } catch (err: any) {
             setError(err.message);
         } finally {

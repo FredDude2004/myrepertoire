@@ -1,5 +1,7 @@
+const BASE_URL = "http://localhost:8080";
+
 export async function signup(username: string, password: string) {
-    const res = await fetch("http://localhost:8080/signup", {
+    const res = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -13,8 +15,8 @@ export async function signup(username: string, password: string) {
     return res.json();
 }
 
-export async function handleLogin(username: string, password: string) {
-    const res = await fetch("http://localhost:8080/login", {
+export async function loginFetch(username: string, password: string) {
+    const res = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -23,6 +25,25 @@ export async function handleLogin(username: string, password: string) {
 
     if (!res.ok) {
         throw new Error("Login failed");
+    }
+
+    return res.json();
+}
+
+export async function logoutFetch() {
+    await fetch(`${BASE_URL}/logout`, {
+        method: "POST",
+        credentials: "include", // important for clearing cookies
+    });
+}
+
+export async function validate() {
+    const res = await fetch(`${BASE_URL}/validate`, {
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        throw new Error("Not authenticated");
     }
 
     return res.json();

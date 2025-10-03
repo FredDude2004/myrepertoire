@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/FredDude2004/myrepertoire.io/backend/config"
@@ -30,6 +31,8 @@ func CreateLine(c *gin.Context) {
 
 		return
 	}
+
+	fmt.Printf("Received body: %+v\n", body)
 
 	parsed, err := utils.ProcessPGN(body.OriginalPGN)
 	if err != nil {

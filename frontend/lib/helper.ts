@@ -43,11 +43,16 @@ export const copyPosition = (position: string[][]) => {
     return newPosition;
 };
 
-export const areSameColorTiles = (coords1, coords2) =>
+type Coord = {
+    x: number;
+    y: number;
+}
+
+export const areSameColorTiles = (coords1: Coord, coords2: Coord) =>
     (coords1.x + coords1.y) % 2 === coords2.x + coords2.y;
 
 export const findPieceCoords = (position: string[][], type: string) => {
-    let results = [];
+    let results: Coord[] = [];
     position.forEach((rank, i) => {
         rank.forEach((pos, j) => {
             if (pos === type) results.push({ x: i, y: j });
@@ -55,6 +60,17 @@ export const findPieceCoords = (position: string[][], type: string) => {
     });
     return results;
 };
+
+interface MoveNotationArgs {
+    piece: string;
+    rank: number;
+    file: number;
+    x: number;
+    y: number;
+    position: string[][];
+    previousPosition: string[][];
+    promotesTo?: string;
+}
 
 export const getNewMoveNotation = ({
     piece,
@@ -64,7 +80,8 @@ export const getNewMoveNotation = ({
     y,
     position,
     previousPosition,
-    promotesTo }) => {
+    promotesTo,
+}: MoveNotationArgs) => {
     let note = "";
     const takes = position[x][y];
 
@@ -82,7 +99,6 @@ export const getNewMoveNotation = ({
     }
 
     note += getCharacter(y + 1) + (x + 1);
-
     const positionAfterMove = arbitor.performMove({
         position,
         piece,

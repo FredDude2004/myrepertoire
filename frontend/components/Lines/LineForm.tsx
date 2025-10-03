@@ -1,3 +1,4 @@
+import { createLine, updateLine } from '@/lib/api/lines';
 import React, { useState, useEffect } from 'react';
 
 interface LineFormProps {
@@ -35,30 +36,20 @@ export default function LineForm({ line, onSuccess }: LineFormProps) {
         setLoading(true);
 
         try {
-            const method = line ? "PATCH" : "POST";
-            const url = line
-                ? `http://localhost:8080/api/lines/${line.ID}`
-                : "http://localhost:8080/api/lines";
-
-            const res = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({
-                    name,
-                    color,
-                    original_pgn: pgn,
-                }),
-            });
-
-            if (!res.ok) throw new Error(`Failed to ${line ? "edit" : "create"} line`);
+            if (line) {
+                // Update existing line
+                await updateLine(line.ID, { name, color, original_pgn: pgn });
+            } else {
+                // Create new line
+                await createLine({ name, color, pgn });
+            }
 
             onSuccess();
-            // reset form inputs here after success
-            setName('');
-            setColor('');
-            setPgn('');
 
+            // Reset form fields after success
+            setName("");
+            setColor("");
+            setPgn("");
         } catch (err: any) {
             setError(err.message);
         } finally {

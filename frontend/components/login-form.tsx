@@ -3,6 +3,7 @@
 import { useAppContext } from "@/contexts/Context"
 import { useState } from "react";
 import { login } from "@/reducer/actions/auth"
+import { loginFetch } from "@/lib/api/auth";
 import { setLines } from "@/reducer/actions/lines"
 import { cn } from "@/lib/utils"
 import React from 'react';
@@ -27,37 +28,23 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         setError("");
 
         try {
-            const res = await fetch("http://localhost:8080/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-                credentials: "include", // optional, for cookies
-            });
+            // 1️⃣ Call API helper
+            await loginFetch(username, password);
 
-            if (!res.ok) {
-                throw new Error("Invalid login credentials");
-            }
+            // 2️⃣ Dispatch login action with user info from response
+            dispatch(login(username, password));
 
-            const data = await res.json();
-            if (data !== null) {
-                dispatch(login(username, password))
-            }
+            // 3️⃣ Fetch user lines
+            const lines = await getLines();
+            dispatch(setLines(lines));
 
-            try {
-                const lines = await getLines();
-                dispatch(setLines(lines));
-                router.push("/repertoire");
-            } catch (err: any) {
-                setError(err.message);
-            }
+            // 4️⃣ Redirect
+            router.push("/repertoire");
         } catch (err: any) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
-
     }
 
     return (
