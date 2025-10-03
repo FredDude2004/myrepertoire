@@ -52,4 +52,4 @@ services:
       # This command installs dependencies and starts the Next.js development server.
 
 volumes:
-  db-data:
+   db-data:
