@@ -2,23 +2,21 @@ name: Docker Image CI for GHCR
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker login to GHCR
+        run: docker login ghcr.io -u FredDude2004 -p ${{ secrets.GH_PAT }}
 
-      - name: Build and push Docker images
-        run: |
-          docker compose --profile prod build
-          docker compose --profile prod push
+      - name: Build images with Docker Compose
+        run: docker compose --profile prod build
+
+      - name: Push images with Docker Compose
+        run: docker compose --profile prod push
