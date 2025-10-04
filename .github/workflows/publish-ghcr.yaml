@@ -16,9 +16,11 @@ jobs:
         run: docker login ghcr.io -u FredDude2004 -p ${{ secrets.GH_PAT }}
 
       - name: Build images with Docker Compose
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: docker compose --profile prod build
-        env: POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Push images with Docker Compose
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: docker compose --profile prod push
-        env: POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
