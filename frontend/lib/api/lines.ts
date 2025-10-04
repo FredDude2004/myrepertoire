@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
+const BASE_URL = "http://myrepertoire.cloud:8080";
 
 export async function getLines() {
     const res = await fetch(`${BASE_URL}/api/lines`, {
