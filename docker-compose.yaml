@@ -7,13 +7,15 @@ services:
     container_name: myrepertoire-db
     restart: always
     environment:
-      POSTGRES_USER: fred
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
       POSTGRES_DB: myrepertoire-db
+      POSTGRES_PASSWORD: /run/secrets/postgres-password
     ports:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+    secrets:
+      - postgres-password
 
   backend:
     build: ./backend
@@ -23,6 +25,11 @@ services:
       - "8080:8080"
     env_file:
       - ./backend/.env
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+      DSTATBASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/myrepertoire-db?sslmode=disable
+    secrets:
+      - postgres-password
     depends_on:
       - db
 
@@ -60,3 +67,7 @@ services:
 
 volumes:
    db-data:
+
+secrets:
+  postgres-password:
+    file: ./db/postgres-password.txt
