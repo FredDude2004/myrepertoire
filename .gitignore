@@ -1,28 +1,42 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# ─── Node.js dependencies ─────────────────────────────
 frontend/node_modules
 frontend/.next
-/.pnp
-.pnp.js
+backend/node_modules
 
-# testing
-/coverage
-
-# production
+# ─── Build outputs ────────────────────────────────────
 /build
+frontend/out
+dist
 
-# misc
-.DS_Store
-.env.local
+# ─── Environment files (sensitive) ────────────────────
+.env
+.env.*
+backend/.env
 backend/api/.env
-.env.development.local
-.env.test.local
-.env.production.local
 
+# ─── Docker and database ──────────────────────────────
+db/
+*.sql
+*.sqlite
+*.db
+
+# ─── OS / Editor junk ─────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Logs ─────────────────────────────────────────────
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-db
+pnpm-debug.log*
 
+# ─── Testing ──────────────────────────────────────────
+/coverage
 
+# ─── Miscellaneous local configs ──────────────────────
+.pnp
+.pnp.js
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
