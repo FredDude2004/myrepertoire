@@ -15,6 +15,10 @@ jobs:
       - name: Docker login to GHCR
         run: docker login ghcr.io -u FredDude2004 -p ${{ secrets.GH_PAT }}
 
+      - name: Create .env file
+        run: |
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" > .env
+
       - name: Build images with Docker Compose
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
