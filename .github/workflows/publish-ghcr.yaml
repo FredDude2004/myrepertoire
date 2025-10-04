@@ -10,6 +10,6 @@ jobs:
             - uses: actions/checkout@v3
             - name: Build and push the image
               run: |
-                    docker login --username FredDude2004 --password ${{ secrets.GH_PAT }}
+                    docker login --username FredDude2004 --password ${{ secrets.GH_PAT }} ghcr.io
                     docker compose --profile prod build
                     docker compose --profile prod push
