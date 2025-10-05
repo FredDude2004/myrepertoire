@@ -1,0 +1,38 @@
+Attaching to myrepertoire-backend, myrepertoire-db, myrepertoire-frontend
+myrepertoire-db  | 
+myrepertoire-db  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+myrepertoire-db  | 
+myrepertoire-backend  | [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+myrepertoire-backend  | 
+myrepertoire-backend  | [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+myrepertoire-backend  |  - using env:	export GIN_MODE=release
+myrepertoire-backend  |  - using code:	gin.SetMode(gin.ReleaseMode)
+myrepertoire-backend  | 
+myrepertoire-backend  | [GIN-debug] POST   /signup                   --> github.com/FredDude2004/myrepertoire.io/backend/handlers.Signup (4 handlers)
+myrepertoire-backend  | [GIN-debug] POST   /login                    --> github.com/FredDude2004/myrepertoire.io/backend/handlers.Login (4 handlers)
+myrepertoire-backend  | [GIN-debug] POST   /logout                   --> github.com/FredDude2004/myrepertoire.io/backend/handlers.Logout (4 handlers)
+myrepertoire-backend  | [GIN-debug] GET    /validate                 --> github.com/FredDude2004/myrepertoire.io/backend/handlers.Validate (5 handlers)
+myrepertoire-backend  | [GIN-debug] POST   /api/lines                --> github.com/FredDude2004/myrepertoire.io/backend/handlers.CreateLine (5 handlers)
+myrepertoire-backend  | [GIN-debug] GET    /api/lines                --> github.com/FredDude2004/myrepertoire.io/backend/handlers.GetLinesByUser (5 handlers)
+myrepertoire-backend  | [GIN-debug] PATCH  /api/lines/:id            --> github.com/FredDude2004/myrepertoire.io/backend/handlers.UpdateLine (5 handlers)
+myrepertoire-backend  | [GIN-debug] DELETE /api/lines/:id            --> github.com/FredDude2004/myrepertoire.io/backend/handlers.DeletLine (5 handlers)
+myrepertoire-backend  | [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+myrepertoire-backend  | Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+myrepertoire-backend  | [GIN-debug] Listening and serving HTTP on :8080
+myrepertoire-frontend  | 
+myrepertoire-frontend  | > repertoire-ui@0.1.0 start
+myrepertoire-frontend  | > next start
+myrepertoire-frontend  | 
+myrepertoire-frontend  |    ▲ Next.js 15.4.5
+myrepertoire-frontend  |    - Local:        http://localhost:3000
+myrepertoire-frontend  |    - Network:      http://172.18.0.4:3000
+myrepertoire-frontend  | 
+myrepertoire-frontend  |  ✓ Starting...
+myrepertoire-frontend  |  ✓ Ready in 604ms
+Gracefully Stopping... press Ctrl+C again to force
+[K Container myrepertoire-frontend  [32mStopping[0m
+[K Container myrepertoire-frontend  [32mStopped[0m
+[K Container myrepertoire-backend  [32mStopping[0m
+[K Container myrepertoire-backend  [32mStopped[0m
+[K Container myrepertoire-db  [32mStopping[0m
+[K Container myrepertoire-db  [32mStopped[0m
