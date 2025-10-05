@@ -20,7 +20,12 @@ func main() {
 	app := gin.Default()
 
 	app.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"http://myrepertoire.cloud:3000", "https://myrepertoire.cloud:3000"},
+        AllowOrigins:     []string{
+                          "http://myrepertoire.cloud", 
+                          "https://myrepertoire.cloud",
+                          "http://api.myrepertoire.cloud",
+                          "https://api.myrepertoire.cloud",
+		},
 		AllowMethods:     []string{"POST", "GET", "OPTIONS", "PUT", "PATCH", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: true,

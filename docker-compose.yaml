@@ -1,7 +1,20 @@
-# docker-compose.yml
 # version: '3.9'
 
 services:
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.traefik.address=:8080" # New entrypoint for Traefik dashboard
+      - "--api.insecure=true" # Enable the dashboard (insecure for testing/dev)
+    ports:
+      - "80:80"
+      - "8080:8080" # The Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   db:
     image: postgres:16-alpine
     container_name: myrepertoire-db
@@ -21,8 +34,13 @@ services:
     build: ./backend
     image: ghcr.io/freddude2004/myrepertoire-backend:latest
     container_name: myrepertoire-backend
-    ports:
-      - "8080:8080"
+    ports: []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.myrepertoire.cloud`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+    deploy: 3
     env_file:
       - ./backend/.env
     depends_on:
@@ -32,36 +50,42 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_BACKEND_URL: http://myrepertoire.cloud:8080
+        # Changed: Use the Traefik public URL and standard port 80
+        NEXT_PUBLIC_BACKEND_URL: http://api.myrepertoire.cloud
     image: ghcr.io/freddude2004/myrepertoire-frontend:latest
     container_name: myrepertoire-frontend
-    ports:
-      - "3000:3000"
+    ports: []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`myrepertoire.cloud`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+    deploy: 3
     environment:
       - NODE_ENV=production
     depends_on:
       - backend
-    profiles: ["prod"]
 
-  frontend-dev:
-    image: node:20-alpine
-    container_name: myrepertoire-frontend-dev
-    working_dir: /app/frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app/frontend
-      - /app/frontend/node_modules
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-      - NEXT_PUBLIC_BACKEND_URL=http://myrepertoire-backend:8080
-    depends_on:
-      - backend
-    command: >
-      sh -c "npm install && npm run dev"
-    profiles: ["dev"]
+    frontend-dev:
+      image: node:20-alpine
+      container_name: myrepertoire-frontend-dev
+      working_dir: /app/frontend
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./frontend:/app/frontend
+        - /app/frontend/node_modules
+      environment:
+        - NODE_ENV=development
+        - CHOKIDAR_USEPOLLING=true
+        # Changed: Use the Traefik internal service name for communication within Docker
+        - NEXT_PUBLIC_BACKEND_URL=http://backend:8080
+      depends_on:
+        - backend
+      command: >
+        sh -c "npm install && npm run dev"
+      profiles: ["dev"]
 
-volumes:
-   db-data:
+  volumes:
+     db-data:
+
 
