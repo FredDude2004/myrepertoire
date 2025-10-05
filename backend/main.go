@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/FredDude2004/myrepertoire.io/backend/config"
-	"github.com/FredDude2004/myrepertoire.io/backend/models"
-	"github.com/FredDude2004/myrepertoire.io/backend/routes"
+	"github.com/FredDude2004/myrepertoire/backend/config"
+	"github.com/FredDude2004/myrepertoire/backend/models"
+	"github.com/FredDude2004/myrepertoire/backend/routes"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
@@ -21,7 +21,7 @@ func main() {
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{
-			"http://myrepertoire.cloud", 
+			"http://myrepertoire.cloud",
 			"https://myrepertoire.cloud",
 			"http://api.myrepertoire.cloud",
 			"https://api.myrepertoire.cloud",

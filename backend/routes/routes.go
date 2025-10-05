@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/FredDude2004/myrepertoire.io/backend/handlers"
-	"github.com/FredDude2004/myrepertoire.io/backend/middleware"
+	"github.com/FredDude2004/myrepertoire/backend/handlers"
+	"github.com/FredDude2004/myrepertoire/backend/middleware"
 	"github.com/gin-gonic/gin"
 )
 

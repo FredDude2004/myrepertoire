@@ -1,21 +1,21 @@
-# myrepertoire.io 🎼♟️
+# myrepertoire 🎼♟️
 
 A full-stack chess repertoire trainer built with TypeScript, React, Next.js, Go
-, PostgreSQL, and self-hosted infrastructure
+, PostgreSQL, and hosted on a configured VPS instance
 
-myrepertoire.io is a production-grade, self-hosted web application that enables
+myrepertoire is a web application that enables
 chess players to create, manage, and train their repertoires interactively.
-Users can upload PGN files, transform them into structured repertoires, and
-practice them through a quiz system that simulates real-world play.
+Users can paste PGN files, transform them into structured repertoires, and
+practice them through a drill system that simulates real-world play.
 
-This project demonstrates full-stack development, systems design, and DevOps
-engineering: from building a custom PGN lexer/parser in Go, to architecting a
+This project demonstrates software engineering, full-stack development, systems design, and DevOps
+: from building a custom PGN lexer/parser in Go, to architecting a
 secure backend API + PostgreSQL database, to deploying a Next.js frontend on a
-hardened, self-hosted server environment with reverse proxying, SSL, and firewalls.
+hardened, VPS environment with reverse proxying, SSL/TLS Certificates, firewall
+and a CI/CD pipeline by registering Docker containers on the GitHub Container
+Registry and useing GitHub Actions and Watchtower for automated deployments.
 
-## 🚀 Highlights
-
-### Custom Chess PGN parser written in Go
+**Custom Chess PGN parser written in Go**
 
 - Designed and implemented a custom lexer and parser to perform lexical analysis
   of and evaluation of PGN files.
@@ -24,7 +24,7 @@ hardened, self-hosted server environment with reverse proxying, SSL, and firewal
 
 - Handles variations, nested moves, and advanced chess notation.
 
-### Backend API (Go + Fiber + GORM)
+**Backend API (Go + Fiber + GORM)**
 
 - Created a REST API for authentication, repertoire CRUD operations, and quiz
   delivery.
@@ -34,7 +34,7 @@ hardened, self-hosted server environment with reverse proxying, SSL, and firewal
 - Designed a normalized PostgreSQL schema to store users, repertoires, and lines
   with strong data integrity.
 
-### Frontend (Next.js + React + TypeScript)
+**Frontend (Next.js + React + TypeScript)**
 
 - Built a responsive, interactive UI with React and Next.js.
 
@@ -44,18 +44,16 @@ hardened, self-hosted server environment with reverse proxying, SSL, and firewal
 
 - Implemented global state management with Context + Reducer for scalability.
 
-### Networking & Self-Hosting
+**Networking & VPS**
 
-- Self-hosted production deployment on hardened server hardware.
-
-- Configured Dynamic DNS for domain resolution.
+- configured a Virtual Private Server instance deployment on hardened hardware.
 
 - Secured HTTPS with Let’s Encrypt TLS certificates via Go Traefik reverse proxy.
 
 - Hardened environment with firewalls, port management, and SSH key-based
   authentication.
 
-### Developer Tooling & Workflow
+**Developer Tooling & Workflow**
 
 - Full development in NeoVim with LSP, debugging, and Treesitter for Go,
   TypeScript, and SQL (All on Arch BTW).
@@ -65,7 +63,7 @@ hardened, self-hosted server environment with reverse proxying, SSL, and firewal
 
 - Open source with clear contribution guidelines for community collaboration.
 
-## 🛠️ Tech Stack
+### Tech Stack
 
 Frontend: TypeScript, React, Next.js
 
@@ -75,14 +73,14 @@ Database: PostgreSQL
 
 Authentication: JWT, go/encrypt library
 
-Deployment & Networking: Self-hosted server, Dynamic DNS, Traefik, Let’s
+Deployment & Networking: VPS, Traefik, Let’s
 Encrypt TLS, SSH, firewalls
 
 Dev Tools: NeoVim, Docker, GitHub
 
-### 🧑‍💻 Contributing
+### Contributing
 
-myrepertoire.io is open source and welcomes contributions!
+myrepertoire is open source and welcomes contributions!
 
 Just fork the repository and clone it out on your local machine.
 Run locally (backend + frontend + database with Docker Compose):
@@ -103,8 +101,6 @@ This project has been something that I wanted to build ever since I first
 started using Gotham's [Chessly](https://chessly.com) and using the drills to go
 over the openings. When I used it I thought to myself "Wouldn't it be awesome if
 you could add your own openings to this tool?" And now here we are!
-
-This project has taught me a lot and I have absolutely loved all of the steps
 
 ### Sources
 

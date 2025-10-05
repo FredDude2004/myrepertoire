@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/FredDude2004/myrepertoire.io/backend/config"
-	"github.com/FredDude2004/myrepertoire.io/backend/models"
+	"github.com/FredDude2004/myrepertoire/backend/config"
+	"github.com/FredDude2004/myrepertoire/backend/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )

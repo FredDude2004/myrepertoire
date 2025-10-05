@@ -1,4 +1,4 @@
-module github.com/FredDude2004/myrepertoire.io/backend
+module github.com/FredDude2004/myrepertoire/backend
 
 go 1.24.4
 

@@ -10,14 +10,14 @@ function MyMarkdownPage() {
                 <header>
                     <h1>About</h1>
                     <h2>What is it?</h2>
-                    <p><strong>myrepertoire.io</strong> is a platform designed to help you gain a stronger grip on your personal openings repertoire. It is largely inspired by Gotham Chess’s platform <a href="https://chessly.com" target="_blank">Chessly.com</a>.</p>
+                    <p><strong>myrepertoire</strong> is a platform designed to help you gain a stronger grip on your personal openings repertoire. It is largely inspired by Gotham Chess’s platform <a href="https://chessly.com" target="_blank">Chessly.com</a>.</p>
                 </header>
 
                 <main>
                     <section>
                         <p>On Chessly, International Master Levy Rozman provides openings coaching, recommendations, and tools to understand and remember lines. The site also offers courses covering the opening, middlegame, and endgame, and has grown significantly with many features to enhance your chess game.</p>
 
-                        <p>My favorite feature on Chessly was the <strong>Drills</strong>. After watching video lessons and going through the opening lines, you could quiz yourself in an interactive environment, with the computer playing your opponent’s moves. This tool was a game changer for memorization and directly inspired me to build <strong>myrepertoire.io</strong>.</p>
+                        <p>My favorite feature on Chessly was the <strong>Drills</strong>. After watching video lessons and going through the opening lines, you could quiz yourself in an interactive environment, with the computer playing your opponent’s moves. This tool was a game changer for memorization and directly inspired me to build <strong>myrepertoire</strong>.</p>
                     </section>
 
                     <section>
@@ -55,7 +55,7 @@ function MyMarkdownPage() {
                         </ol>
                         <br />
                         -
-                        <p>One of the best features of myrepertoire.io is <strong>Variation Folding</strong>. For example:</p>
+                        <p>One of the best features of myrepertoire is <strong>Variation Folding</strong>. For example:</p>
                         <br />
                         <pre>1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 (3... Nf6 4. O-O) 4. Ba4 *</pre>
                         <br />
@@ -69,7 +69,7 @@ function MyMarkdownPage() {
                         <h2>Disclaimer</h2>
                         <p>This site is in its early stages, so you may encounter bugs or errors. I ask for your patience—this is a personal project I’ve wanted ever since becoming a proud owner of <em>“e4 New York Style”</em>.</p>
 
-                        <p>If you run into issues, please visit my <a href="https://github.com/FredDude2004/myrepertoire.io" target="_blank">GitHub</a> and submit an issue (leave a star while you&apos;re there!). The more detailed the report, the better.</p>
+                        <p>If you run into issues, please visit my <a href="https://github.com/FredDude2004/myrepertoire" target="_blank">GitHub</a> and submit an issue (leave a star while you&apos;re there!). The more detailed the report, the better.</p>
                     </section>
                 </main>
             </div>

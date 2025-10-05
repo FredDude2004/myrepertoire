@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/FredDude2004/myrepertoire.io/backend/config"
-	"github.com/FredDude2004/myrepertoire.io/backend/models"
-	"github.com/FredDude2004/myrepertoire.io/backend/utils"
+	"github.com/FredDude2004/myrepertoire/backend/config"
+	"github.com/FredDude2004/myrepertoire/backend/models"
+	"github.com/FredDude2004/myrepertoire/backend/utils"
 	"github.com/gin-gonic/gin"
 )
 
