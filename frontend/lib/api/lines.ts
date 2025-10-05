@@ -1,4 +1,4 @@
-const BASE_URL = "http://myrepertoire.cloud:8080";
+const BASE_URL = "https://api.myrepertoire.cloud";
 
 export async function getLines() {
     const res = await fetch(`${BASE_URL}/api/lines`, {

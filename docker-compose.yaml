@@ -1,67 +1,90 @@
-# docker-compose.yml
 # version: '3.9'
 
+networks:
+  traefik-net:
+    driver: bridge
+
 services:
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=fred@myrepertoire.cloud"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik-net
+
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  myrepertoire-backend:
+    build: ./backend
+    image: ghcr.io/freddude2004/myrepertoire-backend:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.myrepertoire-backend.rule=Host(`api.myrepertoire.cloud`)"
+      - "traefik.http.routers.myrepertoire-backend.entrypoints=websecure"
+      - "traefik.http.routers.myrepertoire-backend.tls.certresolver=myresolver"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - traefik-net
+    deploy:
+      replicas: 3
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+
+  myrepertoire-frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_BACKEND_URL: https://api.myrepertoire.cloud
+    image: ghcr.io/freddude2004/myrepertoire-frontend:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.myrepertoire-frontend.rule=Host(`myrepertoire.cloud`)"
+      - "traefik.http.routers.myrepertoire-frontend.entrypoints=websecure"
+      - "traefik.http.routers.myrepertoire-frontend.tls.certresolver=myresolver"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - traefik-net
+    deploy:
+      replicas: 3
+    depends_on:
+      - myrepertoire-backend
+
   db:
     image: postgres:16-alpine
-    container_name: myrepertoire-db
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: myrepertoire-db
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-    env_file:
-      - .env
-
-  backend:
-    build: ./backend
-    image: ghcr.io/freddude2004/myrepertoire-backend:latest
-    container_name: myrepertoire-backend
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./backend/.env
-    depends_on:
-      - db
-
-  frontend:
-    build:
-      context: ./frontend
-      args:
-        NEXT_PUBLIC_BACKEND_URL: http://myrepertoire.cloud:8080
-    image: ghcr.io/freddude2004/myrepertoire-frontend:latest
-    container_name: myrepertoire-frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - backend
-    profiles: ["prod"]
-
-  frontend-dev:
-    image: node:20-alpine
-    container_name: myrepertoire-frontend-dev
-    working_dir: /app/frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app/frontend
-      - /app/frontend/node_modules
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-      - NEXT_PUBLIC_BACKEND_URL=http://myrepertoire-backend:8080
-    depends_on:
-      - backend
-    command: >
-      sh -c "npm install && npm run dev"
-    profiles: ["dev"]
+    networks:
+      - traefik-net
 
 volumes:
-   db-data:
+  db-data:
+  letsencrypt:
 
