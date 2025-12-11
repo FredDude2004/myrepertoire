@@ -1,0 +1,43 @@
+# docker-compose.dev.yml
+
+services:
+  db:
+    image: postgres:15-alpine
+    env_file:
+      - .env.dev
+    environment:
+      POSTGRES_USER: ${BACKEND_DB_USER}
+      POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
+      POSTGRES_DB: ${BACKEND_DB_NAME}
+
+  backend:
+    image: golang:1.25-alpine
+    working_dir: /app
+    env_file:
+      - .env.dev
+    volumes:
+      - ./backend:/app
+    command: ["go", "run", "main.go"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    env_file:
+      - .env.dev
+      - .env.dev.frontend
+    environment:
+      NODE_ENV: development
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:

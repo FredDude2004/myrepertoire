@@ -1,4 +1,4 @@
-# version: '3.9'
+# version: "3.9"
 
 networks:
   traefik-net:
@@ -60,6 +60,8 @@ services:
       args:
         NEXT_PUBLIC_BACKEND_URL: https://api.myrepertoire.cloud
     image: ghcr.io/freddude2004/myrepertoire-frontend:latest
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL: https://api.myrepertoire.cloud
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.myrepertoire-frontend.rule=Host(`myrepertoire.cloud`)"
