@@ -5,7 +5,7 @@ services:
   db:
     image: postgres:15-alpine
     env_file:
-      - .env.db
+      - .env.dev.db
     environment:
       POSTGRES_USER: ${BACKEND_DB_USER}
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
@@ -15,7 +15,7 @@ services:
     image: golang:1.25-alpine
     working_dir: /app
     env_file:
-      - .env.backend
+      - .env.dev.backend
     volumes:
       - ./backend:/app
     command: ["go", "run", "main.go"]
@@ -28,7 +28,6 @@ services:
     build:
       context: ./frontend
     env_file:
-      - .env.dev
       - .env.dev.frontend
     environment:
       NODE_ENV: development
