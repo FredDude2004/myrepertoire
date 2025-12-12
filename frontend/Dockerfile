@@ -1,29 +1,32 @@
-# Install dependencies only when needed
+# ---- Install dependencies ----
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm set fetch-timeout 60000 \
-    && npm set fetch-retries 5 \
-    && npm ci --registry=https://registry.npmjs.org/
+COPY package*.json ./
+RUN npm ci
 
+# ---- Build stage ----
 FROM node:20-alpine AS builder
 WORKDIR /app
-
-ARG NEXT_PUBLIC_BACKEND_URL
-ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
 
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
+
 RUN npm run build
 
+# ---- Production image ----
 FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy only necessary files
-COPY --from=builder /app/ ./
+# Copy ONLY what the runtime needs
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 
